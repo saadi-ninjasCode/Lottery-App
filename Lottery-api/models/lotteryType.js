@@ -8,7 +8,8 @@ const lotterySchema = new Schema({
         required: true,
     },
     next_draw: {
-        type: String
+        type: Date,
+        min: Date.now()
     },
 },
     { timestamps: true }
