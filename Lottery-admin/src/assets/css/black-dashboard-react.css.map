@@ -115,7 +115,6 @@
 		"../scss/black-dashboard-react/custom/_fixed-plugin.scss",
 		"../scss/black-dashboard-react/custom/_sidebar-and-main-panel.scss",
 		"../scss/black-dashboard-react/custom/_misc.scss",
-		"../scss/black-dashboard-react/custom/_rtl.scss",
 		"../scss/black-dashboard-react/custom/_input-group.scss",
 		"../scss/black-dashboard-react/custom/vendor/_plugin-perfect-scrollbar.scss",
 		"../scss/black-dashboard-react/custom/vendor/_plugin-react-notification-alert.scss",

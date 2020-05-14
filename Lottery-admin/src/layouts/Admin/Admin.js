@@ -24,11 +24,10 @@ import PerfectScrollbar from "perfect-scrollbar";
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
 import Footer from "components/Footer/Footer.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
-import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
 
 import routes from "routes.js";
 
-import logo from "assets/img/react-logo.png";
+import logo from "assets/img/lottery-logo.png";
 
 var ps;
 
@@ -116,8 +115,8 @@ class Admin extends React.Component {
             routes={routes}
             bgColor={this.state.backgroundColor}
             logo={{
-              outterLink: "https://www.creative-tim.com/",
-              text: "Creative Tim",
+              outterLink: "https://www.49sresult.co.uk/",
+              text: "49s Results",
               imgSrc: logo
             }}
             toggleSidebar={this.toggleSidebar}
@@ -135,18 +134,14 @@ class Admin extends React.Component {
             />
             <Switch>
               {this.getRoutes(routes)}
-              <Redirect from="*" to="/admin/dashboard"/>
+              <Redirect from="*" to="/admin/dashboard" />
             </Switch>
             {// we don't want the Footer to be rendered on map page
-            this.props.location.pathname.indexOf("maps") !== -1 ? null : (
-              <Footer fluid />
-            )}
+              this.props.location.pathname.indexOf("maps") !== -1 ? null : (
+                <Footer fluid />
+              )}
           </div>
         </div>
-        <FixedPlugin
-          bgColor={this.state.backgroundColor}
-          handleBgClick={this.handleBgClick}
-        />
       </>
     );
   }
