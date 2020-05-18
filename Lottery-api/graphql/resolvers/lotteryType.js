@@ -6,7 +6,7 @@ module.exports = {
         try {
             const lotteries = await LotteryType.find();
             return lotteries.map(lottery => {
-                return { ...lottery._doc, _id: lottery.id }
+                return { ...lottery._doc, _id: lottery.id, next_draw: new Date(lottery._doc.next_draw).toISOString() }
             })
         }
         catch (err) {
@@ -28,6 +28,5 @@ module.exports = {
             console.log(err);
             throw err;
         }
-
-    }
+    },
 };
