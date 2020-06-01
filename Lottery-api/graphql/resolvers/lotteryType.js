@@ -1,4 +1,5 @@
 const LotteryType = require('../../models/lotteryType');
+const { transfromLotteryType } = require('./transformation')
 
 module.exports = {
     lottery: async () => {
@@ -6,7 +7,7 @@ module.exports = {
         try {
             const lotteries = await LotteryType.find();
             return lotteries.map(lottery => {
-                return { ...lottery._doc, _id: lottery.id, next_draw: new Date(lottery._doc.next_draw).toISOString() }
+                return transfromLotteryType(lottery);
             })
         }
         catch (err) {
@@ -22,7 +23,7 @@ module.exports = {
                 next_draw: args.lotteryInput.next_draw,
             });
             const result = await lottery.save();
-            return ({ ...result._doc, _id: result.id })
+            return transfromLotteryType(result);
         }
         catch (err) {
             console.log(err);

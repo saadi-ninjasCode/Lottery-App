@@ -15,6 +15,13 @@ type User{
     notifications: [LotteryType!]
 }
 
+type UsageBalls {
+    _id: ID!
+    lottery : LotteryType!
+    coldBall : [Int!]!
+    hotBall : [Int!]!
+}
+
 input LotteryInput {
     name: String!
     next_draw: String
@@ -25,15 +32,22 @@ input UserInput{
     email: String!
     password: String!
 }
+input UsageBallsInput {
+    lottery : ID!
+    coldBall : [Int!]!
+    hotBall : [Int!]!
+}
 
 type RootQuery {
-    lottery(id : String) : [LotteryType!]!
-    user(id : String) : [User!]!
+    lottery : [LotteryType!]!
+    user : [User!]!
+    usageBalls: [UsageBalls!]!
 }
 
 type RootMutation{
     createLottery( lotteryInput : LotteryInput ) : LotteryType!
     createUser( userInput : UserInput ) : User!
+    createUsageBalls ( usageInput : UsageBallsInput) : UsageBalls!
 }
 
 schema {
