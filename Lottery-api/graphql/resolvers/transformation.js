@@ -4,8 +4,16 @@ const usageBall = require("../../models/usageBall");
 
 const lotteryById = async (lotteryids) => {
     try {
-        const lottery = await LotteryType.findById(lotteryids);
-        return lotteryTypeTransformation(lottery);
+        if (Array.isArray(lotteryids)) {
+            const lottery = await LotteryType.find({ _id: { $in: lotteryids } });
+            return lottery.map(lott => {
+                return lotteryTypeTransformation(lott);
+            })
+        }
+        else {
+            const lottery = await LotteryType.findById(lotteryids);
+            return lotteryTypeTransformation(lottery);
+        }
     }
     catch (e) {
         console.log(e)
@@ -29,7 +37,16 @@ const usageBallTransformation = ball => {
     }
 }
 
+const userTransformation = user => {
+    return {
+        ...user._doc,
+        _id: user.id,
+        notifications: lotteryById(user._doc.notifications)
+    }
+}
+
 
 
 exports.transfromLotteryType = lotteryTypeTransformation;
 exports.transformUsageBalls = usageBallTransformation;
+exports.transformUser = userTransformation;

@@ -1,20 +1,6 @@
 const User = require('../../models/user');
-const LotteryType = require('../../models/lotteryType');
+const { transformUser } = require('./transformation')
 const bcrypt = require('bcryptjs')
-
-
-const lotteryById = async (lotteryids) => {
-    try {
-        const lottery = await LotteryType.find({ _id: { $in: lotteryids } });
-        return (lottery.map(lott => {
-            return { ...lott._doc, _id: lott.id, next_draw: new Date(lott._doc.next_draw).toISOString() }
-        }))
-    }
-    catch (e) {
-        console.log(e)
-        throw err;
-    }
-}
 
 module.exports = {
     user: async () => {
@@ -22,7 +8,7 @@ module.exports = {
         try {
             const users = await User.find();
             return users.map(user => {
-                return { ...user._doc, _id: user.id, notifications: lotteryById(user._doc.notifications) }
+                return transformUser(user);
             })
         }
         catch (err) {
@@ -37,11 +23,11 @@ module.exports = {
             if (existingUser) {
                 throw new Error('Email is already associated with another account.');
             }
-            const hasPassword = await bcrypt.hash(args.userInput.password, 12)
+            const hashPassword = await bcrypt.hash(args.userInput.password, 12)
             const user = new User({
                 name: args.userInput.name,
                 email: args.userInput.email,
-                password: hasPassword,
+                password: hashPassword,
             });
             user.notifications.push("5ebd1eb85bbb953a30f5b921")
             const result = await user.save();
