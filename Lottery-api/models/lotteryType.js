@@ -9,7 +9,7 @@ const lotterySchema = new Schema({
     },
     next_draw: {
         type: Date,
-        min: Date.now()
+        min: [Date.now(), "Date must be greater than current date & time"]
     },
 },
     { timestamps: true }
