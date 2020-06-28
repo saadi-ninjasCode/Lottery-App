@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
 
+function dateLimit(val) {
+    return val >= Date.now();
+}
 const Schema = mongoose.Schema;
 
 const lotterySchema = new Schema({
@@ -9,7 +12,7 @@ const lotterySchema = new Schema({
     },
     next_draw: {
         type: Date,
-        min: [Date.now(), "Date must be greater than current date & time"]
+        validate: [dateLimit, "Date must be greater than current date & time"],
     },
 },
     { timestamps: true }

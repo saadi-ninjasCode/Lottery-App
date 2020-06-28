@@ -15,8 +15,12 @@ module.exports = {
             throw err;
         }
     },
-    createLottery: async (args) => {
+    createLottery: async (args, req) => {
         console.log("Create Lottery")
+        console.log('auth: ', req.isAuth)
+        if (!req.isAuth) {
+            throw new Error("Unauthenticated!")
+        }
         try {
             const lottery = new LotteryType({
                 name: args.lotteryInput.name,

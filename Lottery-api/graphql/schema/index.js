@@ -21,6 +21,20 @@ type UsageBalls {
     coldBall : [Int!]!
     hotBall : [Int!]!
 }
+type LotteryBalls{
+    _id: ID!
+    lottery : LotteryType!
+    date: String!
+    balls : [Int!]
+    specialBalls : [Int!]
+    pending : Boolean!
+}
+
+type AuthData {
+    userId: ID!
+    token: String!
+    tokenExpiration: Int!
+}
 
 input LotteryInput {
     name: String!
@@ -38,16 +52,27 @@ input UsageBallsInput {
     hotBall : [Int!]!
 }
 
+input LotteryBallsInput{
+    lottery : ID!
+    date: String!
+    balls : [Int!]
+    SpecialBalls : [Int!]
+    pending : Boolean!
+}
+
 type RootQuery {
     lottery : [LotteryType!]!
     user : [User!]!
     usageBalls: [UsageBalls!]!
+    lotteryBalls : [LotteryBalls!]
+    login(email: String!, password: String!): AuthData!
 }
 
 type RootMutation{
     createLottery( lotteryInput : LotteryInput ) : LotteryType!
     createUser( userInput : UserInput ) : User!
     createUsageBalls ( usageInput : UsageBallsInput) : UsageBalls!
+    createLotteryBalls ( lotteryInput : LotteryBallsInput ) : LotteryBalls!
 }
 
 schema {

@@ -3,6 +3,7 @@ const graphqlHttp = require('express-graphql')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const dotenv = require('dotenv')
+const isAuth = require('./middleware/is-auth')
 //Configure the dotenv for loading the environment variable from .env file to process.env
 dotenv.config()
 
@@ -12,6 +13,8 @@ const graphQlResolvers = require('./graphql/resolvers/index');
 const app = express();
 app.set("view engine", "ejs");
 app.use(bodyParser.json());
+
+app.use(isAuth);
 
 app.use('/graphql', graphqlHttp({
     schema: graphQlSchema,
