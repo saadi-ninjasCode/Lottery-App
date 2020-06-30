@@ -40,6 +40,26 @@ module.exports = {
             throw err;
         }
     },
+    // addNotifications: async ({ notifications }, req) => {
+    //     if (!req.isAuth) {
+    //         throw new Error('Invalid credentials!');
+    //     }
+    //     try {
+    //         const user = await User.findById(req.userId);
+    //         if (Array.isArray(notifications)) {
+    //             notifications.map(notificationId => {
+    //                 user.notifications.push(notificationId)
+    //             })
+    //         }
+    //         else{
+    //             user.notifications.push(notifications)
+    //         }
+    //     }
+    //     catch (err) {
+    //         console.log(err);
+    //         throw err;
+    //     }
+    // },
     login: async ({ email, password }) => {
         try {
             const user = await User.findOne({ email: email })

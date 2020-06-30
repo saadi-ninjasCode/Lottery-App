@@ -73,6 +73,7 @@ type RootMutation{
     createUser( userInput : UserInput ) : User!
     createUsageBalls ( usageInput : UsageBallsInput) : UsageBalls!
     createLotteryBalls ( lotteryInput : LotteryBallsInput ) : LotteryBalls!
+    addNotifications (notifications: [LotteryType!]) : User!
 }
 
 schema {
