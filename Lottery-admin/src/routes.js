@@ -24,6 +24,7 @@ import Typography from "views/Typography.js";
 import UserProfile from "views/UserProfile.js";
 import LunchTime from "views/LunchTime.js"
 import TeaTime from "views/TeaTime";
+import Login from 'views/Login'
 
 var routes = [
   {
@@ -96,8 +97,8 @@ var routes = [
   },
   {
     path: "/rtl-support",
-    name: "Irish Lotto",
-    icon: "tim-icons icon-basket-simple",
+    name: "Lottery",
+    icon: "fas fa-glasses",
     layout: "/admin"
   },
   {
@@ -105,6 +106,14 @@ var routes = [
     name: "Daily Million",
     icon: "tim-icons icon-basket-simple",
     layout: "/admin"
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    icon: 'fas fa-walking',
+    component: Login,
+    layout: '/auth',
+    invisible: true
   },
 ];
 export default routes;
