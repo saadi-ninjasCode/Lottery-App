@@ -53,7 +53,7 @@ function Sidebar(props) {
     document.documentElement.classList.remove("nav-open");
   };
 
-console.log(props)
+  console.log(props)
   const { bgColor, routes, rtlActive, logo } = props;
   let logoImg = null;
   let logoText = null;
@@ -116,6 +116,7 @@ console.log(props)
         ) : null}
         <Nav>
           {routes.map((prop, key) => {
+            if (prop.invisible) return null;
             if (prop.redirect) return null;
             return (
               <li
