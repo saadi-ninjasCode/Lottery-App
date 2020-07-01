@@ -1,8 +1,8 @@
 const express = require('express')
-const graphqlHttp = require('express-graphql')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const dotenv = require('dotenv')
+const { ApolloServer, gql } = require('apollo-server-express')
 const isAuth = require('./middleware/is-auth')
 //Configure the dotenv for loading the environment variable from .env file to process.env
 dotenv.config()
@@ -16,11 +16,16 @@ app.use(bodyParser.json());
 
 app.use(isAuth);
 
-app.use('/graphql', graphqlHttp({
-    schema: graphQlSchema,
-    rootValue: graphQlResolvers,
-    graphiql: true
-}));
+const server = new ApolloServer({
+    typeDefs: graphQlSchema,
+    resolvers: graphQlResolvers,
+    // context: ({ req, res }) => {
+    //     return { req, res }
+    // }
+});
+
+
+server.applyMiddleware({ app });
 
 app.get('/', function (req, res) {
     res.send("Ready to Display")
@@ -32,7 +37,7 @@ mongoose.connect(process.env.CONNECTION_STRING,
         useUnifiedTopology: true
     }).then(() => {
         app.listen(process.env.PORT, () => {
-            console.log('server started at port', process.env.PORT)
+            console.log(`🚀  server started at http://localhost:${process.env.PORT}${server.graphqlPath}`)
         })
     })
     .catch(err => console.log("DB Connection Error : \n ", err))

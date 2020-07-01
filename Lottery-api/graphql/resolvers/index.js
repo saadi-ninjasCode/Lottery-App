@@ -5,10 +5,18 @@ const lotteryBalls = require('./lotteryBalls');
 
 
 const rootResolver = {
-    ...lotteryResolver,
-    ...userResolver,
-    ...usageBallResolver,
-    ...lotteryBalls,
+    Query: {
+        ...lotteryResolver.Query,
+        ...userResolver.Query,
+        ...usageBallResolver.Query,
+        ...lotteryBalls.Query,
+    },
+    Mutation: {
+        ...lotteryResolver.Mutation,
+        ...userResolver.Mutation,
+        ...usageBallResolver.Mutation,
+        ...lotteryBalls.Mutation,
+    }
 };
 
 module.exports = rootResolver;

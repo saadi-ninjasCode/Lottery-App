@@ -1,6 +1,6 @@
-const { buildSchema } = require('graphql');
+const { gql } = require('apollo-server-express')
 
-module.exports = buildSchema(`
+module.exports = gql`
 type LotteryType{
     _id: ID!
     name: String!
@@ -60,7 +60,7 @@ input LotteryBallsInput{
     pending : Boolean!
 }
 
-type RootQuery {
+type Query {
     lottery : [LotteryType!]!
     user : [User!]!
     usageBalls: [UsageBalls!]!
@@ -68,16 +68,10 @@ type RootQuery {
     login(email: String!, password: String!): AuthData!
 }
 
-type RootMutation{
+type Mutation{
     createLottery( lotteryInput : LotteryInput ) : LotteryType!
     createUser( userInput : UserInput ) : User!
     createUsageBalls ( usageInput : UsageBallsInput) : UsageBalls!
     createLotteryBalls ( lotteryInput : LotteryBallsInput ) : LotteryBalls!
-    addNotifications (notifications: [LotteryType!]) : User!
-}
 
-schema {
-    query: RootQuery
-    mutation: RootMutation
-}
-`);
+}`
