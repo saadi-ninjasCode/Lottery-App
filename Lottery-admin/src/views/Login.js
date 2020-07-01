@@ -16,6 +16,7 @@ import {
     UncontrolledAlert
 } from 'reactstrap'
 import { Redirect } from 'react-router-dom'
+import { validateFunc } from '../constraint/constraint'
 
 const Login = props => {
     const [email, setEmail] = useState('123@gmail.com')
@@ -27,21 +28,19 @@ const Login = props => {
     const [error, setError] = useState(null)
 
     const onBlur = (event, field) => {
-        return null
-        // if (field === 'email') {
-        //     setEmailError(!validateFunc({ email: email }, 'email'))
-        // }
-        // if (field === 'password') {
-        //     setPasswordError(!validateFunc({ password: password }, 'password'))
-        // }
+        if (field === 'email') {
+            setEmailError(!validateFunc({ email: email }, 'email'))
+        }
+        if (field === 'password') {
+            setPasswordError(!validateFunc({ password: password }, 'password'))
+        }
     }
     const validate = () => {
-        return null
-        // const EmailError = !validateFunc({ email: email }, 'email')
-        // const PasswordError = !validateFunc({ password: password }, 'password')
-        // setEmailError(EmailError)
-        // setPasswordError(PasswordError)
-        // return EmailError && PasswordError
+        const EmailError = !validateFunc({ email: email }, 'email')
+        const PasswordError = !validateFunc({ password: password }, 'password')
+        setEmailError(EmailError)
+        setPasswordError(PasswordError)
+        return EmailError && PasswordError
     }
 
     const { t } = props
@@ -114,9 +113,10 @@ const Login = props => {
                                     onClick={() => {
                                         setEmailError(null)
                                         setPasswordError(null)
-                                        //   if (validate()) {
-                                        //     adminLogin({ variables: { password, email } })
-                                        //   }
+                                          if (validate()) {
+                                            // adminLogin({ variables: { password, email } })
+                                            alert('Login Access')
+                                          }
                                     }}>
                                     {'Sign in'}
                                 </Button>
