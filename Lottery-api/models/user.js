@@ -16,12 +16,12 @@ const User = new Schema({
         type: String,
         required: true,
     },
-    notifications: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'LotteryType'
-        }
-    ]
+    // notifications: [
+    //     {
+    //         type: Schema.Types.ObjectId,
+    //         ref: 'LotteryType'
+    //     }
+    // ]
 });
 
 module.exports = mongoose.model('User', User)

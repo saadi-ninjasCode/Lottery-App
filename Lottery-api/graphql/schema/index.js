@@ -5,6 +5,7 @@ type LotteryType{
     _id: ID!
     name: String!
     next_draw: String
+    user_list:[User!]
 }
 
 type User{
@@ -12,7 +13,6 @@ type User{
     name: String!
     email: String!
     password: String
-    notifications: [LotteryType!]
 }
 
 type UsageBalls {
