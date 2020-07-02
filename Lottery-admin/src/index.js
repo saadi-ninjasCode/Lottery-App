@@ -18,12 +18,38 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import APP from './App'
+import { ApolloClient, HttpLink, InMemoryCache } from 'apollo-boost'
+import { ApolloProvider } from '@apollo/react-hooks'
+import { server_url } from './config/config'
+import gql from 'graphql-tag';
 
 import "assets/scss/black-dashboard-react.scss";
 import "assets/demo/demo.css";
 import "assets/css/nucleo-icons.css";
 
+const cache = new InMemoryCache()
+const link = new HttpLink({
+  uri: `${server_url}graphql`
+})
+const client = new ApolloClient({
+  link,
+  cache
+})
+// client
+//   .query({
+//     query: gql`
+//       {
+//         lottery {
+//           name
+//         }
+//       }
+//     `
+//   })
+//   .then(result => console.log(result));
+
 ReactDOM.render(
-  <APP />,
+  <ApolloProvider client={client}>
+    <APP />
+  </ApolloProvider>,
   document.getElementById("root")
 );

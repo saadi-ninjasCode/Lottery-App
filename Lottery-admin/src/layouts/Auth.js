@@ -4,7 +4,7 @@ import { Route, Switch } from 'react-router-dom'
 import { Container, Row } from 'reactstrap'
 
 // core components
-import AuthNavbar from 'components/Navbars/AuthNavbar.js'
+import AuthNavbar from '../components/Navbars/AuthNavbar.js'
 // import AuthFooter from 'components/Footers/AuthFooter.jsx'
 
 import routes from 'routes.js'

@@ -53,7 +53,6 @@ function Sidebar(props) {
     document.documentElement.classList.remove("nav-open");
   };
 
-  console.log(props)
   const { bgColor, routes, rtlActive, logo } = props;
   let logoImg = null;
   let logoText = null;
@@ -142,7 +141,7 @@ function Sidebar(props) {
 
         </Nav>
       </div>
-    </div>
+    </div >
   )
 }
 
