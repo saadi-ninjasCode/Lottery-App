@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
     Button,
     Card,
@@ -6,7 +6,6 @@ import {
     CardBody,
     CardFooter,
     FormGroup,
-    Form,
     Input,
     Row,
     Col,
@@ -21,9 +20,10 @@ import "react-datepicker/dist/react-datepicker.css";
 import { validateFunc } from "../../constraint/constraint";
 
 function LotteryComponent(props) {
-    const [name, nameSetter] = useState(props.lottery ? props.lottery.name : '')
+    const name = props.lottery ? props.lottery.name : ''
     const [date, dateSetter] = useState(props.lottery ? new Date(+props.lottery.next_draw) : '')
-    const [iconName, iconNameSetter] = useState(props.lottery ? props.lottery.icon_name : 'fas fa-glasses')
+    const [iconName, iconNameSetter] = useState(props.lottery ? props.lottery.icon_name ? props.lottery.icon_name : '' : 'fas fa-glasses')
+    const form = useRef()
     const [iconFocus, iconFocusSetter] = useState(false)
     const [nameError, nameErrorSetter] = useState(null)
     const [iconError, iconErrorSetter] = useState(null)
@@ -32,12 +32,19 @@ function LotteryComponent(props) {
     function onBlur(setter, field, state) {
         setter(!validateFunc({ [field]: state }, field))
     }
-
+    function validate() {
+        const nameError = !validateFunc({ name: form.current['input-name'].value }, 'name')
+        const iconError = !validateFunc({ iconName: form.current['input-icon'].value }, 'iconName')
+        nameErrorSetter(nameError)
+        iconErrorSetter(iconError)
+        return nameError
+    }
+    console.log('LotteryComponent')
     return (
         <Row>
             <Col>
                 <Card>
-                    <Form>
+                    <form ref={form}>
                         <CardHeader>
                             <h5 className="h3">{props.lottery ? 'Edit Lottery Type' : 'Add New Lottery Type'}</h5>
                         </CardHeader>
@@ -58,14 +65,12 @@ function LotteryComponent(props) {
                                     }>
                                         <Input
                                             id="nput-name"
+                                            name='input-name'
                                             placeholder="Lucky Draw"
+                                            defaultValue={name}
                                             type="text"
-                                            value={name}
-                                            onChange={event => {
-                                                nameSetter(event.target.value)
-                                            }}
                                             onBlur={(event) => {
-                                                onBlur(nameErrorSetter, 'name', name)
+                                                onBlur(nameErrorSetter, 'name', event.target.value)
                                             }}
                                         />
                                     </FormGroup>
@@ -78,6 +83,7 @@ function LotteryComponent(props) {
                                     <FormGroup>
                                         <DatePicker
                                             id="input-date"
+                                            name='input-date'
                                             placeholderText="Click to select a date"
                                             className='form-control'
                                             selected={date}
@@ -105,6 +111,7 @@ function LotteryComponent(props) {
                                         </InputGroupAddon>
                                         <Input
                                             id="input-icon"
+                                            name='input-icon'
                                             type="text"
                                             placeholder="Font Awesome 5 Icons"
                                             value={iconName}
@@ -121,11 +128,20 @@ function LotteryComponent(props) {
                             </Row>
                         </CardBody>
                         <CardFooter className='text-center'>
-                            <Button className="btn-fill" color="primary" type="submit">
+                            <Button
+                                className="btn-fill"
+                                color="primary"
+                                type="button"
+                                onClick={(e) => {
+                                    e.preventDefault()
+                                    if (validate())
+                                        alert(form.current['input-icon'].value)
+                                }}
+                            >
                                 Save
-                  </Button>
+                            </Button>
                         </CardFooter>
-                    </Form>
+                    </form>
                 </Card>
             </Col>
         </Row >
@@ -133,4 +149,4 @@ function LotteryComponent(props) {
 
 }
 
-export default LotteryComponent;
+export default React.memo(LotteryComponent)

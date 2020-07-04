@@ -10,8 +10,8 @@ export const getlottery = `query{
     }
 }`
 
-export const login = `mutation Login($email:String!, $pass:String!) {
-    login(email:$email, password:$pass){
+export const adminLogin = `mutation AdminLogin($email:String!, $pass:String!) {
+    adminLogin(email:$email, password:$pass){
         userId
         token
     }

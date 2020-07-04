@@ -32,7 +32,6 @@ function Lottery(props) {
         editModalSetter(prev => !prev)
         lotterySetter(rowdata)
     }
-
     function actionButtons(row) {
         return (
             <>
@@ -83,7 +82,7 @@ function Lottery(props) {
             cell: row => <>{actionButtons(row)}</>
         }
     ]
-    // console.log(props.location.aboutProps)
+    console.log('LotteryView')
 
     return (
         <div className="content">

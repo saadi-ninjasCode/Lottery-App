@@ -18,10 +18,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import APP from './App'
-import ApolloClient, { HttpLink, InMemoryCache, } from 'apollo-boost'
+import ApolloClient, { InMemoryCache, } from 'apollo-boost'
 import { ApolloProvider } from '@apollo/react-hooks'
 import { server_url } from './config/config'
-import gql from 'graphql-tag';
 
 import "assets/scss/black-dashboard-react.scss";
 import "assets/demo/demo.css";
@@ -43,17 +42,6 @@ const client = new ApolloClient({
     })
   }
 })
-// client
-//   .query({
-//     query: gql`
-//       {
-//         lottery {
-//           name
-//         }
-//       }
-//     `
-//   })
-//   .then(result => console.log(result));
 
 ReactDOM.render(
   <ApolloProvider client={client}>

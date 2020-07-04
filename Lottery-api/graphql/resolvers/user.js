@@ -20,7 +20,7 @@ module.exports = {
         },
     },
     Mutation: {
-        login: async (_, args) => {
+        adminLogin: async (_, args) => {
             console.log('login')
             try {
                 const user = await User.findOne({ email: args.email })

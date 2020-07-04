@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import classNames from "classnames";
 // reactstrap components
 import {
@@ -6,8 +6,6 @@ import {
     Card,
     CardHeader,
     CardBody,
-    FormGroup,
-    Form,
     Input,
     InputGroupAddon,
     InputGroupText,
@@ -17,21 +15,27 @@ import {
 } from 'reactstrap'
 import { Redirect } from 'react-router-dom'
 import { validateFunc } from '../constraint/constraint'
-import { login } from '../apollo/server'
+import { adminLogin } from '../apollo/server'
 import { gql } from 'apollo-boost';
 import { useMutation } from '@apollo/react-hooks';
-const LOGIN = gql`${login}`
+const LOGIN = gql`${adminLogin}`
 
+const credentials = {
+    email: 'saadjaved143@yahoo.com',
+    password: 'saadi143'
+}
 const Login = props => {
-    const [email, setEmail] = useState('123@gmail.com')
-    const [password, setPassword] = useState('123456')
+    const form = useRef()
     const [emailFocus, emailFocusSetter] = useState(false)
     const [passFocus, passFocusSetter] = useState(false)
     const [emailError, setEmailError] = useState(null)
     const [passwordError, setPasswordError] = useState(null)
     const [error, setError] = useState(null)
+    const [redirectToReferrer, setRedirectToReferrer] = useState(
+        !!localStorage.getItem('login-token')
+    )
 
-    const [mutate, { data }] = useMutation(LOGIN, { onCompleted, onError })
+    const [mutate, { data, loading }] = useMutation(LOGIN, { onCompleted, onError })
 
     function onError(error) {
         console.log(error)
@@ -40,28 +44,29 @@ const Login = props => {
         if (error.graphQLErrors)
             setError(error.graphQLErrors[0].message)
     }
-    function onCompleted({ login }) {
-        console.log(login)
-        localStorage.setItem('login-token', login.token)
+    function onCompleted({adminLogin}) {
+        localStorage.setItem('login-token', adminLogin.token)
+        setRedirectToReferrer(true)
     }
 
     const onBlur = (event, field) => {
         if (field === 'email') {
-            setEmailError(!validateFunc({ email: email }, 'email'))
+            setEmailError(!validateFunc({ email: form.current['email'].value }, 'email'))
         }
         if (field === 'password') {
-            setPasswordError(!validateFunc({ password: password }, 'password'))
+            setPasswordError(!validateFunc({ password: form.current['password'].value }, 'password'))
         }
     }
     const validate = () => {
-        const emailError = !validateFunc({ email }, 'email')
-        const passwordError = !validateFunc({ password }, 'password')
+        const emailError = !validateFunc({ email: form.current['email'].value }, 'email')
+        const passwordError = !validateFunc({ password: form.current['password'].value }, 'password')
         setEmailError(emailError)
         setPasswordError(passwordError)
         return emailError && passwordError
     }
 
-    const { t } = props
+    const { from } = props.location.state || { from: '/admin/dashboard' }
+    if (redirectToReferrer) return <Redirect to={from} />
     return (
         <Col lg="5" md="7">
             <Card className="content shadow border-0">
@@ -72,7 +77,7 @@ const Login = props => {
                 </CardHeader>
                 <CardBody className="px-lg-5 py-lg-5">
 
-                    <Form >
+                    <form ref={form} >
                         <InputGroup
                             className={classNames(
                                 emailError === null ? '' : emailError ? 'has-success' : 'has-danger',
@@ -84,11 +89,9 @@ const Login = props => {
                                 </InputGroupText>
                             </InputGroupAddon>
                             <Input
-                                value={email}
+                                name='email'
+                                defaultValue={credentials.email}
                                 onFocus={() => emailFocusSetter(true)}
-                                onChange={event => {
-                                    setEmail(event.target.value)
-                                }}
                                 onBlur={event => {
                                     emailFocusSetter(false)
                                     onBlur(event, 'email')
@@ -108,11 +111,9 @@ const Login = props => {
                                 </InputGroupText>
                             </InputGroupAddon>
                             <Input
-                                value={password}
+                                name='password'
+                                defaultValue={credentials.password}
                                 onFocus={() => passFocusSetter(true)}
-                                onChange={event => {
-                                    setPassword(event.target.value)
-                                }}
                                 onBlur={event => {
                                     passFocusSetter(false)
                                     onBlur(event, 'password')
@@ -127,13 +128,15 @@ const Login = props => {
                                 className="my-4"
                                 color="primary"
                                 type="button"
-                                onClick={() => {
-                                    if (validate()) {
-                                        console.log(email, password)
-                                        mutate({ variables: { email: email, pass: password } })
+                                onClick={(e) => {
+                                    e.preventDefault()
+                                    if (validate() && !loading) {
+                                        mutate({ variables: { email: form.current['email'].value, pass: form.current['password'].value } })
                                     }
                                 }}>
-                                {'Sign in'}
+                                {loading ? <i className='fas fa-compact-disc fa-spin fa-2x fa-fw' /> :
+                                    'Sign in'
+                                }
                             </Button>
                         </div>
                         {error && (
@@ -141,7 +144,7 @@ const Login = props => {
                                 <span className="alert-inner--text">{error}</span>
                             </UncontrolledAlert>
                         )}
-                    </Form>
+                    </form>
                 </CardBody>
             </Card>
         </Col>
