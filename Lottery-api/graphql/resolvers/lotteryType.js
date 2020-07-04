@@ -31,7 +31,7 @@ module.exports = {
                     icon_name: args.lotteryInput.icon_name
                 });
                 //hard code
-                lottery.user_list.push("5ebd1eb85bbb953a30f5b921")
+                // lottery.user_list.push("5ebd1eb85bbb953a30f5b921")
                 const result = await lottery.save();
                 return transfromLotteryType(result);
             }

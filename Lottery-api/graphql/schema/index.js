@@ -40,6 +40,7 @@ type AuthData {
 input LotteryInput {
     name: String!
     next_draw: String
+    icon_name: String
 }
 
 input UserInput{
