@@ -14,10 +14,13 @@ const lotterySchema = new Schema({
         type: Date,
         validate: [dateLimit, "Date must be greater than current date & time"],
     },
-    user_list:[
+    icon_name: {
+        type: String
+    },
+    user_list: [
         {
             type: Schema.Types.ObjectId,
-            rel:'User'
+            rel: 'User'
         }
     ]
 },

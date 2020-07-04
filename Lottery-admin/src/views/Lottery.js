@@ -52,6 +52,12 @@ function Lottery(props) {
     }
     const columns = [
         {
+            name: 'Icon',
+            selector: 'icon_name',
+            center: true,
+            cell: row => <i className={row.icon_name} />
+        },
+        {
             name: 'Lottery Name',
             selector: 'name',
             sortable: true,
@@ -87,7 +93,7 @@ function Lottery(props) {
                 toggle={() => alertSetter(prev => !prev)}
             >
                 You will get the list of icons <a href='https://fontawesome.com/icons?d=gallery' className='btn-icon btn-link btn-danger'>Font Awesome 5</a>
-        </Alert>
+            </Alert>
             <Row className='justify-content-center'>
                 <Col md='10'>
                     <LotteryComponent />

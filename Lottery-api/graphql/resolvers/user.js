@@ -18,26 +18,27 @@ module.exports = {
                 throw err;
             }
         },
-        login: async ({ email, password }) => {
+    },
+    Mutation: {
+        login: async (_, args) => {
+            console.log('login')
             try {
-                const user = await User.findOne({ email: email })
+                const user = await User.findOne({ email: args.email })
                 if (!user) {
                     throw new Error('User does not exist.')
                 }
-                const isEqual = await bcrypt.compare(password, user.password)
+                const isEqual = await bcrypt.compare(args.password, user.password)
                 if (!isEqual) {
                     throw new Error('Invalid credentials!')
                 }
-                const token = jwt.sign({ userId: user.id, email: user.email }, 'somesupersecretkey', { expiresIn: '1h' });
+                const token = jwt.sign({ userId: user.id, email: user.email }, 'somesupersecretkey');
                 return { userId: user.id, token: token, tokenExpiration: 1 }
             }
             catch (err) {
                 console.log(err);
                 throw err;
             }
-        }
-    },
-    Mutation: {
+        },
         createUser: async (args) => {
             console.log("Create User")
             try {
@@ -51,8 +52,6 @@ module.exports = {
                     email: args.userInput.email,
                     password: hashPassword,
                 });
-                //hard code
-                user.notifications.push("5ebd1eb85bbb953a30f5b921")
                 const result = await user.save();
                 return ({ ...result._doc, password: null, _id: result.id })
             }

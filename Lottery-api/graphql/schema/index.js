@@ -5,6 +5,7 @@ type LotteryType{
     _id: ID!
     name: String!
     next_draw: String
+    icon_name: String
     user_list:[User!]
 }
 
@@ -65,10 +66,10 @@ type Query {
     user : [User!]!
     usageBalls: [UsageBalls!]!
     lotteryBalls : [LotteryBalls!]
-    login(email: String!, password: String!): AuthData!
 }
 
 type Mutation{
+    login(email: String!, password: String!): AuthData!
     createLottery( lotteryInput : LotteryInput ) : LotteryType!
     createUser( userInput : UserInput ) : User!
     createUsageBalls ( usageInput : UsageBallsInput) : UsageBalls!

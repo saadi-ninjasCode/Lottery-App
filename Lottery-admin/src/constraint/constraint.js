@@ -8,6 +8,19 @@ const constraints = {
         presence: {
             allowEmpty: false
         }
+    },
+    name: {
+        presence: {
+            allowEmpty: false
+        }
+    },
+    iconName: {
+        presence: {
+            allowEmpty: false
+        }
+    },
+    nextDraw: {
+        datetie: true
     }
 }
 

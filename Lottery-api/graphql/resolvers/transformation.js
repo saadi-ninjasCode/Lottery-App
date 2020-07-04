@@ -26,7 +26,7 @@ const lotteryTypeTransformation = lottery => {
     return {
         ...lottery._doc,
         _id: lottery.id,
-        next_draw: dateToString(lottery._doc.next_draw),
+        // next_draw: dateToString(lottery._doc.next_draw),
         // user_list: lottery.user_list.length
         user_list: userById(lottery.user_list)
 

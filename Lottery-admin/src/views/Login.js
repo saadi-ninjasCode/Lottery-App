@@ -17,6 +17,10 @@ import {
 } from 'reactstrap'
 import { Redirect } from 'react-router-dom'
 import { validateFunc } from '../constraint/constraint'
+import { login } from '../apollo/server'
+import { gql } from 'apollo-boost';
+import { useMutation } from '@apollo/react-hooks';
+const LOGIN = gql`${login}`
 
 const Login = props => {
     const [email, setEmail] = useState('123@gmail.com')
@@ -27,6 +31,20 @@ const Login = props => {
     const [passwordError, setPasswordError] = useState(null)
     const [error, setError] = useState(null)
 
+    const [mutate, { data }] = useMutation(LOGIN, { onCompleted, onError })
+
+    function onError(error) {
+        console.log(error)
+        setEmailError(null)
+        setPasswordError(null)
+        if (error.graphQLErrors)
+            setError(error.graphQLErrors[0].message)
+    }
+    function onCompleted({ login }) {
+        console.log(login)
+        localStorage.setItem('login-token', login.token)
+    }
+
     const onBlur = (event, field) => {
         if (field === 'email') {
             setEmailError(!validateFunc({ email: email }, 'email'))
@@ -36,11 +54,11 @@ const Login = props => {
         }
     }
     const validate = () => {
-        const EmailError = !validateFunc({ email: email }, 'email')
-        const PasswordError = !validateFunc({ password: password }, 'password')
-        setEmailError(EmailError)
-        setPasswordError(PasswordError)
-        return EmailError && PasswordError
+        const emailError = !validateFunc({ email }, 'email')
+        const passwordError = !validateFunc({ password }, 'password')
+        setEmailError(emailError)
+        setPasswordError(passwordError)
+        return emailError && passwordError
     }
 
     const { t } = props
@@ -110,11 +128,9 @@ const Login = props => {
                                 color="primary"
                                 type="button"
                                 onClick={() => {
-                                    setEmailError(null)
-                                    setPasswordError(null)
                                     if (validate()) {
-                                        // adminLogin({ variables: { password, email } })
-                                        alert('Login Access')
+                                        console.log(email, password)
+                                        mutate({ variables: { email: email, pass: password } })
                                     }
                                 }}>
                                 {'Sign in'}

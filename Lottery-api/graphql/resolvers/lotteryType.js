@@ -18,7 +18,7 @@ module.exports = {
         },
     },
     Mutation: {
-        createLottery: async (args, req) => {
+        createLottery: async (args, { req, res }) => {
             console.log("Create Lottery")
             console.log('auth: ', req.isAuth)
             if (!req.isAuth) {
@@ -28,7 +28,10 @@ module.exports = {
                 const lottery = new LotteryType({
                     name: args.lotteryInput.name,
                     next_draw: args.lotteryInput.next_draw,
+                    icon_name: args.lotteryInput.icon_name
                 });
+                //hard code
+                lottery.user_list.push("5ebd1eb85bbb953a30f5b921")
                 const result = await lottery.save();
                 return transfromLotteryType(result);
             }
