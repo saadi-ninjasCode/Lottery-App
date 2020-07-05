@@ -58,6 +58,29 @@ module.exports = {
                 throw err;
             }
         },
+        adminChangePassword: async (_, args, context) => {
+            console.log("Change Password User")
+            if (!context.isAuth) {
+                throw new Error("Unauthenticated!")
+            }
+            try {
+                const adminLogin = await Admin.findById(context.userId)
+                if (!adminLogin) {
+                    throw new Error('User not found')
+                }
+                const isEqual = await bcrypt.compare(args.oldPassword, adminLogin.password)
+                if (!isEqual) {
+                    throw new Error('Invalid credentials!')
+                }
+                const hashPassword = await bcrypt.hash(args.newPassword, 12)
+                adminLogin.password = hashPassword
+                await adminLogin.save()
+                return true
+            } catch (err) {
+                throw err
+            }
+
+        },
         createAdminUser: async (_, args, context) => {
             console.log("Create Admin User")
             if (!context.isAuth) {

@@ -81,6 +81,7 @@ type Query {
 
 type Mutation{
     adminLogin(email: String!, password: String!): AuthData!
+    adminChangePassword(oldPassword: String!, newPassword: String!): Boolean!
     createLottery( lotteryInput : LotteryInput ) : LotteryType!
     createAdminUser( userInput : UserInput ) : Admin!
     createUsageBalls ( usageInput : UsageBallsInput) : UsageBalls!

@@ -24,6 +24,9 @@ export const adminLogin = `mutation AdminLogin($email:String!, $pass:String!) {
         token
     }
 }`
+export const changePassword = `mutation ChangePassword($oldPassword: String!, $newPassword: String!){
+    adminChangePassword(oldPassword: $oldPassword, newPassword:$newPassword)
+}`
 
 export const createLottery = `mutation CreateLottery($lotteryInput: LotteryInput!){
     createLottery(lotteryInput: $lotteryInput){
