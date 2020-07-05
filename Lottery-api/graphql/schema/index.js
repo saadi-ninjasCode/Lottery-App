@@ -20,6 +20,7 @@ type Admin {
     name: String!
     email: String!
     password: String
+    role: String
   }
 
 type UsageBalls {
@@ -83,7 +84,7 @@ type Mutation{
     createAdminUser( userInput : UserInput ) : Admin!
     createUsageBalls ( usageInput : UsageBallsInput) : UsageBalls!
     createLotteryBalls ( lotteryInput : LotteryBallsInput ) : LotteryBalls!
-    deleteLottery(id: String!) : LotteryType!
     editLottery(lotteryInput: LotteryInput!) : LotteryType!
-
+    deleteLottery(id: String!) : LotteryType!
+    deleteAdminUser(id: String!): Admin!
 }`

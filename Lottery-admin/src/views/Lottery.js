@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
 // reactstrap components
 import {
@@ -20,9 +20,12 @@ import { useQuery } from "@apollo/react-hooks";
 import { customStyle } from "../assets/custom/custom";
 import { Loader } from "../assets/custom/Spinner";
 import { dateToCustom } from "../variables/date";
+import ActionButton from '../components/ActionButton/ActionButton'
+import NotificationAlert from "react-notification-alert";
 const GET_LOTTERY = gql`${getlottery}`
 
 function Lottery(props) {
+    const notifyEl = useRef(null);
     const [editModal, editModalSetter] = useState(false)
     const [lottery, lotterySetter] = useState(null)
     const { loading, data: LotteryData } = useQuery(GET_LOTTERY)
@@ -48,6 +51,9 @@ function Lottery(props) {
                 </Button>
             </>
         )
+    }
+    function showMessage(message, category) {
+        notifyEl.current.notificationAlert(options(message, category));
     }
     const columns = [
         {
@@ -79,13 +85,35 @@ function Lottery(props) {
         {
             name: 'Action',
             center: true,
-            cell: row => <>{actionButtons(row)}</>
+            cell: row => <ActionButton
+                deleteButton={true}
+                editButton={true}
+                row={row}
+                mutation={null}
+                editModal={toggleModal}
+                showMessage={showMessage}
+                message='User removed' />
         }
     ]
+    //Notification alert
+    var options = (message, category) => ({
+        place: 'tr',
+        message: (
+            <div>
+                <b>{category === 'danger' ? 'Error: ' : 'success: '}</b>{message}
+            </div>
+        ),
+        type: category,
+        autoDismiss: 7,
+        icon: 'far fa-bell'
+    })
     console.log('LotteryView')
 
     return (
         <div className="content">
+            <div className="react-notification-alert-container">
+                <NotificationAlert ref={notifyEl} />
+            </div>
             <Alert
                 color="default"
                 isOpen={alert}

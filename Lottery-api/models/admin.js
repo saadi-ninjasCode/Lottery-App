@@ -16,6 +16,11 @@ const Admin = new Schema({
         type: String,
         required: true,
     },
+    role: {
+        type: String,
+        lowercase: true,
+        trim: true
+    }
 });
 
 module.exports = mongoose.model('Admin', Admin)

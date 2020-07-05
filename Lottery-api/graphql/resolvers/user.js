@@ -73,6 +73,7 @@ module.exports = {
                     name: args.userInput.name,
                     email: args.userInput.email,
                     password: hashPassword,
+                    role: args.userInput.role
                 });
                 const result = await adminUser.save();
                 return ({ ...result._doc, password: null, _id: result.id })
@@ -82,6 +83,31 @@ module.exports = {
                 throw err;
             }
         },
+        deleteAdminUser: async (_, args, context) => {
+            console.log('Delete Admin User')
+            if (!context.isAuth) {
+                throw new Error('Unauthenticated')
+            }
+            const loginUser = await Admin.findById(context.userId)
+            if (loginUser.role !== 'admin') {
+                throw new Error('You are not eligible for this operation.')
+            }
+            if (context.userId === args.id) {
+                throw new Error('You can not remove yourself.')
+            }
+            try {
+                const result = await Admin.deleteOne({ _id: args.id })
+                if (result === 0) {
+                    throw new Error("Deletion failed")
+                }
+                else {
+                    return transformUser(loginUser)
+                }
+            } catch (err) {
+                console.log(err);
+                throw err;
+            }
+        }
     },
     // addNotifications: async ({ notifications }, req) => {
     //     if (!req.isAuth) {

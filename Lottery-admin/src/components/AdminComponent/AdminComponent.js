@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
     Button,
     Card,
@@ -18,14 +18,12 @@ import { validateFunc } from "../../constraint/constraint";
 import { createAdminUser } from '../../apollo/server'
 import { gql } from "apollo-boost";
 import { useMutation } from "@apollo/react-hooks";
-import NotificationAlert from "react-notification-alert";
 
 
 const CREATE_ADMIN_USER = gql`${createAdminUser}`
 
-function AdminComponent() {
+function AdminComponent(props) {
     const form = useRef()
-    const notifyEl = useRef(null);
     const [nameFocus, nameFocusSetter] = useState(false)
     const [emailFocus, emailFocusSetter] = useState(false)
     const [passFocus, passFocusSetter] = useState(false)
@@ -33,7 +31,6 @@ function AdminComponent() {
     const [emailError, emailErrorSetter] = useState(null)
     const [passwordError, passwordErrorSetter] = useState(null)
     const [mutation, { loading }] = useMutation(CREATE_ADMIN_USER, { onCompleted, onError })
-
     function clearFields() {
         nameErrorSetter(null)
         emailErrorSetter(null)
@@ -59,7 +56,7 @@ function AdminComponent() {
         showMessage(errorMesage, 'danger')
     }
     function showMessage(message, category) {
-        notifyEl.current.notificationAlert(options(message, category));
+        props.notification(message, category)
     }
     function onBlur(setter, field, state) {
         setter(!validateFunc({ [field]: state }, field))
@@ -73,31 +70,16 @@ function AdminComponent() {
         passwordErrorSetter(passwordError)
         return nameError && emailError && passwordError
     }
-    //Notification alert
-    var options = (message, category) => ({
-        place: 'tr',
-        message: (
-            <div>
-                <b>{category === 'danger' ? 'Error: ' : 'success: '}</b>{message}
-            </div>
-        ),
-        type: category,
-        autoDismiss: 7,
-        icon: 'far fa-bell'
-    })
 
     console.log('AdminComponent')
     return (
         <>
-            <div className="react-notification-alert-container">
-                <NotificationAlert ref={notifyEl} />
-            </div>
             <Row>
                 <Col>
                     <Card>
                         <form ref={form}>
                             <CardHeader>
-                                <h5 className="h3"> 'Add New Admin User</h5>
+                                <h5 className="h3"> Add New Admin User</h5>
                             </CardHeader>
                             <CardBody>
                                 <Row>

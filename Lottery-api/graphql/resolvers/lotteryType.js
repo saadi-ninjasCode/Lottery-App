@@ -25,21 +25,21 @@ module.exports = {
             if (!context.isAuth) {
                 throw new Error("Unauthenticated!")
             }
-            // try {
-            //     const lottery = new LotteryType({
-            //         name: args.lotteryInput.name,
-            //         next_draw: args.lotteryInput.next_draw,
-            //         icon_name: args.lotteryInput.icon_name
-            //     });
-            //     //hard code
-            //     // lottery.user_list.push("5ebd1eb85bbb953a30f5b921")
-            //     const result = await lottery.save();
-            //     return transfromLotteryType(result);
-            // }
-            // catch (err) {
-            //     console.log(err);
-            //     throw err;
-            // }
+            try {
+                const lottery = new LotteryType({
+                    name: args.lotteryInput.name,
+                    next_draw: args.lotteryInput.next_draw,
+                    icon_name: args.lotteryInput.icon_name
+                });
+                //hard code
+                // lottery.user_list.push("5ebd1eb85bbb953a30f5b921")
+                const result = await lottery.save();
+                return transfromLotteryType(result);
+            }
+            catch (err) {
+                console.log(err);
+                throw err;
+            }
         },
         editLottery: async (_, args, context) => {
             console.log('Edit Lottery')

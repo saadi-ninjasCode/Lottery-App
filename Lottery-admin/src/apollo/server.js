@@ -9,6 +9,20 @@ export const getlottery = `query{
         }
     }
 }`
+export const adminUsers = `query{
+    adminUsers{
+        _id
+        name
+        email
+        role
+    }
+}`
+export const adminLogin = `mutation AdminLogin($email:String!, $pass:String!) {
+    adminLogin(email:$email, password:$pass){
+        userId
+        token
+    }
+}`
 
 export const createLottery = `mutation CreateLottery($lotteryInput: LotteryInput!){
     createLottery(lotteryInput: $lotteryInput){
@@ -21,6 +35,14 @@ export const createLottery = `mutation CreateLottery($lotteryInput: LotteryInput
         }
     }
 }`
+export const createAdminUser = `mutation CreateAdminUser($userInput: UserInput!){
+    createAdminUser(userInput: $userInput){
+        _id
+        name
+        email
+    }
+}`
+
 export const editLottery = `mutation EditLottery($lotteryInput: LotteryInput!){
     editLottery(lotteryInput: $lotteryInput){
         _id
@@ -33,24 +55,8 @@ export const editLottery = `mutation EditLottery($lotteryInput: LotteryInput!){
     }
 }`
 
-export const adminLogin = `mutation AdminLogin($email:String!, $pass:String!) {
-    adminLogin(email:$email, password:$pass){
-        userId
-        token
-    }
-}`
-
-export const adminUsers = `query{
-    adminUsers{
+export const deleteAdminLogin = `mutation DeleteAdminlogin($id: String!){
+    deleteAdminUser(id:$id){
         _id
-        name
-        email
-    }
-}`
-export const createAdminUser=`mutation CreateAdminUser($userInput: UserInput!){
-    createAdminUser(userInput: $userInput){
-        _id
-        name
-        email
     }
 }`
