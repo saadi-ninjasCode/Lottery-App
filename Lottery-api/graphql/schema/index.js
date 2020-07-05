@@ -15,6 +15,12 @@ type User{
     email: String!
     password: String
 }
+type Admin {
+    _id: ID!
+    name: String!
+    email: String!
+    password: String
+  }
 
 type UsageBalls {
     _id: ID!
@@ -38,6 +44,7 @@ type AuthData {
 }
 
 input LotteryInput {
+    _id: String
     name: String!
     next_draw: String
     icon_name: String
@@ -67,13 +74,16 @@ type Query {
     user : [User!]!
     usageBalls: [UsageBalls!]!
     lotteryBalls : [LotteryBalls!]
+    adminUsers: [Admin!]
 }
 
 type Mutation{
     adminLogin(email: String!, password: String!): AuthData!
     createLottery( lotteryInput : LotteryInput ) : LotteryType!
-    createUser( userInput : UserInput ) : User!
+    createAdminUser( userInput : UserInput ) : Admin!
     createUsageBalls ( usageInput : UsageBallsInput) : UsageBalls!
     createLotteryBalls ( lotteryInput : LotteryBallsInput ) : LotteryBalls!
+    deleteLottery(id: String!) : LotteryType!
+    editLottery(lotteryInput: LotteryInput!) : LotteryType!
 
 }`

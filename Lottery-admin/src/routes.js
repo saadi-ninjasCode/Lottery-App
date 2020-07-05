@@ -26,7 +26,7 @@ import LunchTime from "views/LunchTime.js"
 import TeaTime from "views/TeaTime";
 import Login from 'views/Login'
 import Lottery from 'views/Lottery'
-
+import AdminUser from './views/AdminUser'
 var routes = [
   {
     path: "/dashboard",
@@ -102,6 +102,13 @@ var routes = [
     icon: "fas fa-glasses",
     component: Lottery,
     layout: "/admin"
+  },
+  {
+    path: '/loginUsers',
+    name: 'Admin Users',
+    icon: 'fas fa-users-cog',
+    component: AdminUser,
+    layout: '/admin',
   },
   {
     path: "/rtl-support",

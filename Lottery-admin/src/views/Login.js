@@ -24,7 +24,7 @@ const credentials = {
     email: 'saadjaved143@yahoo.com',
     password: 'saadi143'
 }
-const Login = props => {
+function Login(props) {
     const form = useRef()
     const [emailFocus, emailFocusSetter] = useState(false)
     const [passFocus, passFocusSetter] = useState(false)
@@ -35,7 +35,7 @@ const Login = props => {
         !!localStorage.getItem('login-token')
     )
 
-    const [mutate, { data, loading }] = useMutation(LOGIN, { onCompleted, onError })
+    const [mutate, { loading }] = useMutation(LOGIN, { onCompleted, onError })
 
     function onError(error) {
         console.log(error)
@@ -44,7 +44,7 @@ const Login = props => {
         if (error.graphQLErrors)
             setError(error.graphQLErrors[0].message)
     }
-    function onCompleted({adminLogin}) {
+    function onCompleted({ adminLogin }) {
         localStorage.setItem('login-token', adminLogin.token)
         setRedirectToReferrer(true)
     }

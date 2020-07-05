@@ -2,7 +2,10 @@ import { validate } from 'validate.js'
 
 const constraints = {
     email: {
-        email: true
+        email: true,
+        presence: {
+            allowEmpty: false
+        }
     },
     password: {
         presence: {

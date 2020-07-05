@@ -10,71 +10,42 @@ import {
     CardHeader,
     CardTitle,
     Modal,
-    Alert,
 } from "reactstrap";
 import DataTable from 'react-data-table-component'
-import LotteryComponent from "../components/LotteryComponent/LotteryComponent";
-import { getlottery } from '../apollo/server'
+import { adminUsers } from '../apollo/server'
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 import { customStyle } from "../assets/custom/custom";
 import { Loader } from "../assets/custom/Spinner";
-import { dateToCustom } from "../variables/date";
-const GET_LOTTERY = gql`${getlottery}`
+import AdminComponent from "../components/AdminComponent/AdminComponent";
+const ADMIN_USERS = gql`${adminUsers}`
 
-function Lottery(props) {
+function AdminUser() {
     const [editModal, editModalSetter] = useState(false)
-    const [lottery, lotterySetter] = useState(null)
-    const { loading, data: LotteryData } = useQuery(GET_LOTTERY)
-    const [alert, alertSetter] = useState(true)
+    const [adminUser, adminUserSetter] = useState(null)
+    const { loading, data: userData } = useQuery(ADMIN_USERS)
 
     const toggleModal = rowdata => {
         editModalSetter(prev => !prev)
-        lotterySetter(rowdata)
+        adminUserSetter(rowdata)
     }
     function actionButtons(row) {
         return (
-            <>
-                <Button className='btn-icon btn-link remove btn btn-warning btn-sm'
-                    onClick={e => {
-                        e.preventDefault()
-                        toggleModal(row)
-                    }}>
-                    <i className="fas fa-edit"></i>
-                </Button>
-              &nbsp;&nbsp;
-                <Button className='btn-icon btn-link remove btn btn-danger btn-sm'>
-                    <i className="fas fa-times"></i>
-                </Button>
-            </>
+            <Button className='btn-icon btn-link remove btn btn-danger btn-sm'>
+                <i className="fas fa-times"></i>
+            </Button>
         )
     }
     const columns = [
         {
-            name: 'Icon',
-            selector: 'icon_name',
-            center: true,
-            cell: row => <i className={row.icon_name} />
-        },
-        {
-            name: 'Lottery Name',
+            name: 'Name',
             selector: 'name',
-            sortable: true,
             center: true
         },
         {
-            name: 'Next Draw Date',
-            selector: 'next_draw',
-            sortable: true,
+            name: 'Email',
+            selector: 'email',
             center: true,
-            format: row => dateToCustom(row.next_draw)
-        },
-        {
-            name: 'Total Users',
-            selector: 'user_list',
-            sortable: true,
-            center: true,
-            format: row => row.user_list.length
         },
         {
             name: 'Action',
@@ -82,34 +53,27 @@ function Lottery(props) {
             cell: row => <>{actionButtons(row)}</>
         }
     ]
-    console.log('LotteryView')
+    console.log('Admin User View')
 
     return (
         <div className="content">
-            <Alert
-                color="default"
-                isOpen={alert}
-                toggle={() => alertSetter(prev => !prev)}
-            >
-                You will get the list of icons <a href='https://fontawesome.com/icons?d=gallery' className='btn-icon btn-link btn-danger'>Font Awesome 5</a>
-            </Alert>
             <Row className='justify-content-center'>
                 <Col md='10'>
-                    <LotteryComponent />
+                    <AdminComponent />
                 </Col>
             </Row>
             <Row className='justify-content-center'>
                 <Col md="12">
                     <Card>
                         <CardHeader>
-                            <CardTitle tag="h4">Lottery Types</CardTitle>
+                            <CardTitle tag="h4">Admin Users</CardTitle>
                         </CardHeader>
                         <CardBody>
                             <DataTable
                                 theme='dark'
                                 title=""
                                 columns={columns}
-                                data={LotteryData ? LotteryData.lottery : []}
+                                data={userData ? userData.adminUsers : []}
                                 defaultSortField="name"
                                 noHeader={true}
                                 progressPending={loading}
@@ -126,10 +90,10 @@ function Lottery(props) {
                 size="lg"
                 toggle={() => toggleModal(null)}
                 isOpen={editModal}>
-                <LotteryComponent lottery={lottery} />
+                <AdminComponent adminUser={adminUser} />
             </Modal>
         </div>
     )
 
 }
-export default React.memo(Lottery);
+export default React.memo(AdminUser);

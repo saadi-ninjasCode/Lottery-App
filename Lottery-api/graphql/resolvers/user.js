@@ -1,12 +1,16 @@
 const User = require('../../models/user');
+const Admin = require('../../models/admin')
 const { transformUser } = require('./transformation')
 const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
 
 module.exports = {
     Query: {
-        user: async () => {
+        user: async (_, __, context) => {
             console.log("Users")
+            if (!context.isAuth) {
+                throw new Error("Unauthenticated!")
+            }
             try {
                 const users = await User.find();
                 return users.map(user => {
@@ -18,41 +22,59 @@ module.exports = {
                 throw err;
             }
         },
+        adminUsers: async (_, __, context) => {
+            console.log("Admin Users")
+            if (!context.isAuth) {
+                throw new Error("Unauthenticated!")
+            }
+            try {
+                const adminUsers = await Admin.find();
+                return adminUsers.map(user => {
+                    return transformUser(user)
+                })
+            } catch (err) {
+                console.log(err)
+                throw err;
+            }
+        }
     },
     Mutation: {
         adminLogin: async (_, args) => {
-            console.log('login')
+            console.log('Admin Login')
             try {
-                const user = await User.findOne({ email: args.email })
-                if (!user) {
+                const adminLogin = await Admin.findOne({ email: args.email })
+                if (!adminLogin) {
                     throw new Error('User does not exist.')
                 }
-                const isEqual = await bcrypt.compare(args.password, user.password)
+                const isEqual = await bcrypt.compare(args.password, adminLogin.password)
                 if (!isEqual) {
                     throw new Error('Invalid credentials!')
                 }
-                const token = jwt.sign({ userId: user.id, email: user.email }, 'somesupersecretkey');
-                return { userId: user.id, token: token, tokenExpiration: 1 }
+                const token = jwt.sign({ userId: adminLogin.id, email: adminLogin.email }, 'somesupersecretkey');
+                return { userId: adminLogin.id, token: token, tokenExpiration: 1 }
             }
             catch (err) {
                 console.log(err);
                 throw err;
             }
         },
-        createUser: async (args) => {
-            console.log("Create User")
+        createAdminUser: async (_, args, context) => {
+            console.log("Create Admin User")
+            if (!context.isAuth) {
+                throw new Error("Unauthenticated!")
+            }
             try {
-                const existingUser = await User.findOne({ email: args.userInput.email });
+                const existingUser = await Admin.findOne({ email: args.userInput.email });
                 if (existingUser) {
                     throw new Error('Email is already associated with another account.');
                 }
                 const hashPassword = await bcrypt.hash(args.userInput.password, 12)
-                const user = new User({
+                const adminUser = new Admin({
                     name: args.userInput.name,
                     email: args.userInput.email,
                     password: hashPassword,
                 });
-                const result = await user.save();
+                const result = await adminUser.save();
                 return ({ ...result._doc, password: null, _id: result.id })
             }
             catch (err) {

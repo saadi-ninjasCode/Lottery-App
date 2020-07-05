@@ -19,9 +19,11 @@ app.use(isAuth);
 const server = new ApolloServer({
     typeDefs: graphQlSchema,
     resolvers: graphQlResolvers,
-    // context: ({ req, res }) => {
-    //     return { req, res }
-    // }
+    context: ({ req }) => {
+        const token = req.isAuth
+        const userId = req.userId
+        return { isAuth: true, userId }
+    }
 });
 
 
