@@ -40,6 +40,7 @@ type LotteryBalls{
 
 type AuthData {
     userId: ID!
+    name: String
     token: String!
     tokenExpiration: Int!
 }

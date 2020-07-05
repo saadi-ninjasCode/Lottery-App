@@ -51,7 +51,7 @@ module.exports = {
                     throw new Error('Invalid credentials!')
                 }
                 const token = jwt.sign({ userId: adminLogin.id, email: adminLogin.email }, 'somesupersecretkey');
-                return { userId: adminLogin.id, token: token, tokenExpiration: 1 }
+                return { userId: adminLogin.id, name: adminLogin.name, token: token, tokenExpiration: 1 }
             }
             catch (err) {
                 console.log(err);

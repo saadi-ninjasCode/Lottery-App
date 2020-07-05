@@ -46,6 +46,7 @@ function Login(props) {
     }
     function onCompleted({ adminLogin }) {
         localStorage.setItem('login-token', adminLogin.token)
+        localStorage.setItem('user-name', adminLogin.name)
         setRedirectToReferrer(true)
     }
 

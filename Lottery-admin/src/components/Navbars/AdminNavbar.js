@@ -115,14 +115,10 @@ function AdminNavbar(props) {
             <Nav className="ml-auto" navbar>
               <InputGroup className="search-bar">
                 <Button
-                  color="link"
-                  data-target="#searchModal"
-                  data-toggle="modal"
-                  id="search-button"
-                  onClick={toggleModalSearch}
-                >
-                  <i className="tim-icons icon-zoom-split" />
-                  <span className="d-lg-none d-md-block">Search</span>
+                  className="btn remove btn-primary"
+                  onClick={() => null}
+                  color="link">
+                  {localStorage.getItem('user-name')}
                 </Button>
               </InputGroup>
               <UncontrolledDropdown nav>
@@ -140,7 +136,6 @@ function AdminNavbar(props) {
                   <p className="d-lg-none">Log out</p>
                 </DropdownToggle>
                 <DropdownMenu className="dropdown-navbar" right tag="ul">
-                  <DropdownItem divider tag="li" />
                   <NavLink tag="li">
                     <DropdownItem className="nav-item" onClick={(e) => {
                       e.preventDefault()

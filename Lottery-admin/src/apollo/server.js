@@ -20,6 +20,7 @@ export const adminUsers = `query{
 export const adminLogin = `mutation AdminLogin($email:String!, $pass:String!) {
     adminLogin(email:$email, password:$pass){
         userId
+        name
         token
     }
 }`
