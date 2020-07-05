@@ -36,7 +36,7 @@ function LotteryComponent(props) {
     const name = props.lottery ? props.lottery.name : ''
     const [date, dateSetter] = useState(props.lottery ? new Date(+props.lottery.next_draw) : '')
     const [iconName, iconNameSetter] = useState(props.lottery ? props.lottery.icon_name ? props.lottery.icon_name : '' : 'fas fa-glasses')
-    const [mutation, { data, loading }] = useMutation(MUTATION, { onCompleted, onError })
+    const [mutation, { loading }] = useMutation(MUTATION, { onCompleted, onError })
 
     function onCompleted(data) {
         console.log(data)
