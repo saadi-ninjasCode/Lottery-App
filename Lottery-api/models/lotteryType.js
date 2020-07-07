@@ -3,8 +3,12 @@ const mongoose = require('mongoose');
 function dateLimit(val) {
     return val >= Date.now();
 }
-const Schema = mongoose.Schema;
 
+function arrayLimit(val) {
+    return val.length <= 3;
+}
+
+const Schema = mongoose.Schema;
 const lotterySchema = new Schema({
     name: {
         type: String,
@@ -12,10 +16,28 @@ const lotterySchema = new Schema({
     },
     next_draw: {
         type: Date,
-        validate: [dateLimit, "Date must be greater than current date & time"],
+        // validate: [dateLimit, "Date must be greater than current date & time"],
     },
     icon_name: {
         type: String
+    },
+    coldBall: {
+        type: [
+            {
+                ball: String,
+                times: String,
+            }
+        ],
+        validate: [arrayLimit, "{PATH} exceeds the limit of 3"]
+    },
+    hotBall: {
+        type: [
+            {
+                ball: String,
+                times: String,
+            }
+        ],
+        validate: [arrayLimit, "{PATH} exceeds the limit of 3"]
     },
     user_list: [
         {

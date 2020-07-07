@@ -58,6 +58,7 @@ function AdminUser() {
                 deleteButton={true}
                 row={row}
                 mutation={ADMIN_DELETE}
+                refetchQuery={ADMIN_USERS}
                 showMessage={showMessage}
                 message='User removed' />
         }

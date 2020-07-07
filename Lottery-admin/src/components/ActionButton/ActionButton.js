@@ -2,15 +2,17 @@ import React from 'react'
 import classNames from 'classnames'
 import { useMutation } from '@apollo/react-hooks'
 import { Button } from 'reactstrap'
-import { adminLogin } from '../../apollo/server'
+import { adminLogin, getlottery } from '../../apollo/server'
 import { gql } from 'apollo-boost'
 
 const ADMIN_USERS = gql`${adminLogin}`
+const GET_LOTTERY = gql`${getlottery}`
 
 
 function ActionButton(props) {
     const mutation = props.mutation ? props.mutation : ADMIN_USERS
-    var [deleteAdmin, { loading: deleteLoader }] = useMutation(mutation, { onCompleted, onError })
+    const query = props.refetchQuery ? props.refetchQuery : GET_LOTTERY
+    var [deleteAdmin, { loading: deleteLoader }] = useMutation(mutation, { onCompleted, onError, refetchQueries: [{ query: query }] })
     function onCompleted(data) {
         console.log(data)
         props.showMessage(props.message, 'success')

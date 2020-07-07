@@ -23,9 +23,9 @@ import TableList from "views/TableList.js";
 import Typography from "views/Typography.js";
 import UserProfile from "views/UserProfile.js";
 import LunchTime from "views/LunchTime.js"
-import TeaTime from "views/TeaTime";
-import Login from 'views/Login'
-import Lottery from 'views/Lottery'
+import LotteryBalls from "./views/LotteryBalls";
+import Login from './views/Login'
+import Lottery from './views/Lottery'
 import AdminUser from './views/AdminUser'
 var routes = [
   {
@@ -90,11 +90,11 @@ var routes = [
     layout: "/admin"
   },
   {
-    path: "/TeaTime",
-    name: "Tea Time",
-    icon: 'fas fa-coffee',
-    component: TeaTime,
-    layout: "/admin"
+    path: '/Users',
+    name: 'Admin Users',
+    icon: 'fas fa-users-cog',
+    component: AdminUser,
+    layout: '/admin',
   },
   {
     path: "/Lottery",
@@ -104,11 +104,11 @@ var routes = [
     layout: "/admin"
   },
   {
-    path: '/loginUsers',
-    name: 'Admin Users',
-    icon: 'fas fa-users-cog',
-    component: AdminUser,
-    layout: '/admin',
+    path: "/Balls",
+    name: "Draws",
+    icon: 'fab fa-bitcoin',
+    component: LotteryBalls,
+    layout: "/admin"
   },
   {
     path: "/rtl-support",

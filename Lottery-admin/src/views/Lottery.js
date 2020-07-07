@@ -14,7 +14,7 @@ import {
 } from "reactstrap";
 import DataTable from 'react-data-table-component'
 import LotteryComponent from "../components/LotteryComponent/LotteryComponent";
-import { getlottery } from '../apollo/server'
+import { getlottery, delelteLottery } from '../apollo/server'
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 import { customStyle } from "../assets/custom/custom";
@@ -22,9 +22,11 @@ import { Loader } from "../assets/custom/Spinner";
 import { dateToCustom } from "../variables/date";
 import ActionButton from '../components/ActionButton/ActionButton'
 import NotificationAlert from "react-notification-alert";
-const GET_LOTTERY = gql`${getlottery}`
 
-function Lottery(props) {
+const GET_LOTTERY = gql`${getlottery}`
+const DELETE_LOTTERY = gql`${delelteLottery}`
+
+function Lottery() {
     const notifyEl = useRef(null);
     const [editModal, editModalSetter] = useState(false)
     const [lottery, lotterySetter] = useState(null)
@@ -34,23 +36,6 @@ function Lottery(props) {
     const toggleModal = rowdata => {
         editModalSetter(prev => !prev)
         lotterySetter(rowdata)
-    }
-    function actionButtons(row) {
-        return (
-            <>
-                <Button className='btn-icon btn-link remove btn btn-warning btn-sm'
-                    onClick={e => {
-                        e.preventDefault()
-                        toggleModal(row)
-                    }}>
-                    <i className="fas fa-edit"></i>
-                </Button>
-              &nbsp;&nbsp;
-                <Button className='btn-icon btn-link remove btn btn-danger btn-sm'>
-                    <i className="fas fa-times"></i>
-                </Button>
-            </>
-        )
     }
     function showMessage(message, category) {
         notifyEl.current.notificationAlert(options(message, category));
@@ -89,9 +74,10 @@ function Lottery(props) {
                 deleteButton={true}
                 editButton={true}
                 row={row}
-                mutation={null}
+                mutation={DELETE_LOTTERY}
                 editModal={toggleModal}
                 showMessage={showMessage}
+                refetchQuery={GET_LOTTERY}
                 message='User removed' />
         }
     ]

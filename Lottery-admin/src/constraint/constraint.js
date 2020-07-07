@@ -23,7 +23,12 @@ const constraints = {
         }
     },
     nextDraw: {
-        datetie: true
+        datetime: true
+    },
+    lotteryDropDown: {
+        presence: {
+            allowEmpty: false
+        }
     }
 }
 

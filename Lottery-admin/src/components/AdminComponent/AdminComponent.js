@@ -5,7 +5,6 @@ import {
     CardHeader,
     CardBody,
     CardFooter,
-    FormGroup,
     Input,
     Row,
     Col,
@@ -15,11 +14,11 @@ import {
 } from "reactstrap";
 import classNames from 'classnames'
 import { validateFunc } from "../../constraint/constraint";
-import { createAdminUser } from '../../apollo/server'
+import { adminUsers, createAdminUser } from '../../apollo/server'
 import { gql } from "apollo-boost";
 import { useMutation } from "@apollo/react-hooks";
 
-
+const ADMIN_USERS = gql`${adminUsers}`
 const CREATE_ADMIN_USER = gql`${createAdminUser}`
 
 function AdminComponent(props) {
@@ -30,7 +29,7 @@ function AdminComponent(props) {
     const [nameError, nameErrorSetter] = useState(null)
     const [emailError, emailErrorSetter] = useState(null)
     const [passwordError, passwordErrorSetter] = useState(null)
-    const [mutation, { loading }] = useMutation(CREATE_ADMIN_USER, { onCompleted, onError })
+    const [mutation, { loading }] = useMutation(CREATE_ADMIN_USER, { onCompleted, onError, refetchQueries: [{ query: ADMIN_USERS }] })
     function clearFields() {
         nameErrorSetter(null)
         emailErrorSetter(null)

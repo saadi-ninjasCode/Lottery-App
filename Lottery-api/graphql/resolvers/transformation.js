@@ -42,12 +42,12 @@ const userById = async (userids) => {
             })
         }
         else {
-            console.log(userids)
-            throw 'Here'
+            const user = await User.findById(userids)
+            return userTransformation(user)
         }
     }
     catch (e) {
-        console.log(e); ``
+        console.log(e); 
         throw e;
     }
 }
@@ -72,7 +72,6 @@ const lotterBallsTransformation = ball => {
         ...ball._doc,
         _id: ball.id,
         lottery: lotteryById(ball._doc.lottery),
-        date: dateToLocal(ball._doc.date)
     }
 }
 

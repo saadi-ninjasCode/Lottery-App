@@ -6,7 +6,13 @@ type LotteryType{
     name: String!
     next_draw: String
     icon_name: String
-    user_list:[User!]
+    coldBall : [BallsCount!]
+    hotBall  : [BallsCount!]
+    user_list: [User!]
+}
+type BallsCount{
+    ball : Int!
+    times: Int!
 }
 
 type User{
@@ -23,12 +29,6 @@ type Admin {
     role: String
   }
 
-type UsageBalls {
-    _id: ID!
-    lottery : LotteryType!
-    coldBall : [Int!]!
-    hotBall : [Int!]!
-}
 type LotteryBalls{
     _id: ID!
     lottery : LotteryType!
@@ -51,19 +51,25 @@ input LotteryInput {
     next_draw: String
     icon_name: String
 }
+input CountInput{
+    ball : Int!
+    times: Int!
+}
+input BallsCountInput {
+    lottery : ID!
+    coldBall : [CountInput!]
+    hotBall  : [CountInput!]
+}
+
 
 input UserInput{
     name: String!
     email: String!
     password: String!
 }
-input UsageBallsInput {
-    lottery : ID!
-    coldBall : [Int!]!
-    hotBall : [Int!]!
-}
 
 input LotteryBallsInput{
+    _id: String
     lottery : ID!
     date: String!
     balls : [Int!]
@@ -74,7 +80,6 @@ input LotteryBallsInput{
 type Query {
     lottery : [LotteryType!]!
     user : [User!]!
-    usageBalls: [UsageBalls!]!
     lotteryBalls : [LotteryBalls!]
     adminUsers: [Admin!]
 }
@@ -84,9 +89,9 @@ type Mutation{
     adminChangePassword(oldPassword: String!, newPassword: String!): Boolean!
     createLottery( lotteryInput : LotteryInput ) : LotteryType!
     createAdminUser( userInput : UserInput ) : Admin!
-    createUsageBalls ( usageInput : UsageBallsInput) : UsageBalls!
     createLotteryBalls ( lotteryInput : LotteryBallsInput ) : LotteryBalls!
     editLottery(lotteryInput: LotteryInput!) : LotteryType!
+    editFavouriteBalls ( ballCountInput : BallsCountInput) : LotteryType!
     deleteLottery(id: String!) : LotteryType!
     deleteAdminUser(id: String!): Admin!
 }`

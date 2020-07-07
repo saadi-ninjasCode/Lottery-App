@@ -18,7 +18,7 @@ import classNames from 'classnames'
 
 import "react-datepicker/dist/react-datepicker.css";
 import { validateFunc } from "../../constraint/constraint";
-import { createLottery, editLottery } from '../../apollo/server'
+import { createLottery, editLottery, getlottery } from '../../apollo/server'
 import { gql } from "apollo-boost";
 import { useMutation } from "@apollo/react-hooks";
 import NotificationAlert from "react-notification-alert";
@@ -26,6 +26,7 @@ import NotificationAlert from "react-notification-alert";
 
 const CREATE_LOTTERY = gql`${createLottery}`
 const EDIT_LOTTERY = gql`${editLottery}`
+const GET_LOTTERY = gql`${getlottery}`
 function LotteryComponent(props) {
     const form = useRef()
     const notifyEl = useRef(null);
@@ -36,7 +37,7 @@ function LotteryComponent(props) {
     const name = props.lottery ? props.lottery.name : ''
     const [date, dateSetter] = useState(props.lottery ? new Date(+props.lottery.next_draw) : '')
     const [iconName, iconNameSetter] = useState(props.lottery ? props.lottery.icon_name ? props.lottery.icon_name : '' : 'fas fa-glasses')
-    const [mutation, { loading }] = useMutation(MUTATION, { onCompleted, onError })
+    const [mutation, { loading }] = useMutation(MUTATION, { onCompleted, onError, refetchQueries: [{ query: GET_LOTTERY }] })
 
     function onCompleted(data) {
         console.log(data)
