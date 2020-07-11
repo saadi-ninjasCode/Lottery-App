@@ -12,15 +12,15 @@ import {
     Col,
     Label
 } from "reactstrap";
-import { editFavouriteBalls, getColdBalls } from "../..//apollo/server";
 import { useQuery, useMutation } from "@apollo/react-hooks";
+import { gethotBalls, editFavouriteBalls } from "../../apollo/server";
 import { gql } from "apollo-boost";
-import { validateFunc } from "../../constraint/constraint";
+import { validateFunc } from "constraint/constraint";
 
 const EDIT_FAVOURITE_BALLS = gql`${editFavouriteBalls}`
-const GET_BALLS = gql`${getColdBalls}`
+const GET_BALLS = gql`${gethotBalls}`
 
-function ColdBallComponent(props) {
+function HotBallComponent(props) {
     const formRef = useRef()
 
     const [lotteryError, lotteryErrorSetter] = useState(null)
@@ -57,19 +57,21 @@ function ColdBallComponent(props) {
     }
 
     function enterData() {
-        const coldBallArray = Array(3)
-        coldBallArray[0] = { ball: formRef.current['input-ball1'].value, times: formRef.current['input-time1'].value }
-        coldBallArray[1] = { ball: formRef.current['input-ball2'].value, times: formRef.current['input-time2'].value }
-        coldBallArray[2] = { ball: formRef.current['input-ball3'].value, times: formRef.current['input-time3'].value }
+        const hotBallArray = Array(3)
+        hotBallArray[0] = { ball: formRef.current['input-ball1'].value, times: formRef.current['input-time1'].value }
+        hotBallArray[1] = { ball: formRef.current['input-ball2'].value, times: formRef.current['input-time2'].value }
+        hotBallArray[2] = { ball: formRef.current['input-ball3'].value, times: formRef.current['input-time3'].value }
+        console.log(hotBallArray)
         mutation({
             variables: {
                 ballsCountInput: {
                     lottery: formRef.current['input-lottery'].value,
-                    coldBall: coldBallArray
+                    hotBall: hotBallArray
                 }
             }
         })
     }
+
     function onCompleted() {
         props.showMessage("Favourite Balls Updated!", "success")
         formRef.current.reset()
@@ -98,7 +100,7 @@ function ColdBallComponent(props) {
             <Card>
                 <form ref={formRef}>
                     <CardHeader>
-                        <h4 className="title text-info">Add Cold Balls</h4>
+                        <h4 className="title text-warning">Cold Balls</h4>
                     </CardHeader>
                     <CardBody>
                         <Row>
@@ -292,4 +294,4 @@ function ColdBallComponent(props) {
     )
 }
 
-export default ColdBallComponent
+export default HotBallComponent

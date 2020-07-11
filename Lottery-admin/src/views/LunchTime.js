@@ -23,7 +23,7 @@ import {
     ModalHeader,
 } from "reactstrap";
 import LunchTimeComponent from "../components/LunchTimeComponent/LunchTimeComponent";
-import ColdBallComponent from "components/ColdBallComponent/ColdBallComponent";
+import FavouriteBallComponent from "components/FavouriteBallComponent/FavouriteBallComponent";
 
 function LunchTime(props) {
     const [luchTime, luchTimeSetter] = useState(null)
@@ -42,7 +42,7 @@ function LunchTime(props) {
                     <LunchTimeComponent />
                 </Col>
                 <Col md='4'>
-                    <ColdBallComponent />
+                    <FavouriteBallComponent />
                 </Col>
             </Row>
             <Row>

@@ -27,6 +27,9 @@ import LotteryBalls from "./views/LotteryBalls";
 import Login from './views/Login'
 import Lottery from './views/Lottery'
 import AdminUser from './views/AdminUser'
+import ColdBalls from './views/ColdBalls'
+import HotBalls from './views/HotBalls'
+
 var routes = [
   {
     path: "/dashboard",
@@ -111,9 +114,17 @@ var routes = [
     layout: "/admin"
   },
   {
-    path: "/rtl-support",
-    name: "Daily Million",
-    icon: "tim-icons icon-basket-simple",
+    path: "/coldBall",
+    name: "Cold Balls",
+    icon: "fas fa-snowman",
+    component: ColdBalls,
+    layout: "/admin"
+  },
+  {
+    path: "/hotBall",
+    name: "Hot Balls",
+    icon: "fab fa-hotjar",
+    component: HotBalls,
     layout: "/admin"
   },
   {

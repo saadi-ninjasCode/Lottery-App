@@ -2,75 +2,66 @@ import React, { useState, useRef } from "react";
 
 // reactstrap components
 import {
-    Button,
     Card,
     CardHeader,
     CardBody,
-    CardFooter,
-    CardText,
-    FormGroup,
-    Form,
-    Input,
     Row,
     Col,
     CardTitle,
-    Table,
-    UncontrolledDropdown,
-    DropdownToggle,
-    DropdownMenu,
-    DropdownItem,
     Modal,
     ModalHeader,
 } from "reactstrap";
 import LotteryBallsComponent from "../components/LotteryBallsComponent/LotteryBallsComponent";
-import { getlotteryDetails } from "../apollo/server"
+import { getlotteryDetails, deleteDraw } from "../apollo/server"
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 import { customStyle } from "../assets/custom/custom";
 import { Loader } from "assets/custom/Spinner";
 import { dateToCustom } from "variables/date";
-import ActionButton from "components/ActionButton/ActionButton";
+import ActionButton from "../components/ActionButton/ActionButton";
 import DataTable from "react-data-table-component";
 import { lotteryBallsTransformation } from "utils/stringManipulation";
 import NotificationAlert from "react-notification-alert";
 
 const GET_LOTTERY_DETAILS = gql`${getlotteryDetails}`
+const DELETE_DRAW = gql`${deleteDraw}`
 
 function LotteryBalls() {
     const notifyEl = useRef(null);
-    const [teaTime, teaTimeSetter] = useState(null)
+    const [balls, ballSetter] = useState(null)
     const [editModal, editModalSetter] = useState(false)
     const { loading, data: LotteryData } = useQuery(GET_LOTTERY_DETAILS)
 
     const toggleModal = (value) => {
-        teaTimeSetter(value)
+        ballSetter(value)
         editModalSetter(prev => !prev)
+    }
+    function showMessage(message, category) {
+        notifyEl.current.notificationAlert(options(message, category));
     }
     const columns = [
         {
             name: 'Name',
             selector: 'lottery.name',
             sortable: true,
-            center: true
+            // center: true
         },
         {
             name: 'Draw Date',
             selector: 'date',
             sortable: true,
-            defaultSortAsc: false,
-            center: true,
-            format: row => dateToCustom(row.lottery.next_draw)
+            defaultSortAsc: true,
+            sortFunction: (a, b) => b.date - a.date,
+            format: row => dateToCustom(row.date)
         },
         {
             name: 'Balls',
             selector: 'balls',
-            center: true,
             format: row => lotteryBallsTransformation(row.balls, row.pending)
         },
         {
             name: 'Bonus',
             selector: 'specialBalls',
-            center: true,
             format: row => lotteryBallsTransformation(row.specialBalls, row.pending)
         },
         {
@@ -79,14 +70,26 @@ function LotteryBalls() {
             cell: row => <ActionButton
                 deleteButton={true}
                 editButton={true}
-                // row={row}
-                mutation={null}
+                row={row}
+                mutation={DELETE_DRAW}
                 editModal={toggleModal}
-                // showMessage={showMessage}
+                showMessage={showMessage}
                 refetchQuery={GET_LOTTERY_DETAILS}
                 message='User removed' />
         }
     ]
+    //Notification alert
+    var options = (message, category) => ({
+        place: 'tr',
+        message: (
+            <div>
+                <b>{category === 'danger' ? 'Error: ' : 'success: '}</b>{message}
+            </div>
+        ),
+        type: category,
+        autoDismiss: 7,
+        icon: 'far fa-bell'
+    })
 
     return (
         <div className="content">
@@ -99,7 +102,7 @@ function LotteryBalls() {
                     <LotteryBallsComponent />
                 </Col>
             </Row>
-            <Row>
+            <Row className='justify-content-center'>
                 <Col md="12">
                     <Card>
                         <CardHeader>
@@ -122,14 +125,12 @@ function LotteryBalls() {
                     </Card>
                 </Col>
             </Row>
-            <Modal
-                className="modal-dialog-centered"
+            <Modal modalTransition={{ timeout: 400 }} backdropTransition={{ timeout: 200 }}
+                modalClassName="modal-black"
                 size="lg"
                 isOpen={editModal}
-                toggle={() => { toggleModal() }}
-            >
-                <ModalHeader toggle={toggleModal} charCode="X"><h3 className="title mb-md-4" style={{ fontSize: 'large' }}>Update</h3></ModalHeader>
-                <LotteryBallsComponent luchTime={teaTime} />
+                toggle={() => toggleModal(null)}>
+                <LotteryBallsComponent draw={balls} />
             </Modal>
         </div>
     )

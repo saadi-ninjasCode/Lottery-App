@@ -11,8 +11,8 @@ type LotteryType{
     user_list: [User!]
 }
 type BallsCount{
-    ball : Int!
-    times: Int!
+    ball : String!
+    times: String!
 }
 
 type User{
@@ -33,8 +33,8 @@ type LotteryBalls{
     _id: ID!
     lottery : LotteryType!
     date: String!
-    balls : [Int!]
-    specialBalls : [Int!]
+    balls : [String!]
+    specialBalls : [String!]
     pending : Boolean!
 }
 
@@ -52,8 +52,8 @@ input LotteryInput {
     icon_name: String
 }
 input CountInput{
-    ball : Int!
-    times: Int!
+    ball : String!
+    times: String!
 }
 input BallsCountInput {
     lottery : ID!
@@ -72,8 +72,8 @@ input LotteryBallsInput{
     _id: String
     lottery : ID!
     date: String!
-    balls : [Int!]
-    SpecialBalls : [Int!]
+    balls : [String!]
+    specialBalls : [String!]
     pending : Boolean!
 }
 
@@ -91,7 +91,11 @@ type Mutation{
     createAdminUser( userInput : UserInput ) : Admin!
     createLotteryBalls ( lotteryInput : LotteryBallsInput ) : LotteryBalls!
     editLottery(lotteryInput: LotteryInput!) : LotteryType!
-    editFavouriteBalls ( ballCountInput : BallsCountInput) : LotteryType!
+    editLotteryBalls ( lotteryInput : LotteryBallsInput ) : LotteryBalls!
+    editFavouriteBalls( ballsCountInput : BallsCountInput) : LotteryType!
     deleteLottery(id: String!) : LotteryType!
     deleteAdminUser(id: String!): Admin!
+    deleteColdBalls(id: String!): LotteryType!
+    deleteHotBalls(id: String!): LotteryType!
+    deleteDraw(id: String!): LotteryBalls!
 }`

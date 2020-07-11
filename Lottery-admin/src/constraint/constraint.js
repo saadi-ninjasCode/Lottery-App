@@ -19,13 +19,18 @@ const constraints = {
     },
     iconName: {
         presence: {
-            allowEmpty: false
+            allowEmpty: true
         }
     },
     nextDraw: {
         datetime: true
     },
     lotteryDropDown: {
+        presence: {
+            allowEmpty: false
+        }
+    },
+    ball: {
         presence: {
             allowEmpty: false
         }

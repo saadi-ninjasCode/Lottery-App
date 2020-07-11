@@ -9,6 +9,31 @@ export const getlottery = `query{
         }
     }
 }`
+
+export const getColdBalls = `query{
+    lottery{
+        _id
+        name
+        icon_name
+        coldBall{
+            ball
+            times
+        }
+    }
+}`
+
+export const gethotBalls = `query{
+    lottery{
+        _id
+        name
+        icon_name
+        hotBall{
+            ball
+            times
+        }
+    }
+}`
+
 export const getlotteryDetails = `query{
     lotteryBalls{
         _id
@@ -20,14 +45,6 @@ export const getlotteryDetails = `query{
           _id
           name
           next_draw
-          coldBall {
-            ball
-            times
-          }
-          hotBall {
-            ball
-            times
-          }
         }
       }
 }`
@@ -63,6 +80,13 @@ export const createAdminUser = `mutation CreateAdminUser($userInput: UserInput!)
     }
 }`
 
+export const createLotteryBalls = `mutation CreateLotteryBalls($lotteryInput: LotteryBallsInput!){
+    createLotteryBalls(lotteryInput: $lotteryInput){
+        _id
+    }
+}
+`
+
 export const editLottery = `mutation EditLottery($lotteryInput: LotteryInput!){
     editLottery(lotteryInput: $lotteryInput){
         _id
@@ -72,12 +96,15 @@ export const editLottery = `mutation EditLottery($lotteryInput: LotteryInput!){
 export const editFavouriteBalls = `mutation EditFavouriteBalls($ballsCountInput: BallsCountInput!){
     editFavouriteBalls(ballsCountInput:$ballsCountInput){
         _id
-        name
-        icon_name
-        coldBall
-        hotBall
     }
 }`
+
+export const editLotteryBalls = `mutation EditLotteryBalls($lotteryInput: LotteryBallsInput!){
+    editLotteryBalls(lotteryInput:$lotteryInput){
+        _id
+    }
+}`
+
 
 export const deleteAdminLogin = `mutation DeleteAdminlogin($id: String!){
     deleteAdminUser(id:$id){
@@ -87,6 +114,22 @@ export const deleteAdminLogin = `mutation DeleteAdminlogin($id: String!){
 
 export const delelteLottery = `mutation DeleteLottery($id: String!){
     deleteLottery(id: $id){
+        _id
+    }
+}`
+export const delelteColdBall = `mutation DeleteColdBalls($id: String!){
+    deleteColdBalls(id: $id){
+        _id
+    }
+}`
+export const delelteHotBall = `mutation DeleteHotBalls($id: String!){
+    deleteHotBalls(id: $id){
+        _id
+    }
+}`
+
+export const deleteDraw = `mutation DeleteDraw($id: String!){
+    deleteDraw(id: $id){
         _id
     }
 }`

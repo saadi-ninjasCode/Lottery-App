@@ -21,7 +21,6 @@ module.exports = {
     Mutation: {
         createLottery: async (_, args, context) => {
             console.log("Create Lottery")
-            console.log(args)
             if (!context.isAuth) {
                 throw new Error("Unauthenticated!")
             }
@@ -64,25 +63,28 @@ module.exports = {
             }
         },
         editFavouriteBalls: async (_, args, context) => {
-            console.log('Edit Ball Count')
+            console.log('Edit Favourite Ball')
+            if (!context.isAuth) {
+                throw new Error("Unauthenticated!")
+            }
             try {
-                let checkLottery = await LotteryType.findById(args.ballCountInput.lottery)
+                let checkLottery = await LotteryType.findById(args.ballsCountInput.lottery)
                 if (!checkLottery) {
                     throw new Error("Lottery doesn't exist")
                 }
-                if (args.ballCountInput.coldBall) {
-                    if (args.ballCountInput.coldBall.length > 1) {
+                if (args.ballsCountInput.coldBall) {
+                    if (args.ballsCountInput.coldBall.length > 3) {
                         throw new Error("Can't perform this action.")
                     }
-                    if (args.ballCountInput.coldBall.length === 1)
-                        checkLottery.coldBall = args.ballCountInput.coldBall
+                    if (args.ballsCountInput.coldBall.length <= 3)
+                        checkLottery.coldBall = args.ballsCountInput.coldBall.sort(function (a, b) { return (b.times - a.times) })
                 }
-                else if (args.ballCountInput.hotBall) {
-                    if (args.ballCountInput.hotBall.length > 1) {
+                if (args.ballsCountInput.hotBall) {
+                    if (args.ballsCountInput.hotBall.length > 3) {
                         throw new Error("Can't perform this action.")
                     }
-                    if (args.ballCountInput.hotBall.length === 1)
-                        checkLottery.hotBall = args.ballCountInput.hotBall
+                    if (args.ballsCountInput.hotBall.length <= 3)
+                        checkLottery.hotBall = args.ballsCountInput.hotBall.sort(function (a, b) { return (b.times - a.times) })
                 }
                 const result = await checkLottery.save()
                 return transfromLotteryType(result)
@@ -111,5 +113,41 @@ module.exports = {
             //     return transfromLotteryType(checkLottery)
             // }
         },
+        deleteColdBalls: async (_, args, context) => {
+            console.log('Delete Favourite Ball ')
+            if (!context.isAuth) {
+                throw new Error("Unauthenticated!")
+            }
+            try {
+                let checkLottery = await LotteryType.findById(args.id)
+                if (!checkLottery) {
+                    throw new Error("Lottery doesn't exist")
+                }
+                checkLottery.coldBall = []
+                const result = await checkLottery.save()
+                return transfromLotteryType(result)
+            } catch (err) {
+                console.log(err)
+                throw err;
+            }
+        },
+        deleteHotBalls: async (_, args, context) => {
+            console.log('Delete Favourite Ball ')
+            if (!context.isAuth) {
+                throw new Error("Unauthenticated!")
+            }
+            try {
+                let checkLottery = await LotteryType.findById(args.id)
+                if (!checkLottery) {
+                    throw new Error("Lottery doesn't exist")
+                }
+                checkLottery.hotBall = []
+                const result = await checkLottery.save()
+                return transfromLotteryType(result)
+            } catch (err) {
+                console.log(err)
+                throw err;
+            }
+        }
     }
 };
