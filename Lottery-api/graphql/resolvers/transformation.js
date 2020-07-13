@@ -1,6 +1,5 @@
 const LotteryType = require('../../models/lotteryType');
 const User = require('../../models/user')
-const { dateToString, dateToLocal } = require('../../helpers/date');
 const lotteryBalls = require('../../models/lotteryBalls');
 
 
@@ -64,14 +63,6 @@ const userById = async (userids) => {
     }
 }
 
-const usageBallTransformation = ball => {
-    return {
-        ...ball._doc,
-        _id: ball.id,
-        lottery: lotteryById(ball._doc.lottery)
-    }
-}
-
 const userTransformation = user => {
     return {
         ...user._doc,
@@ -90,7 +81,6 @@ const lotterBallsTransformation = ball => {
 
 
 exports.transfromLotteryType = lotteryTypeTransformation;
-exports.transformUsageBalls = usageBallTransformation;
 exports.transformUser = userTransformation;
 exports.transformLotteryBalls = lotterBallsTransformation;
 exports.transformSummary = summaryTransformation;
