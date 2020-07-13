@@ -10,6 +10,23 @@ export const getlottery = `query{
     }
 }`
 
+export const dasboardInfo = `query{
+    dasboardInfo{
+        lottery{
+            _id
+            name
+            next_draw
+            icon_name
+            user_list{
+                name
+            }
+        }
+        draw{
+            date
+        }
+    }
+}`
+
 export const getColdBalls = `query{
     lottery{
         _id
@@ -112,7 +129,7 @@ export const deleteAdminLogin = `mutation DeleteAdminlogin($id: String!){
     }
 }`
 
-export const delelteLottery = `mutation DeleteLottery($id: String!){
+export const deleteLottery = `mutation DeleteLottery($id: String!){
     deleteLottery(id: $id){
         _id
     }
