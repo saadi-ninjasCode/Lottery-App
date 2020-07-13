@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import {
     Button,
     Card,
@@ -37,6 +37,7 @@ function AdminComponent(props) {
     }
     function onCompleted(data) {
         console.log(data)
+        form.current.reset()
         showMessage('Admin User Added', 'success')
         clearFields()
     }

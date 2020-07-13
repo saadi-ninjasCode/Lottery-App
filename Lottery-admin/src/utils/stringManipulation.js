@@ -1,10 +1,16 @@
+import { dateToCustom, dateWithWeekday } from "../variables/date"
 
 const lotteryBallsTransformation = (balls, pending) => {
     if (pending) {
         return 'Pending'
     }
     else if (balls.length > 0) {
-        const arr = balls.map(x => { if (!x) { return '-' } else { return x } })
+        const arr = balls.map(x => {
+            if (!x)
+                return '-'
+            else
+                return x
+        })
         return arr.join(", ")
     }
     else {
@@ -18,9 +24,9 @@ const favouriteBallTransformation = (balls) => {
     }
     else {
         const ballArr = Array(3).fill('-')
-        balls.map((x, index) => {
+        balls.map((x, index) => (
             ballArr[index] = x.ball ? x.ball : '-'
-        })
+        ))
         return ballArr.join(" , ")
     }
 }
@@ -31,11 +37,22 @@ const favouriteTimeTransformation = balls => {
     }
     else {
         const timeArr = Array(3).fill('-')
-        balls.map((x, index) => {
+        balls.map((x, index) => (
             timeArr[index] = x.times ? x.times : '-'
-        })
+        ))
         return timeArr.join(" , ")
     }
 }
 
-export { lotteryBallsTransformation, favouriteBallTransformation, favouriteTimeTransformation }
+const dateTransformation = (date, weekday = false) => {
+    if (date) {
+        if (weekday)
+            return dateWithWeekday(date)
+        else
+            return dateToCustom(date)
+    }
+    else
+        return '-'
+}
+
+export { lotteryBallsTransformation, favouriteBallTransformation, favouriteTimeTransformation, dateTransformation }

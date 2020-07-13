@@ -2,7 +2,6 @@ import React, { useRef } from "react";
 
 // reactstrap components
 import {
-    Button,
     Card,
     CardBody,
     Row,
@@ -69,7 +68,7 @@ function AdminUser() {
         place: 'tr',
         message: (
             <div>
-                <b>{category === 'danger' ? 'Error: ' : 'success: '}</b>{message}
+                <b>{category === 'danger' ? 'Error: ' : 'Success: '}</b>{message}
             </div>
         ),
         type: category,

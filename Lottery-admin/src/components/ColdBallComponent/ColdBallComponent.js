@@ -6,7 +6,6 @@ import {
     CardBody,
     CardFooter,
     FormGroup,
-    Form,
     Input,
     Row,
     Col,
@@ -93,12 +92,13 @@ function ColdBallComponent(props) {
         }
         props.showMessage(errorMesage, 'danger')
     }
+    if (lotteryDataError) return <h5>Something is missing</h5>
     return (
         <>
             <Card>
                 <form ref={formRef}>
                     <CardHeader>
-                        <h4 className="title text-info">Add Cold Balls</h4>
+                        <h4 className="title text-info">Cold Balls</h4>
                     </CardHeader>
                     <CardBody>
                         <Row>
@@ -277,12 +277,14 @@ function ColdBallComponent(props) {
                             <Button className="btn-fill" color="primary" type="button"
                                 onClick={(e) => {
                                     e.preventDefault()
-                                    if (validate()) {
+                                    if (validate() && !loading) {
                                         enterData()
                                     }
                                 }}
                             >
-                                {'Save'}
+                                {loading ? <i className='fas fa-compact-disc fa-spin fa-2x fa-fw' /> :
+                                    'Save'
+                                }
                             </Button>
                         </CardFooter>
                     </CardBody>

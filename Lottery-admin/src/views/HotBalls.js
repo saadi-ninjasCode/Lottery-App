@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useRef } from "react";
 
 // reactstrap components
 import {
@@ -68,7 +68,7 @@ function HotBalls() {
         place: 'tr',
         message: (
             <div>
-                <b>{category === 'danger' ? 'Error: ' : 'success: '}</b>{message}
+                <b>{category === 'danger' ? 'Error: ' : 'Success: '}</b>{message}
             </div>
         ),
         type: category,

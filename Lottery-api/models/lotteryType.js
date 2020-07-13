@@ -1,7 +1,10 @@
 const mongoose = require('mongoose');
 
 function dateLimit(val) {
-    return val >= Date.now();
+    if (val)
+        return val >= Date.now();
+    else
+        return true
 }
 
 function arrayLimit(val) {
@@ -16,7 +19,7 @@ const lotterySchema = new Schema({
     },
     next_draw: {
         type: Date,
-        // validate: [dateLimit, "Date must be greater than current date & time"],
+        validate: [dateLimit, "Date must be greater than current date & time"],
     },
     icon_name: {
         type: String

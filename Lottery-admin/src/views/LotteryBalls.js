@@ -9,7 +9,6 @@ import {
     Col,
     CardTitle,
     Modal,
-    ModalHeader,
 } from "reactstrap";
 import LotteryBallsComponent from "../components/LotteryBallsComponent/LotteryBallsComponent";
 import { getlotteryDetails, deleteDraw } from "../apollo/server"
@@ -17,11 +16,11 @@ import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 import { customStyle } from "../assets/custom/custom";
 import { Loader } from "assets/custom/Spinner";
-import { dateToCustom } from "variables/date";
 import ActionButton from "../components/ActionButton/ActionButton";
 import DataTable from "react-data-table-component";
 import { lotteryBallsTransformation } from "utils/stringManipulation";
 import NotificationAlert from "react-notification-alert";
+import { dateTransformation } from "utils/stringManipulation";
 
 const GET_LOTTERY_DETAILS = gql`${getlotteryDetails}`
 const DELETE_DRAW = gql`${deleteDraw}`
@@ -52,7 +51,7 @@ function LotteryBalls() {
             sortable: true,
             defaultSortAsc: true,
             sortFunction: (a, b) => b.date - a.date,
-            format: row => dateToCustom(row.date)
+            format: row => dateTransformation(row.date)
         },
         {
             name: 'Balls',
@@ -83,7 +82,7 @@ function LotteryBalls() {
         place: 'tr',
         message: (
             <div>
-                <b>{category === 'danger' ? 'Error: ' : 'success: '}</b>{message}
+                <b>{category === 'danger' ? 'Error: ' : 'Success: '}</b>{message}
             </div>
         ),
         type: category,

@@ -2,7 +2,6 @@ import React, { useState, useRef } from "react";
 
 // reactstrap components
 import {
-    Button,
     Card,
     CardBody,
     Row,
@@ -14,17 +13,17 @@ import {
 } from "reactstrap";
 import DataTable from 'react-data-table-component'
 import LotteryComponent from "../components/LotteryComponent/LotteryComponent";
-import { getlottery, delelteLottery } from '../apollo/server'
+import { getlottery, deleteLottery } from '../apollo/server'
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 import { customStyle } from "../assets/custom/custom";
 import { Loader } from "../assets/custom/Spinner";
-import { dateToCustom } from "../variables/date";
 import ActionButton from '../components/ActionButton/ActionButton'
 import NotificationAlert from "react-notification-alert";
+import { dateTransformation } from "../utils/stringManipulation";
 
 const GET_LOTTERY = gql`${getlottery}`
-const DELETE_LOTTERY = gql`${delelteLottery}`
+const DELETE_LOTTERY = gql`${deleteLottery}`
 
 function Lottery() {
     const notifyEl = useRef(null);
@@ -58,7 +57,7 @@ function Lottery() {
             selector: 'next_draw',
             sortable: true,
             center: true,
-            format: row => dateToCustom(row.next_draw)
+            format: row => dateTransformation(row.next_draw)
         },
         {
             name: 'Total Users',
@@ -78,7 +77,7 @@ function Lottery() {
                 editModal={toggleModal}
                 showMessage={showMessage}
                 refetchQuery={GET_LOTTERY}
-                message='User removed' />
+                message='Lottery removed' />
         }
     ]
     //Notification alert
@@ -86,7 +85,7 @@ function Lottery() {
         place: 'tr',
         message: (
             <div>
-                <b>{category === 'danger' ? 'Error: ' : 'success: '}</b>{message}
+                <b>{category === 'danger' ? 'Error: ' : 'Success: '}</b>{message}
             </div>
         ),
         type: category,

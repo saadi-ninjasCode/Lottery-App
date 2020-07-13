@@ -41,6 +41,7 @@ function LotteryComponent(props) {
 
     function onCompleted(data) {
         console.log(data)
+        form.current.reset()
         showMessage('Lottery Type Added', 'success')
         nameErrorSetter(null)
         iconErrorSetter(null)
@@ -78,7 +79,7 @@ function LotteryComponent(props) {
         place: 'tr',
         message: (
             <div>
-                <b>{category === 'danger' ? 'Error: ' : 'success: '}</b>{message}
+                <b>{category === 'danger' ? 'Error: ' : 'Success: '}</b>{message}
             </div>
         ),
         type: category,

@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 // nodejs library that concatenates classes
 import classNames from "classnames";
 
@@ -33,12 +33,7 @@ import {
   NavLink,
   Nav,
   Container,
-  Modal,
-  Input,
-  ModalFooter,
-  ModalBody,
-  Row,
-  Col,
+  Modal
 } from "reactstrap";
 import ChangePassword from "./ChangePassword";
 

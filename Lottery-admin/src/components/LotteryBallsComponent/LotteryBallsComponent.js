@@ -6,7 +6,6 @@ import {
     CardBody,
     CardFooter,
     FormGroup,
-    Form,
     Input,
     Row,
     Col,
@@ -46,9 +45,9 @@ function LotteryBallsComponent(props) {
         const lotteryError = !validateFunc({ lotteryDropDown: formRef.current['input-lottery'].value }, 'lotteryDropDown')
         let numberError = []
         if (!pending) {
-            Array(8).fill(0).map((item, index) => {
+            Array(8).fill(0).map((item, index) => (
                 numberError.push(formRef.current['input-ball' + (index + 1)].value)
-            })
+            ))
         }
         numberError = numberError.filter(Boolean)
         lotteryErrorSetter(lotteryError)
@@ -69,9 +68,9 @@ function LotteryBallsComponent(props) {
         if (!pending) {
             var ballArray = []
             var specialBall = []
-            Array(6).fill(0).map((item, index) => {
+            Array(6).fill(0).map((item, index) => (
                 ballArray.push(formRef.current['input-ball' + (index + 1)].value)
-            })
+            ))
             specialBall.push(formRef.current['input-ball7'].value)
             specialBall.push(formRef.current['input-ball8'].value)
             mutation({
@@ -105,6 +104,7 @@ function LotteryBallsComponent(props) {
 
     function onCompleted() {
         showMessage('Lottery Type Added', 'success')
+        formRef.current.reset()
         lotteryErrorSetter(null)
     }
     function onError(QueryError) {
@@ -126,13 +126,14 @@ function LotteryBallsComponent(props) {
         place: 'tr',
         message: (
             <div>
-                <b>{category === 'danger' ? 'Error: ' : 'success: '}</b>{message}
+                <b>{category === 'danger' ? 'Error: ' : 'Success: '}</b>{message}
             </div>
         ),
         type: category,
         autoDismiss: 7,
         icon: 'far fa-bell'
     })
+    if (lotteryDataError) return <h5>Something is missing</h5>
     return (
         <>
             <div className="react-notification-alert-container">

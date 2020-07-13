@@ -45,6 +45,11 @@ type AuthData {
     tokenExpiration: Int!
 }
 
+type dashboardLottery {
+    lottery: LotteryType
+    draw: LotteryBalls
+}
+
 input LotteryInput {
     _id: String
     name: String!
@@ -79,6 +84,7 @@ input LotteryBallsInput{
 
 type Query {
     lottery : [LotteryType!]!
+    dasboardInfo: [dashboardLottery]
     user : [User!]!
     lotteryBalls : [LotteryBalls!]
     adminUsers: [Admin!]

@@ -1,6 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-import classNames from "classnames";
 // reactstrap components
 import {
     UncontrolledCollapse,
@@ -11,16 +9,8 @@ import {
     Container,
     Row,
     Col,
-    FormGroup,
     Input,
     NavbarBrand,
-    DropdownMenu,
-    DropdownItem,
-    InputGroupButtonDropdown,
-    InputGroup,
-    Button,
-    InputGroupAddon,
-    DropdownToggle
 } from 'reactstrap'
 
 function AdminNavbar(props) {

@@ -9,8 +9,7 @@ import {
     Form,
     Input,
     Row,
-    Col,
-    Label
+    Col
 } from "reactstrap";
 
 function FavouriteBallComponent(props) {

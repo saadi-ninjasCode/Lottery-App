@@ -1,6 +1,7 @@
 const LotteryType = require('../../models/lotteryType');
 const User = require('../../models/user')
-const { dateToString, dateToLocal } = require('../../helpers/date')
+const { dateToString, dateToLocal } = require('../../helpers/date');
+const lotteryBalls = require('../../models/lotteryBalls');
 
 
 const lotteryById = async (lotteryids) => {
@@ -32,6 +33,17 @@ const lotteryTypeTransformation = lottery => {
 
     };
 };
+const summaryTransformation = async lottery => {
+    const drawBall = await lotteryBalls.find({ lottery: lottery.id }).sort({ date: -1 }).limit(1)
+    return {
+        lottery: {
+            ...lottery._doc,
+            _id: lottery.id,
+            user_list: userById(lottery.user_list)
+        },
+        draw: drawBall[0]
+    };
+};
 
 const userById = async (userids) => {
     try {
@@ -47,7 +59,7 @@ const userById = async (userids) => {
         }
     }
     catch (e) {
-        console.log(e); 
+        console.log(e);
         throw e;
     }
 }
@@ -81,3 +93,4 @@ exports.transfromLotteryType = lotteryTypeTransformation;
 exports.transformUsageBalls = usageBallTransformation;
 exports.transformUser = userTransformation;
 exports.transformLotteryBalls = lotterBallsTransformation;
+exports.transformSummary = summaryTransformation;

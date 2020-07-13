@@ -75,7 +75,7 @@ module.exports = {
             try {
                 const getDraw = await LotteryBalls.findById(args.id)
                 const result = await LotteryBalls.deleteOne({ _id: args.id })
-                if (result === 0) {
+                if (result.ok !== 1) {
                     throw new Error("Deletion failed")
                 }
                 else {

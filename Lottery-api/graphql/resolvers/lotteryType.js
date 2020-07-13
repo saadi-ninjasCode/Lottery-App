@@ -1,6 +1,6 @@
 const LotteryType = require('../../models/lotteryType');
-const { transfromLotteryType } = require('./transformation');
-const lotteryType = require('../../models/lotteryType');
+const { transfromLotteryType, transformSummary } = require('./transformation');
+const LotteryBalls = require('../../models/lotteryBalls');
 
 module.exports = {
     Query: {
@@ -17,12 +17,26 @@ module.exports = {
                 throw err;
             }
         },
+        dasboardInfo: async (_, args, context) => {
+            console.log('Dashboard Info')
+            // if (!context.isAuth) {
+            //     throw new Error("Unauthenticated!")
+            // }
+            const lotteries = await LotteryType.find();
+            return lotteries.map(lott => {
+                return transformSummary(lott)
+            })
+        }
     },
     Mutation: {
         createLottery: async (_, args, context) => {
             console.log("Create Lottery")
             if (!context.isAuth) {
                 throw new Error("Unauthenticated!")
+            }
+            const existingName = await LotteryType.findOne({ name: args.lotteryInput.name });
+            if (existingName) {
+                throw new Error('Lottery Name is already exist.');
             }
             try {
                 const lottery = new LotteryType({
@@ -41,7 +55,7 @@ module.exports = {
             }
         },
         editLottery: async (_, args, context) => {
-            console.log('Edit Lottery')
+            console.log('Delete Lottery')
             if (!context.isAuth) {
                 throw new Error("Unauthenticated!")
             }
@@ -50,7 +64,7 @@ module.exports = {
                 if ((checkName) && checkName._id != args.lotteryInput._id) {
                     throw new Error('Lottery Name already exists')
                 }
-                const getLottery = await lotteryType.findById(args.lotteryInput._id)
+                const getLottery = await LotteryType.findById(args.lotteryInput._id)
 
                 getLottery.name = args.lotteryInput.name
                 getLottery.next_draw = args.lotteryInput.next_draw
@@ -95,23 +109,32 @@ module.exports = {
         },
         deleteLottery: async (_, args, context) => {
             console.log('Delete Lottery')
-
             // IMplement Delete to end level
 
-            // if (!context.isAuth) {
-            //     throw new Error("Unauthenticated!")
-            // }
-            // const checkLottery = await LotteryType.findById(args.id)
-            // if (!checkLottery) {
-            //     throw new Error("Operation failed!")
-            // }
-            // const result = await LotteryType.deleteOne({ _id: args.id })
-            // if (result === 0) {
-            //     throw new Error("Deletion failed")
-            // }
-            // else {
-            //     return transfromLotteryType(checkLottery)
-            // }
+            if (!context.isAuth) {
+                throw new Error("Unauthenticated!")
+            }
+            try {
+                const checkLottery = await LotteryType.findById(args.id)
+                if (!checkLottery) {
+                    throw new Error("Lottery doesn't Exist")
+                }
+                const result = await LotteryBalls.deleteMany({ lottery: args.id })
+                if (result.ok !== 1) {
+                    throw new Error("Deletion Failed")
+                }
+                else {
+                    const lotteryResult = await LotteryType.deleteOne({ _id: args.id })
+                    if (lotteryResult.ok !== 1)
+                        throw new Error("Deletion Failed!")
+                    else {
+                        return transfromLotteryType(checkLottery);
+                    }
+                }
+            } catch (err) {
+                console.log(err)
+                throw err
+            }
         },
         deleteColdBalls: async (_, args, context) => {
             console.log('Delete Favourite Ball ')

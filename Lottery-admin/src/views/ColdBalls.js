@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useRef } from "react";
 
 // reactstrap components
 import {
@@ -7,9 +7,7 @@ import {
     Row,
     Col,
     CardHeader,
-    CardTitle,
-    Modal,
-    Alert,
+    CardTitle
 } from "reactstrap";
 import DataTable from 'react-data-table-component'
 import { getColdBalls, delelteColdBall } from '../apollo/server'
@@ -69,7 +67,7 @@ function ColdBalls() {
         place: 'tr',
         message: (
             <div>
-                <b>{category === 'danger' ? 'Error: ' : 'success: '}</b>{message}
+                <b>{category === 'danger' ? 'Error: ' : 'Success: '}</b>{message}
             </div>
         ),
         type: category,
