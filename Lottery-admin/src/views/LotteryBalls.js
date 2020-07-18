@@ -11,7 +11,7 @@ import {
     Modal,
 } from "reactstrap";
 import LotteryBallsComponent from "../components/LotteryBallsComponent/LotteryBallsComponent";
-import { getlotteryDetails, deleteDraw } from "../apollo/server"
+import { getlotteryDetails, deleteDraw, getTotalDraws } from "../apollo/server"
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 import { customStyle } from "../assets/custom/custom";
@@ -23,13 +23,17 @@ import NotificationAlert from "react-notification-alert";
 import { dateTransformation } from "utils/stringManipulation";
 
 const GET_LOTTERY_DETAILS = gql`${getlotteryDetails}`
+const GET_TOTAL_DRAW = gql`${getTotalDraws}`
 const DELETE_DRAW = gql`${deleteDraw}`
 
 function LotteryBalls() {
     const notifyEl = useRef(null);
     const [balls, ballSetter] = useState(null)
     const [editModal, editModalSetter] = useState(false)
-    const { loading, data: LotteryData } = useQuery(GET_LOTTERY_DETAILS)
+    const [page, setPage] = useState(1)
+    const [rowsPerPage, setRowsPerPage] = useState(1)
+    const { loading: loadingcount, data: totalcount } = useQuery(GET_TOTAL_DRAW)
+    const { loading, data: LotteryData } = useQuery(GET_LOTTERY_DETAILS, { variables: { page: page - 1, rows: rowsPerPage } })
 
     const toggleModal = (value) => {
         ballSetter(value)
@@ -37,6 +41,13 @@ function LotteryBalls() {
     }
     function showMessage(message, category) {
         notifyEl.current.notificationAlert(options(message, category));
+    }
+    async function handlePerRowChange(currentRowsPerPage, currentPage) {
+        setPage(currentPage)
+        setRowsPerPage(currentRowsPerPage)
+    }
+    async function handlePageChange(page) {
+        setPage(page)
     }
     const columns = [
         {
@@ -50,7 +61,6 @@ function LotteryBalls() {
             selector: 'date',
             sortable: true,
             defaultSortAsc: true,
-            sortFunction: (a, b) => b.date - a.date,
             format: row => dateTransformation(row.date)
         },
         {
@@ -113,12 +123,19 @@ function LotteryBalls() {
                                 title=""
                                 columns={columns}
                                 data={LotteryData ? LotteryData.lotteryBalls : []}
-                                defaultSortField="date"
                                 noHeader={true}
                                 progressPending={loading}
                                 progressComponent={<Loader />}
                                 highlightOnHover={true}
                                 customStyles={customStyle}
+                                pagination
+                                paginationServer
+                                paginationTotalRows={!loadingcount && totalcount.drawCount}
+                                onChangeRowsPerPage={handlePerRowChange}
+                                onChangePage={handlePageChange}
+                                paginationRowsPerPageOptions={[1, 2, 10]}
+                                paginationPerPage={1}
+
                             />
                         </CardBody>
                     </Card>

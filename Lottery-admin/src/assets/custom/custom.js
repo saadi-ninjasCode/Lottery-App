@@ -42,5 +42,13 @@ export const customStyle = {
         style: {
             backgroundColor: 'rgb(30, 30, 47)',
         }
+    },
+    pagination: {
+        style: {
+            color: 'grey',
+            fontSize: '13px',
+            minHeight: '56px',
+            backgroundColor: 'black'
+        },
     }
 }

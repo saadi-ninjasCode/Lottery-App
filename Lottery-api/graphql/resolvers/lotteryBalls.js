@@ -4,10 +4,13 @@ const { transformLotteryBalls } = require('./transformation')
 
 module.exports = {
     Query: {
-        lotteryBalls: async () => {
+        lotteryBalls: async (_, args) => {
             console.log('Lottery Balls');
             try {
-                const balls = await LotteryBalls.find();
+                const balls = await LotteryBalls.find()
+                    .sort({ date: -1 })
+                    .skip((args.page || 0) * args.rows)
+                    .limit(args.rows);
                 return balls.map(ball => {
                     return transformLotteryBalls(ball)
                 })
@@ -17,6 +20,16 @@ module.exports = {
                 throw err;
             }
         },
+        drawCount: async () => {
+            console.log('Total Draws');
+            try {
+                const totalDraws = await LotteryBalls.estimatedDocumentCount();
+                return totalDraws
+            } catch (err) {
+                console.log(err)
+                throw err;
+            }
+        }
     },
     Mutation: {
         createLotteryBalls: async (_, args, context) => {

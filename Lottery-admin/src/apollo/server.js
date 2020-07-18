@@ -51,8 +51,8 @@ export const gethotBalls = `query{
     }
 }`
 
-export const getlotteryDetails = `query{
-    lotteryBalls{
+export const getlotteryDetails = `query Draws($page : Int, $rows: Int){
+    lotteryBalls(page:$page, rows:$rows){
         _id
         date
         balls
@@ -64,6 +64,9 @@ export const getlotteryDetails = `query{
           next_draw
         }
       }
+}`
+export const getTotalDraws = `query{
+    drawCount
 }`
 export const adminUsers = `query{
     adminUsers{

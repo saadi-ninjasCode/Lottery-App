@@ -108,6 +108,7 @@ function Lottery() {
             </Alert>
             <Row className='justify-content-center'>
                 <Col md='10'>
+                    <h2 className="blockquote blockquote-primary" style={{ fontSize: 'x-large' }}>Lottery Name</h2>
                     <LotteryComponent />
                 </Col>
             </Row>
