@@ -74,7 +74,7 @@ const BottomMenu = [
 function SideBar(props) {
     const navigation = useNavigation()
     const { error, data } = useQuery(GET_LOTTERY)
-    if (error) return <TextError text='Something is not working Properly' />
+    if (error) return <TextError text={error.message} />
     return (
         <DrawerContentScrollView {...props} >
             <View style={{ flex: 1, backgroundColor: 'transparent' }}>
