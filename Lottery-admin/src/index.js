@@ -24,7 +24,6 @@ import { server_url } from './config/config'
 
 import "assets/scss/black-dashboard-react.scss";
 import "assets/demo/demo.css";
-import "assets/css/nucleo-icons.css";
 
 
 const cache = new InMemoryCache()

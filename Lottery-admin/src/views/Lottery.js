@@ -44,7 +44,7 @@ function Lottery() {
             name: 'Icon',
             selector: 'icon_name',
             center: true,
-            cell: row => <i className={row.icon_name} />
+            cell: row => <i className={"fa-2x fa-fw fas fa-" + row.icon_name} />
         },
         {
             name: 'Lottery Name',
@@ -104,7 +104,7 @@ function Lottery() {
                 isOpen={alert}
                 toggle={() => alertSetter(prev => !prev)}
             >
-                You will get the list of icons <a href='https://fontawesome.com/icons?d=gallery' className='btn-icon btn-link btn-danger'>Font Awesome 5</a>
+                You will get the list of icons <a href='https://icons.expo.fyi/' className='btn-icon btn-link btn-danger'> Vector Icons.</a> Only use the FontAwesome5. <br /> Don't worry if icons is not shown here. We are dynamically convert<a href='https://icons.expo.fyi/' className='btn-icon btn-link btn-danger'>Vector Icons.</a> to Web icons.
             </Alert>
             <Row className='justify-content-center'>
                 <Col md='10'>

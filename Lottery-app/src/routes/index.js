@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import { SideBar } from '../components'
-import { useSafeArea } from 'react-native-safe-area-context'
+import { useSafeArea, SafeAreaProvider } from 'react-native-safe-area-context'
 import navigationService from './navigationService'
 import { Main, Contact, Privacy, Notification, Setting, Generator, Profile, FavouriteBall, Lottery } from '../screen'
 import { drawerContentOptions, drawerStyle, ScreenAnimation, ScreenHeader, menuButton } from './navigationOptions'
@@ -26,7 +26,7 @@ function Drawer() {
 
 function MenuStack() {
     return (
-        <Stack.Navigator initialRouteName='Main' screenOptions={ScreenAnimation(), ScreenHeader()}>
+        <Stack.Navigator initialRouteName='Main' screenOptions={{ ...ScreenHeader(), ...ScreenAnimation() }}>
             <Stack.Screen name='Main' component={Main} options={menuButton()} />
             <Stack.Screen name='Contact' component={Contact} />
             <Stack.Screen name='Privacy' component={Privacy} />

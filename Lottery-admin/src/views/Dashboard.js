@@ -40,6 +40,7 @@ const GET_LOTTERY = gql`${dasboardInfo}`
 function Dashboard(props) {
 
     const { loading, data: LotteryData, error } = useQuery(GET_LOTTERY)
+    console.log(LotteryData)
     if (error) return <div className="content text-center text-white" ><h1>Error.</h1></div>
     if (loading) return <div className="content text-center text-white" ><Loader /></div>
     return (
@@ -51,7 +52,7 @@ function Dashboard(props) {
                             <Row className="align-items-center">
                                 <div className="col">
                                     <CardTitle className="text-uppercase text-default font-weight-bold mb-0">
-                                        {'Total Lotteries'} {new Date(+LotteryData.dasboardInfo[0].next_draw) - new Date()}
+                                        {'Total Lotteries'}
                                     </CardTitle>
                                     <span className="h2 text-primary font-weight-bold mb-0">
                                         {LotteryData ? LotteryData.dasboardInfo.length : "0"}
@@ -101,7 +102,7 @@ function Dashboard(props) {
                                     </div>
                                     <Col className="col-auto">
                                         <div className="text-white p-2 bg-info rounded-circle ">
-                                            <i className={classNames(item.lottery.icon_name, "fa-2x")} />
+                                            <i className={classNames("fas", "fa-" + item.lottery.icon_name, "fa-2x fa-fw")} />
                                         </div>
                                     </Col>
                                 </Row>

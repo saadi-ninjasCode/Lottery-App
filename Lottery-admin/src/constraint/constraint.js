@@ -19,7 +19,7 @@ const constraints = {
     },
     iconName: {
         presence: {
-            allowEmpty: true
+            allowEmpty: false
         }
     },
     nextDraw: {

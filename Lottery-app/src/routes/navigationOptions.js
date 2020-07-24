@@ -6,7 +6,7 @@ import { StyleSheet, View, Image } from "react-native";
 const config = {
     animation: 'timing',
     config: {
-        timing: 400,
+        timing: 500,
     },
 };
 

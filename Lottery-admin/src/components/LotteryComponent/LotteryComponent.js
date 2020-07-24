@@ -36,7 +36,7 @@ function LotteryComponent(props) {
     const [iconError, iconErrorSetter] = useState(null)
     const name = props.lottery ? props.lottery.name : ''
     const [date, dateSetter] = useState(props.lottery ? new Date(+props.lottery.next_draw) : '')
-    const [iconName, iconNameSetter] = useState(props.lottery ? props.lottery.icon_name ? props.lottery.icon_name : '' : 'fas fa-glasses')
+    const [iconName, iconNameSetter] = useState(props.lottery ? props.lottery.icon_name ? props.lottery.icon_name : '' : 'mug-hot')
     const [mutation, { loading }] = useMutation(MUTATION, { onCompleted, onError, refetchQueries: [{ query: GET_LOTTERY }] })
 
     function onCompleted(data) {
@@ -159,13 +159,13 @@ function LotteryComponent(props) {
                                             { "input-group-focus": iconFocus })
                                         }>
                                             <InputGroupAddon addonType="prepend" >
-                                                <InputGroupText><i className={iconName}></i></InputGroupText>
+                                                <InputGroupText><i className={"fas fa-" + iconName}></i></InputGroupText>
                                             </InputGroupAddon>
                                             <Input
                                                 id="input-icon"
                                                 name='input-icon'
                                                 type="text"
-                                                placeholder="Font Awesome 5 Icons"
+                                                placeholder="Expo Icon Name"
                                                 value={iconName}
                                                 onFocus={e => iconFocusSetter(true)}
                                                 onBlur={e => {

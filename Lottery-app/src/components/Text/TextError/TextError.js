@@ -11,7 +11,7 @@ function TextError(props) {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: colors.mainBackground
+        backgroundColor: props.mainColor ?? colors.mainBackground
       }}>
       <TextDefault
         textColor={

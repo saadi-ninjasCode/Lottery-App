@@ -74,7 +74,6 @@ const BottomMenu = [
 function SideBar(props) {
     const navigation = useNavigation()
     const { error, data } = useQuery(GET_LOTTERY)
-    if (error) return <TextError text={error.message} />
     return (
         <DrawerContentScrollView {...props} >
             <View style={{ flex: 1, backgroundColor: 'transparent' }}>
@@ -98,18 +97,20 @@ function SideBar(props) {
                                 {'Lottery Results'}
                             </TextDefault>
                             <View style={styles.resultContainer}>
-                                {data ? data.lottery.length > 0 && (
-                                    data.lottery.map((dataItem, ind) => (
-                                        <DrawerItems
-                                            key={ind}
-                                            id={dataItem._id}
-                                            name={'Lottery'}
-                                            icon={'caret-right'}
-                                            text={dataItem.name}
-                                            onPress={() => navigation.navigate('Lottery', { id: dataItem._id })}
-                                        />
-                                    ))
-                                ) : null}
+                                {error ? <TextError text={error.message} mainColor={'transparent'} textColor={colors.drawerTitleColor} /> :
+                                    data ? data.lottery.length > 0 && (
+                                        data.lottery.map((dataItem, ind) => (
+                                            <DrawerItems
+                                                key={ind}
+                                                id={dataItem._id}
+                                                name={'Lottery'}
+                                                icon={'caret-right'}
+                                                text={dataItem.name}
+                                                onPress={() => navigation.navigate('Lottery', { id: dataItem._id })}
+                                            />
+                                        ))
+                                    ) :
+                                        null}
 
                             </View>
                         </View>
