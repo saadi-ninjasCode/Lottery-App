@@ -1,7 +1,8 @@
 import React from 'react'
 import { colors, scale, textStyles } from "../utilities"
 import { BackButtonComponent, LeftButtonComponent } from "../components";
-import { StyleSheet, View, Image } from "react-native";
+import { StyleSheet, View } from "react-native";
+import Logo from '../assets/SVG/Logo';
 
 const config = {
     animation: 'timing',
@@ -38,9 +39,7 @@ const ScreenHeader = () => ({
     headerBackTitleVisible: false,
     headerTitle: (props) => (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Image resizeMode='cover'
-                style={{ width: scale(65), height: scale(65) }}
-                source={require('../assets/images/headerIcon.png')} />
+            <Logo width={scale(65)} height={scale(65)} />
         </View>
     ),
     headerStyle: {

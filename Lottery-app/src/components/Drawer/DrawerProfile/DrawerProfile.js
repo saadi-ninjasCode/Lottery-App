@@ -3,15 +3,16 @@ import { View, TouchableOpacity } from 'react-native'
 import styles from './styles'
 import { TextDefault } from '../../Text'
 import { colors } from '../../../utilities'
+import { useNavigation } from '@react-navigation/native'
 
-function DrawerProfile(props) {
-
+function DrawerProfile() {
+    const navigation = useNavigation()
     const isLogged = false
     return (
         <View style={styles.mainContainer}>
             {!isLogged ? (
                 <View style={styles.loginContainer}>
-                    <TouchableOpacity style={styles.touchSpace}>
+                    <TouchableOpacity style={styles.touchSpace} onPress={() => navigation.navigate('Registration')}>
                         <TextDefault textColor={colors.drawerColor} style={styles.font} H4>
                             {'Login/Create Account'}
                         </TextDefault>

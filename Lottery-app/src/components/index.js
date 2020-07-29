@@ -1,7 +1,11 @@
 import SideBar from './SideBar/SideBar'
+import Spinner from './Spinner/Spinner'
 import TextDefault from './Text/TextDefault/TextDefault'
 import TextError from './Text/TextError/TextError'
+import Login from './Login/Login'
+import SignUp from './SignUp/SignUp'
+import HeadingLine from './HeadingLine/HeadingLine'
 import { BackButtonComponent, RightButtonComponent, LeftButtonComponent } from './Header/HeaderIcons'
 
 
-export { SideBar, TextDefault, TextError, BackButtonComponent, RightButtonComponent, LeftButtonComponent }
+export { SideBar, Login, SignUp, Spinner, TextDefault, TextError, BackButtonComponent, RightButtonComponent, LeftButtonComponent, HeadingLine }

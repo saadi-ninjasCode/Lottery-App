@@ -7,5 +7,6 @@ import Generator from './Generator/Generator'
 import Profile from './Profile/Profile'
 import Lottery from './Lottery/Lottery'
 import FavouriteBall from './FavouriteBall/FavouriteBall'
+import Registration from './Registration/Registration'
 
-export { Contact, Main, Notification, Privacy, Setting, Generator, Profile, FavouriteBall, Lottery }
+export { Registration, Contact, Main, Notification, Privacy, Setting, Generator, Profile, FavouriteBall, Lottery }

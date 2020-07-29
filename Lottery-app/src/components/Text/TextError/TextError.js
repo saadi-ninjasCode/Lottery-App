@@ -30,4 +30,4 @@ TextError.propTypes = {
   backColor: PropTypes.string,
   textColor: PropTypes.string
 }
-export default TextError
+export default React.memo(TextError)

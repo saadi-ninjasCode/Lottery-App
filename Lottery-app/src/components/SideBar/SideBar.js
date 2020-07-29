@@ -8,6 +8,8 @@ import { TextDefault, TextError } from '../Text'
 import { colors } from '../../utilities'
 import { gql, useQuery } from '@apollo/client'
 import { getLotteryName } from '../../apollo/server'
+import Spinner from '../Spinner/Spinner'
+
 
 const GET_LOTTERY = gql`${getLotteryName}`
 
@@ -20,25 +22,25 @@ const Home = {
 const TopMenus = [
     {
         title: 'Profile',
-        icon: 'user-o',
+        icon: 'user',
         navigateTo: 'Profile',
         isAuth: true
     },
     {
         title: 'Notifications',
-        icon: 'bell-o',
+        icon: 'bell',
         navigateTo: 'Notifications',
         isAuth: true
     },
     {
         title: 'Hot & Cold',
-        icon: 'snowflake-o',
+        icon: 'snowflake',
         navigateTo: 'Favourite',
         isAuth: false
     },
     {
         title: 'Number Generator',
-        icon: 'refresh',
+        icon: 'sync-alt',
         navigateTo: 'Generator',
         isAuth: false
     },
@@ -47,7 +49,7 @@ const TopMenus = [
 const BottomMenu = [
     {
         title: 'Setting',
-        icon: 'gear',
+        icon: 'cog',
         navigateTo: 'Setting',
         isAuth: true
     },
@@ -73,7 +75,7 @@ const BottomMenu = [
 
 function SideBar(props) {
     const navigation = useNavigation()
-    const { error, data } = useQuery(GET_LOTTERY)
+    const { error, loading, data } = useQuery(GET_LOTTERY)
     return (
         <DrawerContentScrollView {...props} >
             <View style={{ flex: 1, backgroundColor: 'transparent' }}>
@@ -98,19 +100,20 @@ function SideBar(props) {
                             </TextDefault>
                             <View style={styles.resultContainer}>
                                 {error ? <TextError text={error.message} mainColor={'transparent'} textColor={colors.drawerTitleColor} /> :
-                                    data ? data.lottery.length > 0 && (
-                                        data.lottery.map((dataItem, ind) => (
-                                            <DrawerItems
-                                                key={ind}
-                                                id={dataItem._id}
-                                                name={'Lottery'}
-                                                icon={'caret-right'}
-                                                text={dataItem.name}
-                                                onPress={() => navigation.navigate('Lottery', { id: dataItem._id })}
-                                            />
-                                        ))
-                                    ) :
-                                        null}
+                                    loading ? <Spinner backColor='transparent' spinnerColor={colors.white} size='small' /> :
+                                        data ? data.lottery.length > 0 && (
+                                            data.lottery.map((dataItem, ind) => (
+                                                <DrawerItems
+                                                    key={ind}
+                                                    id={dataItem._id}
+                                                    name={'Lottery'}
+                                                    icon={dataItem.icon_name}
+                                                    text={dataItem.name}
+                                                    onPress={() => navigation.navigate('Lottery', { id: dataItem._id })}
+                                                />
+                                            ))
+                                        ) :
+                                            null}
 
                             </View>
                         </View>

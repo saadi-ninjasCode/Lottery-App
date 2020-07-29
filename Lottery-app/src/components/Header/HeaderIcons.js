@@ -1,7 +1,7 @@
 import React from 'react'
 import {
   Ionicons,
-  EvilIcons,
+  AntDesign,
   MaterialIcons,
   MaterialCommunityIcons
 } from '@expo/vector-icons'
@@ -41,7 +41,7 @@ function BackButton(props) {
     )
   } else {
     return (
-      <EvilIcons
+      <MaterialIcons
         name="close"
         size={scale(30)}
         style={styles.leftIconPadding}

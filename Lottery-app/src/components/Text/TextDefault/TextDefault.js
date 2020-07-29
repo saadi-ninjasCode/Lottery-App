@@ -54,4 +54,4 @@ TextDefault.propTypes = {
   style: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
   children: PropTypes.node.isRequired
 }
-export default TextDefault
+export default React.memo(TextDefault)
