@@ -20,6 +20,27 @@ module.exports = {
                 throw err;
             }
         },
+        lotteryBallsById: async (_, args) => {
+            console.log('Lottery Balls by Id');
+            try {
+                if (args.id) {
+                    const checkLottery = await LotteryType.findById(args.id)
+                    if (!checkLottery)
+                        throw new Error("Lottery doesn't exist")
+                    const lotteryBalls = await LotteryBalls.find({ lottery: args.id }).sort({ date: -1 })
+                    return lotteryBalls.map(ball => {
+                        return transformLotteryBalls(ball)
+                    })
+                }
+                else {
+                    console.log('No Id')
+                }
+            }
+            catch (err) {
+                console.log(err)
+                throw err;
+            }
+        },
         drawCount: async () => {
             console.log('Total Draws');
             try {

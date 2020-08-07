@@ -4,10 +4,8 @@ import Svg, { G, Path, Defs, Pattern, Use, Image } from "react-native-svg"
 
 function Logo(props) {
     return (
-        <Svg width={264} height={264} viewBox="0 0 264 264" fill="none" {...props}>
-            <G filter="url(#prefix__filter0_d)">
-                <Path fill="url(#prefix__pattern0)" d="M4 0h256v256H4z" />
-            </G>
+        <Svg width={512} height={512} viewBox="0 0 512 512" fill="none" {...props}>
+            <Path fill="url(#prefix__pattern0)" d="M0 0h512v512H0z" />
             <Defs>
                 <Pattern
                     id="prefix__pattern0"

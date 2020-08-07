@@ -87,6 +87,7 @@ type Query {
     dasboardInfo: [dashboardLottery]
     user : [User!]!
     lotteryBalls(page: Int, rows: Int) : [LotteryBalls!]
+    lotteryBallsById(id: String) : [LotteryBalls!]
     drawCount: Int
     adminUsers: [Admin!]
 }
