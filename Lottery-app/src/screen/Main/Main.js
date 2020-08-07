@@ -1,23 +1,44 @@
-import { StatusBar } from 'expo-status-bar';
-import React, { useLayoutEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { LeftButtonComponent } from '../../components';
-import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { FlatList, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context'
+import styles from './styles';
+import { Spinner, TextError, MainCard } from '../../components'
 import { colors } from '../../utilities';
+import { gql, useQuery } from '@apollo/client';
+import { dashboardInfo } from '../../apollo/server';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
 
-export default function Main() {
+const LOTTERY = gql`${dashboardInfo}`
+
+function Main() {
+  const navigation = useNavigation()
+  const { data: LotteryData, loading, error, refetch, networkStatus } = useQuery(LOTTERY)
+  if (loading) return < Spinner />
+  if (error) return <TextError text={error.message} textColor={colors.headerBackground} />
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-    </View>
+    <SafeAreaView edges={['bottom', 'left', 'right']} style={styles.flex}>
+      <FlatList
+        data={LotteryData ? LotteryData.dasboardInfo : []}
+        showsVerticalScrollIndicator={false}
+        keyExtractor={item => item.lottery._id}
+        style={styles.flex}
+        refreshing={networkStatus === 4}
+        onRefresh={() => refetch()}
+        ItemSeparatorComponent={() => <View style={styles.seperator} />}
+        contentContainerStyle={[styles.mainBackground, styles.mainContainer]}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => navigation.navigate('Lottery', { lotteryId: item.lottery._id })}
+          >
+            <MainCard {...item} />
+          </TouchableOpacity>
+        )}
+      />
+
+    </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default React.memo(Main)

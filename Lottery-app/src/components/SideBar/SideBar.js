@@ -55,13 +55,13 @@ const BottomMenu = [
     },
     {
         title: 'Contact',
-        icon: 'envelope',
+        icon: 'id-card',
         navigateTo: 'Contact',
         isAuth: false
     },
     {
         title: 'Privacy Policy',
-        icon: 'book',
+        icon: 'file-signature',
         navigateTo: 'Privacy',
         isAuth: false
     },

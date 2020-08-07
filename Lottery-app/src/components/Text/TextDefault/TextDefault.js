@@ -13,7 +13,7 @@ function TextDefault(props) {
   ])
   var customStyles = [defaultStyle]
 
-  // if (props.bold) customStyles.push(textStyles.Bold)
+  if (props.bold) customStyles.push(textStyles.Bold)
   // if (props.bolder) customStyles.push(textStyles.Bolder)
   if (props.center) customStyles.push(textStyles.Center)
   if (props.right) customStyles.push(textStyles.Right)

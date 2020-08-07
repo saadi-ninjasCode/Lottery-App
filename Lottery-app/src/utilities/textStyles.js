@@ -25,9 +25,9 @@ export const textStyles = {
   // Regular: {
   //   fontFamily: fontStyles.MuseoSans300
   // },
-  // Bold: {
-  //   fontFamily: fontStyles.MuseoSans500
-  // },
+  Bold: {
+    fontWeight: 'bold'
+  },
   // Bolder: {
   //   fontFamily: fontStyles.MuseoSans700
   // },

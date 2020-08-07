@@ -6,6 +6,8 @@ import Login from './Login/Login'
 import SignUp from './SignUp/SignUp'
 import HeadingLine from './HeadingLine/HeadingLine'
 import { BackButtonComponent, RightButtonComponent, LeftButtonComponent } from './Header/HeaderIcons'
+import MainCard from './MainCard/MainCard'
+import LotteryCard from './LotteryCard/LotteryCard'
 
 
-export { SideBar, Login, SignUp, Spinner, TextDefault, TextError, BackButtonComponent, RightButtonComponent, LeftButtonComponent, HeadingLine }
+export { SideBar, Login, SignUp, Spinner, TextDefault, TextError, BackButtonComponent, RightButtonComponent, LeftButtonComponent, HeadingLine, MainCard, LotteryCard }

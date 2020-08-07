@@ -18,7 +18,7 @@ function TextError(props) {
           props.textColor ? props.textColor : colors.fontMainColor
         }
         bold
-        H4
+        H5
         center>
         {props.text}{' '}
       </TextDefault>
