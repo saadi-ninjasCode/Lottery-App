@@ -22,16 +22,6 @@ const styles = StyleSheet.create({
         ...alignment.PTmedium,
         ...alignment.PBmedium
     },
-    googleButton: {
-        backgroundColor: colors.buttonBackground,
-        width: '90%',
-        flexDirection: 'row',
-        alignItems: 'center',
-        alignSelf: 'center',
-        justifyContent: 'space-between',
-        borderRadius: scale(50),
-        ...alignment.Pmedium
-    },
     font: {
         fontWeight: 'bold',
         textTransform: "uppercase"
@@ -39,7 +29,7 @@ const styles = StyleSheet.create({
     rowStyle: {
         flexDirection: 'row',
         alignItems: 'center'
-    }
+    },
 });
 
 export default styles

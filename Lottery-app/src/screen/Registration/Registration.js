@@ -7,14 +7,15 @@ import screenOptions from './screenOptions'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import Animated, { Easing } from 'react-native-reanimated'
-import { TextDefault, Login, SignUp } from '../../components'
+import { TextDefault, Login, SignUp, HeadingLine } from '../../components'
+import { FontAwesome } from '@expo/vector-icons';
 
 function Registration() {
     const navigation = useNavigation()
     const [isOn, isOnSetter] = useState(false)
     const [textLogin, textLoginSetter] = useState(true)
     const [offset, offsetSetter] = useState(new Animated.Value(0));
-    const [fade, fadeSetter] = useState(new Animated.Value(0));
+
     useLayoutEffect(() => {
         navigation.setOptions(
             screenOptions({
@@ -38,10 +39,10 @@ function Registration() {
     }
     function toggle() {
         animate();
-        setTimeout(toggleText, 200)
+        textLoginSetter(prev => !prev)
+        setTimeout(toggleText, 300)
     }
     const toggleText = () => {
-        textLoginSetter(prev => !prev)
         isOnSetter(prev => !prev);
     }
 
@@ -66,11 +67,32 @@ function Registration() {
             <View style={styles.container}>
                 {SwitchButton()}
                 <View style={[styles.inputContainer, styles.flex]}>
-                    {!isOn ?
-                        <Login />
-                        :
-                        <SignUp />
-                    }
+                    <View style={[styles.flex, { justifyContent: 'space-between' }]}>
+                        {!isOn ?
+                            <Login />
+                            :
+                            <SignUp />
+                        }
+                    </View>
+                    <View>
+                        <HeadingLine headerName="Or" textWidth="20%" lineWidth="40%" />
+                        <TouchableOpacity style={[styles.socialBtn, styles.googleButton]}>
+                            <View style={styles.btnLogo}>
+                                <FontAwesome name="google" size={scale(20)} color={colors.google} />
+                            </View>
+                            <View style={styles.btnText}>
+                                <TextDefault textColor={colors.white} H5>{'Sign in with Google'}</TextDefault>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={[styles.socialBtn, styles.facebookButton]}>
+                            <View style={styles.btnLogo}>
+                                <FontAwesome name="facebook" size={scale(20)} color={colors.facebook} />
+                            </View>
+                            <View style={styles.btnText}>
+                                <TextDefault textColor={colors.white} H5>{'Sign in with Facebook'}</TextDefault>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </View>
         </SafeAreaView>

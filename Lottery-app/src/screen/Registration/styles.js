@@ -17,16 +17,14 @@ const styles = StyleSheet.create({
     container: {
         width: '90%',
         height: '90%',
-        backgroundColor: colors.themeBackground,
+        backgroundColor: colors.cartContainer,
         alignItems: 'center',
         borderRadius: scale(10),
         ...alignment.Plarge
     },
     switchContainer: {
         flexDirection: 'row',
-        alignItems: 'center',
-        ...alignment.MBlarge,
-        ...alignment.MTlarge
+        alignItems: 'center'
     },
     createToggleSwitchStyle: {
         flexDirection: 'row',
@@ -59,7 +57,35 @@ const styles = StyleSheet.create({
         width: "100%",
         backgroundColor: 'transparent',
         ...alignment.PTlarge
-    }
+    },
+    btnText: {
+        width: "80%",
+        ...alignment.PLmedium
+    },
+    btnLogo: {
+        width: scale(26),
+        height: scale(26),
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: colors.white,
+        borderRadius: scale(13)
+    },
+    socialBtn: {
+        height: scale(45),
+        flexDirection: 'row',
+        alignItems: 'center',
+        alignSelf: 'center',
+        justifyContent: 'space-between',
+        borderRadius: scale(50),
+        ...alignment.PLmedium
+    },
+    googleButton: {
+        backgroundColor: colors.google,
+    },
+    facebookButton: {
+        backgroundColor: colors.facebook,
+        ...alignment.MTmedium
+    },
 });
 
 export default styles

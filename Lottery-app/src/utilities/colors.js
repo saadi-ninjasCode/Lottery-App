@@ -17,6 +17,8 @@ const theme = {
     fontMainColor: '#212121',
     fontSecondColor: '#949393',
     yellow: '#F7FF00',
+    google: '#db3236',
+    facebook: '#3b5998',
 
     activeColor: '#4AD285',
     headerText: '#FFFFFF',

@@ -109,7 +109,7 @@ function SideBar(props) {
                                                     name={'Lottery'}
                                                     icon={dataItem.icon_name}
                                                     text={dataItem.name}
-                                                    onPress={() => navigation.navigate('Lottery', { id: dataItem._id })}
+                                                    onPress={() => navigation.navigate('Lottery', { lotteryId: dataItem._id })}
                                                 />
                                             ))
                                         ) :

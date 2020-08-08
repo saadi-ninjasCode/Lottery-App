@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     w10: {
-        width: '10%'
+        width: "10%"
     },
     w90: {
         width: '90%'
@@ -22,15 +22,21 @@ const styles = StyleSheet.create({
         ...alignment.PTmedium,
         ...alignment.PBmedium
     },
-    googleButton: {
-        backgroundColor: colors.buttonBackground,
-        width: '90%',
+    socialBtn: {
+        height: scale(45),
         flexDirection: 'row',
         alignItems: 'center',
         alignSelf: 'center',
         justifyContent: 'space-between',
         borderRadius: scale(50),
-        ...alignment.Pmedium
+        ...alignment.PLmedium
+    },
+    googleButton: {
+        backgroundColor: colors.google,
+    },
+    facebookButton: {
+        backgroundColor: colors.facebook,
+        ...alignment.MTmedium
     },
     font: {
         fontWeight: 'bold',
@@ -39,7 +45,19 @@ const styles = StyleSheet.create({
     rowStyle: {
         flexDirection: 'row',
         alignItems: 'center'
-    }
+    },
+    btnText: {
+        width: "80%",
+        ...alignment.PLmedium
+    },
+    btnLogo: {
+        width: scale(26),
+        height: scale(26),
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: colors.white,
+        borderRadius: scale(13)
+    },
 });
 
 export default styles
