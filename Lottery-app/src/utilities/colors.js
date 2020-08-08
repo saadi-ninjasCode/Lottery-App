@@ -2,6 +2,7 @@ const theme = {
   Primary: {
     black: '#000',
     white: '#FFF',
+    cartContainer: '#FFF',
     drawerColor: 'rgb(34,25,119)',
     drawerSelected: 'rgba(0,0,0,0.2)',
     drawerTitleColor: 'rgb(78, 142, 237)',
@@ -21,8 +22,8 @@ const theme = {
     green: '#6ae13a',
     google: '#db3236',
     facebook: '#3b5998',
+    activeColor: '#4AD285',
 
-    // activeColor: '#4AD285',
     // iconColorPink: '#d83765',
     // itemCardColor: '#FFF',
     // tagColor: '#d83765',
@@ -40,7 +41,7 @@ const theme = {
     // buttonBackgroundPink: '#d83765',
     // buttonTextPink: '#FFF',
     // shadowColor: '#2a2a2a',
-    // cartContainer: '#FFF',
+
     // textErrorColor: '#FA7751',
     // headerBackgroundTwo: '#FAFAFA',
     // titleComponentBackground: 'rgba(39,111,191,0.1)',

@@ -7,13 +7,12 @@ const styles = StyleSheet.create({
     },
     mainBackground: {
         backgroundColor: colors.mainBackground,
-        ...alignment.Pmedium
+        ...alignment.PLsmall,
+        ...alignment.PRsmall
     },
     box: {
         backgroundColor: 'transparent',
-        width: '100%',
-        ...alignment.PLlarge,
-        ...alignment.PRlarge
+        width: '100%'
     },
     header: {
         width: "80%",
@@ -40,23 +39,21 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         ...alignment.MTlarge,
         ...alignment.PTlarge,
-        ...alignment.PLxSmall,
-        ...alignment.PRxSmall
     },
     lotteryBalls: {
         width: '100%',
         backgroundColor: 'transparent',
         flexDirection: 'row',
         flexWrap: 'wrap',
-        justifyContent: 'center'
+        justifyContent: 'space-evenly',
+        ...alignment.MBmedium
     },
     ballContainer: {
-        width: scale(30),
-        height: scale(30),
+        width: scale(40),
+        height: scale(40),
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: scale(15),
-        ...alignment.MRxSmall,
+        borderRadius: scale(20),
         ...alignment.MTxSmall
     },
     btn: {
