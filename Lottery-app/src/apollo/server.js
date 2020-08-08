@@ -7,6 +7,20 @@ export const getLotteryName = `query{
     }
 }`
 
+export const favouriteBall = `query{
+    lottery{
+        name
+        hotBall{
+          ball
+          times
+        }
+        coldBall{
+          ball
+          times
+        }
+      }
+}`
+
 export const dashboardInfo = `query{
     dasboardInfo{
         lottery{

@@ -31,14 +31,14 @@ function MainCard(props) {
                         ) : (
                                 <>
                                     {props.draw.balls.filter(Boolean).map((item, index) => (
-                                        <View style={[styles.ballContainer, { backgroundColor: colors.cartContainer }]} key={index}>
+                                        <View style={[styles.ballContainer, { backgroundColor: colors.yellow }]} key={index}>
                                             <TextDefault style={styles.font} textColor={colors.headerBackground} bold H4 center >
                                                 {item}
                                             </TextDefault>
                                         </View>
                                     ))}
                                     {props.draw.specialBalls.filter(Boolean).map((item, index) => (
-                                        <View style={[styles.ballContainer, { backgroundColor: colors.yellow }]} key={index}>
+                                        <View style={[styles.ballContainer, { backgroundColor: colors.green }]} key={index}>
                                             <TextDefault style={styles.font} textColor={colors.headerBackground} bold H4 center >
                                                 {item}
                                             </TextDefault>

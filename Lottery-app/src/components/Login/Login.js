@@ -1,12 +1,13 @@
 import React, { useState, useRef } from 'react'
-import { View, TouchableOpacity } from 'react-native'
+import { View } from 'react-native'
 import styles from './styles'
 import { OutlinedTextField } from 'react-native-material-textfield'
 import { colors, scale } from '../../utilities'
 import { TextDefault } from '../Text'
 import { SimpleLineIcons } from '@expo/vector-icons';
+import { RectButton } from 'react-native-gesture-handler'
 
-function Login() {
+function Login(props) {
     const email = useRef()
     const password = useRef()
     const [emailError, emailErrorSetter] = useState('')
@@ -75,9 +76,12 @@ function Login() {
                     />
                 </View>
             </View>
-            <TouchableOpacity style={styles.button}>
-                <TextDefault style={styles.font} textColor={colors.white} H5>{'Login'}</TextDefault>
-            </TouchableOpacity>
+            <RectButton style={styles.button}
+                onPress={props.onPress}>
+                {props.loadingIcon ? <Spinner backColor="rgba(0,0,0,0.1)" spinnerColor={colors.white} />
+                    : <TextDefault style={styles.font} textColor={colors.white} H5>{'Login'}</TextDefault>
+                }
+            </RectButton>
         </View>
     )
 }

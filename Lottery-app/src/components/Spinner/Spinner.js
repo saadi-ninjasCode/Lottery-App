@@ -9,6 +9,7 @@ function Spinner(props) {
       animating={true}
       style={{
         flex: 1,
+        height: "100%",
         backgroundColor: props.backColor
           ? props.backColor
           : colors.mainBackground

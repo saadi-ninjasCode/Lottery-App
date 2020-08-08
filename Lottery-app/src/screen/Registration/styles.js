@@ -24,15 +24,16 @@ const styles = StyleSheet.create({
     },
     switchContainer: {
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     createToggleSwitchStyle: {
         flexDirection: 'row',
         justifyContent: "space-between",
+        alignItems: 'center',
         width: scale(150),
-        borderRadius: scale(30),
+        height: scale(40),
+        borderRadius: scale(20),
         backgroundColor: colors.switchBackground,
-        ...alignment.Pmedium,
         ...alignment.PLlarge,
         ...alignment.PRlarge
     },
@@ -59,7 +60,7 @@ const styles = StyleSheet.create({
         ...alignment.PTlarge
     },
     btnText: {
-        width: "80%",
+        flex: 1,
         ...alignment.PLmedium
     },
     btnLogo: {
@@ -68,16 +69,16 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: colors.white,
-        borderRadius: scale(13)
+        borderRadius: scale(13),
+        ...alignment.MLmedium
     },
     socialBtn: {
-        height: scale(45),
+        height: scale(46),
         flexDirection: 'row',
         alignItems: 'center',
         alignSelf: 'center',
         justifyContent: 'space-between',
-        borderRadius: scale(50),
-        ...alignment.PLmedium
+        borderRadius: scale(23),
     },
     googleButton: {
         backgroundColor: colors.google,

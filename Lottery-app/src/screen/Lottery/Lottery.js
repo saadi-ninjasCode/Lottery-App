@@ -15,7 +15,6 @@ function Lottery() {
     const lotteryId = route.params?.lotteryId ?? null
     const { data, loading, refetch, error } = useQuery(LOTTERY_DRAW, { variables: { id: lotteryId } })
 
-    console.log("l: ", data)
     function LotteryHeader(latest) {
         return (
             <>

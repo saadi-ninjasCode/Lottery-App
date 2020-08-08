@@ -15,12 +15,11 @@ const styles = StyleSheet.create({
     button: {
         backgroundColor: colors.drawerTitleColor,
         width: '50%',
+        height: scale(46),
         alignItems: 'center',
         justifyContent: 'center',
         alignSelf: 'center',
-        borderRadius: scale(50),
-        ...alignment.PTmedium,
-        ...alignment.PBmedium
+        borderRadius: scale(23)
     },
     socialBtn: {
         height: scale(45),
