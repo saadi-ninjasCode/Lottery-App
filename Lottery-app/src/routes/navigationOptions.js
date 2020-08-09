@@ -3,6 +3,7 @@ import { colors, scale, textStyles } from "../utilities"
 import { BackButtonComponent, LeftButtonComponent } from "../components";
 import { StyleSheet, View } from "react-native";
 import Logo from '../assets/SVG/Logo';
+import { HeaderStyleInterpolators, TransitionPresets } from '@react-navigation/stack';
 
 const config = {
     animation: 'timing',

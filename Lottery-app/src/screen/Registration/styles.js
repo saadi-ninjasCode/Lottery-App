@@ -1,6 +1,7 @@
 import { colors, scale, alignment } from "../../utilities";
 
-const { StyleSheet } = require("react-native");
+const { StyleSheet, Dimensions } = require("react-native");
+const { height } = Dimensions.get('window')
 
 const styles = StyleSheet.create({
     flex: {
@@ -16,7 +17,7 @@ const styles = StyleSheet.create({
     },
     container: {
         width: '90%',
-        height: '90%',
+        height: height * 0.75,
         backgroundColor: colors.cartContainer,
         alignItems: 'center',
         borderRadius: scale(10),
@@ -56,6 +57,7 @@ const styles = StyleSheet.create({
     },
     inputContainer: {
         width: "100%",
+        height: '100%',
         backgroundColor: 'transparent',
         ...alignment.PTlarge
     },

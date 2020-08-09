@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Ionicons,
   AntDesign,
@@ -10,7 +10,11 @@ import styles from './styles'
 import { useNavigation, CommonActions } from '@react-navigation/native'
 import { HeaderBackButton } from '@react-navigation/stack'
 import PropTypes from 'prop-types'
-import { scale, alignment } from '../../utilities'
+import { scale, alignment, colors } from '../../utilities'
+import Animated, { Value, Easing, Extrapolate, concat, timing } from 'react-native-reanimated'
+import { TextDefault } from '../Text'
+
+const AnimatedMaterialIcons = Animated.createAnimatedComponent(MaterialIcons)
 
 function BackButton(props) {
   if (props.icon === 'leftArrow') {
@@ -41,10 +45,12 @@ function BackButton(props) {
     )
   } else {
     return (
-      <MaterialIcons
+      <AnimatedMaterialIcons
         name="close"
         size={scale(30)}
-        style={styles.leftIconPadding}
+        style={props.rotation && {
+          transform: [{ rotate: concat(props.rotation, 'deg') }]
+        }}
         color={props.iconColor}
       />
     )
@@ -53,6 +59,40 @@ function BackButton(props) {
 
 function LeftButton(props) {
   const navigation = useNavigation()
+  let value = new Value(0)
+
+  const rotation = value.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 360],
+    extrapolate: Extrapolate.CLAMP
+  });
+
+
+  function crossButton() {
+    animate()
+    setTimeout(() => {
+      processing()
+    }, 50);
+  }
+
+  function animate() {
+    timing(value, {
+      duration: 100,
+      toValue: 1,
+      easing: Easing.ease
+    }).start()
+  }
+
+  function processing() {
+    navigation.dispatch(state => {
+      const routes = state.routes.filter(r => r.name === 'Main')
+      return CommonActions.reset({
+        ...state,
+        routes,
+        index: 0
+      })
+    })
+  }
   if (props.icon === 'back') {
     return (
       <HeaderBackButton
@@ -70,21 +110,29 @@ function LeftButton(props) {
       <HeaderBackButton
         labelVisible={false}
         backImage={() =>
-          BackButton({ iconColor: props.iconColor, icon: 'close' })
+          <View style={styles.leftIconPadding}>
+            {BackButton({ iconColor: props.iconColor, icon: 'close', rotation: rotation })}
+          </View>
         }
         onPress={() => {
-          navigation.dispatch(state => {
-            const routes = state.routes.filter(r => r.name === 'Main')
-            return CommonActions.reset({
-              ...state,
-              routes,
-              index: 0
-            })
-          })
+          crossButton()
         }}
       />
     )
-  } else {
+  } else if (props.toggle) {
+    return (
+      <HeaderBackButton
+        labelVisible={false}
+        backImage={() =>
+          <View style={styles.leftIconPadding}>
+            {BackButton({ iconColor: props.iconColor, icon: props.toggleValue ? 'leftArrow' : 'close' })}
+          </View>
+        }
+        onPress={() => props.toggleValue ? navigation.goBack() : props.toggleView(prev => !prev)}
+      />
+    )
+  }
+  else {
     return (
       <HeaderBackButton
         labelVisible={false}
@@ -99,18 +147,39 @@ function LeftButton(props) {
 
 function RightButton(props) {
   const navigation = useNavigation()
+  const [password, setPassword] = useState(false)
+
+  function togglePassword() {
+    props.titlePosition()
+    setPassword(prev => !prev)
+  }
 
   if (props.icon === 'dots') {
     return (
-      <HeaderBackButton
-        labelVisible={false}
-        backImage={() => (
-          <View style={styles.rightContainer}>
-            {BackButton({ iconColor: props.textColor, icon: 'dots' })}
-          </View>
-        )}
-        onPress={togglePassword}
-      />
+      <View>
+        {password ? (
+          <TouchableOpacity
+            activeOpacity={0.7}
+            style={styles.rightContainer}
+            onPress={props.modalVisible}>
+            <Animated.View style={styles.titlePasswordText}>
+              <TextDefault textColor={colors.fontMainColor} small bold>
+                {'Change Password'}
+              </TextDefault>
+            </Animated.View>
+          </TouchableOpacity>
+        ) : (
+            <HeaderBackButton
+              labelVisible={false}
+              backImage={() => (
+                <View style={styles.rightContainer}>
+                  {BackButton({ iconColor: props.textColor, icon: 'dots' })}
+                </View>
+              )}
+              onPress={togglePassword}
+            />
+          )}
+      </View>
     )
   } else {
     return null

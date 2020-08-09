@@ -45,6 +45,14 @@ type AuthData {
     tokenExpiration: Int!
 }
 
+type AuthDataApp {
+    userId: ID!
+    name: String!
+    email: String!
+    token: String!
+    tokenExpiration: Int!
+}
+
 type dashboardLottery {
     lottery: LotteryType
     draw: LotteryBalls
@@ -93,6 +101,12 @@ type Query {
 }
 
 type Mutation{
+    appLogin(facebookId: String
+        email: String
+        password: String
+        type: String!
+        name: String
+        notificationToken: String) : AuthDataApp!
     adminLogin(email: String!, password: String!): AuthData!
     adminChangePassword(oldPassword: String!, newPassword: String!): Boolean!
     createLottery( lotteryInput : LotteryInput ) : LotteryType!

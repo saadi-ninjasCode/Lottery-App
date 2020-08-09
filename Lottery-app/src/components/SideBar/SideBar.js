@@ -17,7 +17,7 @@ const Home = {
     title: 'Home',
     icon: 'home',
     navigateTo: 'Main',
-    isAuth: true
+    isAuth: false
 }
 const TopMenus = [
     {
@@ -29,7 +29,7 @@ const TopMenus = [
     {
         title: 'Notifications',
         icon: 'bell',
-        navigateTo: 'Notifications',
+        navigateTo: 'Notification',
         isAuth: true
     },
     {
@@ -48,9 +48,8 @@ const TopMenus = [
 
 const BottomMenu = [
     {
-        title: 'Setting',
-        icon: 'cog',
-        navigateTo: 'Setting',
+        title: 'Log Out',
+        icon: 'sign-out-alt',
         isAuth: true
     },
     {

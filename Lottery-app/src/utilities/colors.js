@@ -7,7 +7,7 @@ const theme = {
     drawerSelected: 'rgba(0,0,0,0.2)',
     drawerTitleColor: 'rgb(78, 142, 237)',
     draweHeader: 'rgba(255,255,255,0.9)',
-    mainBackground: 'rgba(255,255,255,0.9)',
+    mainBackground: '#f0f0f0',
     headerBackground: 'rgb(34,25,119)',
     headerText: '#FFFFFF',
     loginBackground: 'rgb(34,25,119)',
@@ -23,6 +23,7 @@ const theme = {
     google: '#db3236',
     facebook: '#3b5998',
     activeColor: '#4AD285',
+    checkBoxColor: 'rgb(78, 142, 237)',
 
     // iconColorPink: '#d83765',
     // itemCardColor: '#FFF',

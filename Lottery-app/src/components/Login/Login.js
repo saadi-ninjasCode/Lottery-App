@@ -23,7 +23,6 @@ function Login(props) {
                         ref={email}
                         error={emailError}
                         label={'Email'}
-                        autoFocus
                         labelFontSize={scale(8)}
                         fontSize={scale(12)}
                         maxLength={100}
@@ -35,7 +34,7 @@ function Login(props) {
                         labelTextStyle={{
                             fontSize: scale(10),
                         }}
-                        onBlur={(event) => {
+                        onEndEditing={event => {
                             emailErrorSetter(
                                 !event.nativeEvent.text.trim().length
                                     ? 'Email address is required'
@@ -68,7 +67,7 @@ function Login(props) {
                         }}
                         onBlur={(event) => {
                             passwordErrorSetter(
-                                !event.nativeEvent.text.trim().length
+                                !event.nativeEvent?.text.trim().length
                                     ? 'Password is required'
                                     : null
                             )
@@ -83,6 +82,7 @@ function Login(props) {
                 }
             </RectButton>
         </View>
+        
     )
 }
 export default React.memo(Login)

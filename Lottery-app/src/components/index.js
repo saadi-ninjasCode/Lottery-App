@@ -8,6 +8,6 @@ import HeadingLine from './HeadingLine/HeadingLine'
 import { BackButtonComponent, RightButtonComponent, LeftButtonComponent } from './Header/HeaderIcons'
 import MainCard from './MainCard/MainCard'
 import LotteryCard from './LotteryCard/LotteryCard'
+import Checkbox from './Checkbox/Checkbox'
 
-
-export { SideBar, Login, SignUp, Spinner, TextDefault, TextError, BackButtonComponent, RightButtonComponent, LeftButtonComponent, HeadingLine, MainCard, LotteryCard }
+export { SideBar, Login, SignUp, Spinner, TextDefault, TextError, BackButtonComponent, RightButtonComponent, LeftButtonComponent, HeadingLine, MainCard, LotteryCard, Checkbox }

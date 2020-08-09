@@ -1,11 +1,11 @@
-import React, { useLayoutEffect, useState } from 'react'
+import React, { useLayoutEffect, useState, useEffect } from 'react'
 import styles from './styles'
-import { View } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
+import { View, Platform, KeyboardAvoidingView, Keyboard } from 'react-native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import { colors, scale } from '../../utilities'
 import screenOptions from './screenOptions'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { RectButton } from 'react-native-gesture-handler'
+import { RectButton, ScrollView } from 'react-native-gesture-handler'
 import Animated, { Easing } from 'react-native-reanimated'
 import { TextDefault, Login, SignUp, HeadingLine, Spinner } from '../../components'
 import { FontAwesome } from '@expo/vector-icons';
@@ -13,6 +13,8 @@ import * as Google from 'expo-google-app-auth';
 import * as AppAuth from 'expo-app-auth'
 import * as Facebook from 'expo-facebook'
 import getEnvVars from '../../../environment'
+import { gql } from '@apollo/client'
+import { login } from '../../apollo/server'
 
 const {
     IOS_CLIENT_ID_GOOGLE,
@@ -20,13 +22,19 @@ const {
     FACEBOOK_APP_ID
 } = getEnvVars()
 
+const LOGIN = gql`${login}`
+
 function Registration() {
     const navigation = useNavigation()
+    const route = useRoute()
+    const backScreen = route.params?.backScreen ?? null
     const [isOn, isOnSetter] = useState(false)
     const [loading, setLoading] = useState(false)
     const [textLogin, textLoginSetter] = useState(true)
     const [loginButton, loginButtonSetter] = useState(null)
     const [offset, offsetSetter] = useState(new Animated.Value(0));
+    const [margin, marginSetter] = useState(false)
+    const [mutate] = useMutation(LOGIN, { onCompleted, onError })
 
     useLayoutEffect(() => {
         navigation.setOptions(
@@ -36,6 +44,49 @@ function Registration() {
             })
         )
     }, [navigation])
+
+    useEffect(() => {
+        if (backScreen)
+            mutateLogin(backScreen)
+    }, [backScreen])
+    useEffect(() => {
+        Keyboard.addListener("keyboardDidShow", _keyboardDidShow);
+        Keyboard.addListener("keyboardDidHide", _keyboardDidHide);
+        // cleanup function
+        return () => {
+            Keyboard.removeListener("keyboardDidShow", _keyboardDidShow);
+            Keyboard.removeListener("keyboardDidHide", _keyboardDidHide);
+        };
+    }, []);
+
+    function _keyboardDidShow() {
+        marginSetter(true)
+    }
+    function _keyboardDidHide() {
+        marginSetter(false)
+    }
+    function onCompleted(data) {
+        try {
+            console.log('Login')
+        } catch (err) {
+            console.log(err)
+        }
+        finally {
+            setLoading(false)
+        }
+
+    }
+    function onError(error) {
+        try {
+            console.log('ERROR')
+        } catch (err) {
+            console.log(err)
+        }
+        finally {
+            setLoading(false)
+        }
+    }
+
 
     const buttonPosition = offset.interpolate({
         inputRange: [0, 1],
@@ -56,6 +107,10 @@ function Registration() {
     }
     const toggleText = () => {
         isOnSetter(prev => !prev);
+    }
+
+    async function mutateLogin() {
+        setLoading(true)
     }
     async function _googleSignup() {
         const { type, user } = await Google.logInAsync({
@@ -106,72 +161,78 @@ function Registration() {
     }
     return (
         <SafeAreaView edges={['bottom', 'left', 'right']} style={[styles.flex, styles.backScreen]} >
-            <View style={styles.container}>
-                {SwitchButton()}
-                <View style={[styles.inputContainer, styles.flex]}>
-                    <View style={[styles.flex, { justifyContent: 'space-between' }]}>
-                        {!isOn ?
-                            <Login loadingIcon={loading && loginButton === 'Login'}
-                                onPress={() => {
-                                    loginButtonSetter('Login')
-                                }}
-                            />
-                            :
-                            <SignUp loadingIcon={loading && loginButton === 'SignUp'}
-                                onPress={() => {
-                                    loginButtonSetter('SignUp')
-                                }}
-                            />
-                        }
-                    </View>
-                    <View>
-                        <HeadingLine headerName="Or" textWidth="20%" lineWidth="40%" />
-                        <RectButton style={[styles.socialBtn, styles.googleButton]}
-                            onPress={async () => {
-                                if (!loading) {
-                                    loginButtonSetter('Google')
-                                    const googleUser = await _googleSignup()
+            <KeyboardAvoidingView
+                behavior={Platform.OS === "ios" ? "padding" : null}
+                style={styles.flex}>
+                <ScrollView
+                    style={styles.flex}
+                    contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', alignItems: 'center', paddingBottom: margin ? 20 : 0 }}>
+                    <View style={styles.container}>
+                        {SwitchButton()}
+                        <View style={[styles.inputContainer, styles.flex]}>
+                            {!isOn ?
+                                <Login loadingIcon={loading && loginButton === 'Login'}
+                                    onPress={() => {
+                                        loginButtonSetter('Login')
+                                    }}
+                                />
+                                :
+                                <SignUp loadingIcon={loading && loginButton === 'SignUp'}
+                                    onPress={() => {
+                                        loginButtonSetter('SignUp')
+                                    }}
+                                />
+                            }
+                            <View>
+                                <HeadingLine headerName="Or" textWidth="20%" lineWidth="40%" />
+                                <RectButton style={[styles.socialBtn, styles.googleButton]}
+                                    onPress={async () => {
+                                        if (!loading) {
+                                            loginButtonSetter('Google')
+                                            const googleUser = await _googleSignup()
 
-                                }
-                            }}
-                        >
-                            {(loading && loginButton === 'Google') ?
-                                <Spinner backColor="rgba(0,0,0,0.1)" spinnerColor={colors.white} />
-                                : (
-                                    <>
-                                        <View style={styles.btnLogo}>
-                                            <FontAwesome name="google" size={scale(20)} color={colors.google} />
-                                        </View>
-                                        <View style={styles.btnText}>
-                                            <TextDefault textColor={colors.white} H5>{'Sign in with Google'}</TextDefault>
-                                        </View>
-                                    </>
-                                )}
-                        </RectButton>
-                        <RectButton style={[styles.socialBtn, styles.facebookButton]}
-                            onPress={async () => {
-                                if (!loading) {
-                                    loginButtonSetter('Facebook')
-                                    const facebookUser = await _facebookSignup()
-                                }
-                            }}>
-                            {(loading && loginButton === 'Facebook') ?
-                                <Spinner backColor="rgba(0,0,0,0.1)" spinnerColor={colors.white} />
-                                : (
-                                    <>
-                                        <View style={styles.btnLogo}>
-                                            <FontAwesome name="facebook" size={scale(20)} color={colors.facebook} />
-                                        </View>
-                                        <View style={styles.btnText}>
-                                            <TextDefault textColor={colors.white} H5>{'Sign in with Facebook'}</TextDefault>
-                                        </View>
-                                    </>
-                                )}
-                        </RectButton>
+                                        }
+                                    }}
+                                >
+                                    {(loading && loginButton === 'Google') ?
+                                        <Spinner backColor="rgba(0,0,0,0.1)" spinnerColor={colors.white} />
+                                        : (
+                                            <>
+                                                <View style={styles.btnLogo}>
+                                                    <FontAwesome name="google" size={scale(20)} color={colors.google} />
+                                                </View>
+                                                <View style={styles.btnText}>
+                                                    <TextDefault textColor={colors.white} H5>{'Sign in with Google'}</TextDefault>
+                                                </View>
+                                            </>
+                                        )}
+                                </RectButton>
+                                <RectButton style={[styles.socialBtn, styles.facebookButton]}
+                                    onPress={async () => {
+                                        if (!loading) {
+                                            loginButtonSetter('Facebook')
+                                            const facebookUser = await _facebookSignup()
+                                        }
+                                    }}>
+                                    {(loading && loginButton === 'Facebook') ?
+                                        <Spinner backColor="rgba(0,0,0,0.1)" spinnerColor={colors.white} />
+                                        : (
+                                            <>
+                                                <View style={styles.btnLogo}>
+                                                    <FontAwesome name="facebook" size={scale(20)} color={colors.facebook} />
+                                                </View>
+                                                <View style={styles.btnText}>
+                                                    <TextDefault textColor={colors.white} H5>{'Sign in with Facebook'}</TextDefault>
+                                                </View>
+                                            </>
+                                        )}
+                                </RectButton>
+                            </View>
+                        </View>
                     </View>
-                </View>
-            </View>
-        </SafeAreaView>
+                </ScrollView>
+            </KeyboardAvoidingView>
+        </SafeAreaView >
     )
 }
 

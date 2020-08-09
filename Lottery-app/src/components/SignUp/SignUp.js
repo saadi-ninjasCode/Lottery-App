@@ -26,7 +26,6 @@ function SignUp(props) {
                         ref={name}
                         error={nameError}
                         label={'Name'}
-                        autoFocus
                         labelFontSize={scale(8)}
                         fontSize={scale(12)}
                         maxLength={100}
@@ -40,7 +39,7 @@ function SignUp(props) {
                         }}
                         onBlur={(event) => {
                             nameErrorSetter(
-                                !event.nativeEvent.text.trim().length
+                                !event.nativeEvent.value.trim().length
                                     ? 'Email address is required'
                                     : null
                             )
@@ -68,9 +67,10 @@ function SignUp(props) {
                         labelTextStyle={{
                             fontSize: scale(10),
                         }}
-                        onBlur={(event) => {
+                        onEndEditing={(event) => {
+
                             emailErrorSetter(
-                                !event.nativeEvent.text.trim().length
+                                !event.nativeEvent.value.trim().length
                                     ? 'Email address is required'
                                     : null
                             )
@@ -99,7 +99,7 @@ function SignUp(props) {
                         labelTextStyle={{
                             fontSize: scale(10),
                         }}
-                        onBlur={(event) => {
+                        onEndEditing={(event) => {
                             passwordErrorSetter(
                                 !event.nativeEvent.text.trim().length
                                     ? 'Password is required'

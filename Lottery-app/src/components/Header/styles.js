@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { alignment, verticalScale } from '../../utilities'
+import { alignment, colors, scale } from '../../utilities'
 
 const styles = StyleSheet.create({
   leftIconPadding: {
@@ -16,6 +16,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     ...alignment.PLsmall,
     ...alignment.PRsmall
+  },
+  titlePasswordText: {
+    backgroundColor: colors.cartContainer,
+    height: scale(40),
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: scale(7),
+    ...alignment.PLxSmall,
+    ...alignment.PRxSmall
   }
 })
 

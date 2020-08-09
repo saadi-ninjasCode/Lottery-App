@@ -1,0 +1,47 @@
+import { StyleSheet } from 'react-native'
+import { colors, alignment } from '../../utilities';
+
+const styles = StyleSheet.create({
+    flex: {
+        flex: 1
+    },
+    mainBackground: {
+        backgroundColor: colors.mainBackground,
+        ...alignment.Pmedium
+    },
+    scrollContent: {
+        alignItems: 'center',
+        justifyContent: "center",
+        ...alignment.PBlarge
+    },
+    notificationContainer: {
+        width: '100%',
+        backgroundColor: colors.cartContainer,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        ...alignment.PTlarge,
+        ...alignment.PBlarge,
+        ...alignment.PRsmall,
+        ...alignment.PLsmall,
+        ...alignment.MTxSmall,
+        ...alignment.MBmedium
+    },
+    shadow: {
+        shadowColor: colors.boxShadow,
+        shadowOffset: {
+            width: 0,
+            height: 5,
+        },
+        shadowOpacity: 0.6,
+        shadowRadius: 5,
+        elevation: 5,
+        borderWidth: StyleSheet.hairlineWidth,
+        borderColor: colors.boxShadow,
+    },
+    notificationChekboxContainer: {
+        width: "100%",
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+});
+export default styles

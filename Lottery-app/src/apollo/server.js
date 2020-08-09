@@ -1,3 +1,16 @@
+export const login = `
+mutation Login($facebookId:String,$email:String,$password:String,$type:String!,$name:String,$notificationToken:String){
+    login(facebookId:$facebookId,email:$email,password:$password,type:$type,name:$name,notificationToken:$notificationToken){
+     userId
+     token
+     tokenExpiration
+     name
+     email
+     phone
+   }
+}
+`
+
 export const getLotteryName = `query{
     lottery{
         _id

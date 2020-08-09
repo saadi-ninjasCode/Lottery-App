@@ -39,6 +39,15 @@ module.exports = {
         }
     },
     Mutation: {
+        login: async (_, args) => {
+            console.log('login', {
+                facebookId,
+                email,
+                password,
+                type,
+                notificationToken
+            })
+        },
         adminLogin: async (_, args) => {
             console.log('Admin Login')
             try {
