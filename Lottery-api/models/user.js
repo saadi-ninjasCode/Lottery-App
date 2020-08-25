@@ -14,14 +14,11 @@ const User = new Schema({
     },
     password: {
         type: String,
-        required: true,
+        default: ''
     },
-    // notifications: [
-    //     {
-    //         type: Schema.Types.ObjectId,
-    //         ref: 'LotteryType'
-    //     }
-    // ]
+    notificationToken: {
+        type: String
+    },
 });
 
 module.exports = mongoose.model('User', User)

@@ -20,6 +20,7 @@ type User{
     name: String!
     email: String!
     password: String
+    notificationToken: String
 }
 type Admin {
     _id: ID!
@@ -81,6 +82,13 @@ input UserInput{
     password: String!
 }
 
+input UserInputApp{
+    name: String!
+    email: String!
+    password: String!,
+    notificationToken: String
+}
+
 input LotteryBallsInput{
     _id: String
     lottery : ID!
@@ -89,6 +97,10 @@ input LotteryBallsInput{
     specialBalls : [String!]
     pending : Boolean!
 }
+type Subscription_Data {
+    userId: String
+    balls: LotteryBalls
+  }
 
 type Query {
     lottery : [LotteryType!]!
@@ -98,6 +110,7 @@ type Query {
     lotteryBallsById(id: String) : [LotteryBalls!]
     drawCount: Int
     adminUsers: [Admin!]
+    profile: User
 }
 
 type Mutation{
@@ -107,6 +120,7 @@ type Mutation{
         type: String!
         name: String
         notificationToken: String) : AuthDataApp!
+    createUser(userInputApp: UserInputApp): AuthDataApp!
     adminLogin(email: String!, password: String!): AuthData!
     adminChangePassword(oldPassword: String!, newPassword: String!): Boolean!
     createLottery( lotteryInput : LotteryInput ) : LotteryType!
@@ -120,4 +134,8 @@ type Mutation{
     deleteColdBalls(id: String!): LotteryType!
     deleteHotBalls(id: String!): LotteryType!
     deleteDraw(id: String!): LotteryBalls!
-}`
+}
+type Subscription {
+    subscribeLotteryBall: Subscription_Data!
+}
+`

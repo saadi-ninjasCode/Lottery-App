@@ -1,14 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { View } from 'react-native'
 import { DrawerContentScrollView } from '@react-navigation/drawer'
 import styles from './styles'
 import { DrawerProfile, DrawerItems } from '../Drawer'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, DrawerActions } from '@react-navigation/native'
 import { TextDefault, TextError } from '../Text'
 import { colors } from '../../utilities'
 import { gql, useQuery } from '@apollo/client'
 import { getLotteryName } from '../../apollo/server'
 import Spinner from '../Spinner/Spinner'
+import UserContext from '../../context/User'
 
 
 const GET_LOTTERY = gql`${getLotteryName}`
@@ -48,11 +49,6 @@ const TopMenus = [
 
 const BottomMenu = [
     {
-        title: 'Log Out',
-        icon: 'sign-out-alt',
-        isAuth: true
-    },
-    {
         title: 'Contact',
         icon: 'id-card',
         navigateTo: 'Contact',
@@ -74,6 +70,7 @@ const BottomMenu = [
 
 function SideBar(props) {
     const navigation = useNavigation()
+    const { isLogged, logout } = useContext(UserContext)
     const { error, loading, data } = useQuery(GET_LOTTERY)
     return (
         <DrawerContentScrollView {...props} >
@@ -123,13 +120,29 @@ function SideBar(props) {
                                 name={dataItem.navigateTo}
                                 icon={dataItem.icon}
                                 text={dataItem.title}
-                                onPress={() => navigation.navigate(dataItem.navigateTo)} />
+                                onPress={async () => {
+                                    if (dataItem.isAuth && !isLogged)
+                                        navigation.navigate('Registration')
+                                    else
+                                        navigation.navigate(dataItem.navigateTo)
+                                }
+                                } />
                         ))
 
                         }
 
                     </View>
                     <View style={styles.bottomMenu}>
+                        {isLogged && (
+                            <DrawerItems
+                                icon={'sign-out-alt'}
+                                text={'Log Out'}
+                                onPress={() => {
+                                    logout()
+                                    navigation.dispatch(DrawerActions.closeDrawer());
+                                }} />
+                        )}
+
                         {BottomMenu.map((dataItem, ind) => (
                             <DrawerItems
                                 key={ind}

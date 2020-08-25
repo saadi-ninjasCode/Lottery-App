@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState } from 'react'
 import { View } from 'react-native'
 import styles from './styles'
 import { OutlinedTextField } from 'react-native-material-textfield'
@@ -8,13 +8,46 @@ import { SimpleLineIcons } from '@expo/vector-icons';
 import { RectButton } from 'react-native-gesture-handler'
 import Spinner from '../Spinner/Spinner'
 
-function SignUp(props) {
-    const email = useRef()
-    const password = useRef()
-    const name = useRef()
+const SignUp = React.forwardRef((props, ref) => {
+    const { emailRef, passwordRef, nameRef } = ref
     const [nameError, nameErrorSetter] = useState('')
     const [emailError, emailErrorSetter] = useState('')
     const [passwordError, passwordErrorSetter] = useState('')
+
+    const emailValidate = () => {
+        let result = true
+        emailErrorSetter(null)
+        const email = emailRef.current.value()
+        if (!email) {
+            emailErrorSetter('Email/Phone is required')
+            result = false
+        } else {
+            const emailRegex = /^\w+([\\.-]?\w+)*@\w+([\\.-]?\w+)*(\.\w{2,3})+$/
+            const phoneRegex = /^[+]\d{6,15}$/
+            if (emailRegex.test(email) !== true && phoneRegex.test(email) !== true) {
+                emailErrorSetter('Invalid Email')
+                result = false
+            }
+        }
+        return result
+    }
+    function validate() {
+        let result = true
+        result = emailValidate()
+        passwordErrorSetter(null)
+        const name = nameRef.current.value()
+        const nameRegex = /^[A-Za-z]{1,15}$/
+        if (!nameRegex.test(name)) {
+            nameErrorSetter('Name is required')
+            result = false
+        }
+        const password = passwordRef.current.value()
+        if (!password) {
+            passwordErrorSetter('Password is required')
+            result = false
+        }
+        return result
+    }
     return (
         <View style={{ justifyContent: "space-evenly", flex: 1 }}>
             <View style={styles.rowStyle}>
@@ -23,7 +56,7 @@ function SignUp(props) {
                 </View>
                 <View style={styles.w90}>
                     <OutlinedTextField
-                        ref={name}
+                        ref={nameRef}
                         error={nameError}
                         label={'Name'}
                         labelFontSize={scale(8)}
@@ -37,9 +70,9 @@ function SignUp(props) {
                         labelTextStyle={{
                             fontSize: scale(10),
                         }}
-                        onBlur={(event) => {
+                        onEndEditing={(event) => {
                             nameErrorSetter(
-                                !event.nativeEvent.value.trim().length
+                                !event.nativeEvent.text.trim().length
                                     ? 'Email address is required'
                                     : null
                             )
@@ -53,7 +86,7 @@ function SignUp(props) {
                 </View>
                 <View style={styles.w90}>
                     <OutlinedTextField
-                        ref={email}
+                        ref={emailRef}
                         error={emailError}
                         label={'Email'}
                         labelFontSize={scale(8)}
@@ -67,14 +100,7 @@ function SignUp(props) {
                         labelTextStyle={{
                             fontSize: scale(10),
                         }}
-                        onEndEditing={(event) => {
-
-                            emailErrorSetter(
-                                !event.nativeEvent.value.trim().length
-                                    ? 'Email address is required'
-                                    : null
-                            )
-                        }}
+                        onEndEditing={(event) => emailValidate()}
                     />
                 </View>
             </View>
@@ -84,7 +110,7 @@ function SignUp(props) {
                 </View>
                 <View style={styles.w90}>
                     <OutlinedTextField
-                        ref={password}
+                        ref={passwordRef}
                         error={passwordError}
                         label={'Password'}
                         secureTextEntry
@@ -110,12 +136,15 @@ function SignUp(props) {
                 </View>
             </View>
             <RectButton style={styles.button}
-                onPress={props.onPress}>
+                onPress={() => {
+                    if (validate())
+                        props.onPress()
+                }}>
                 {props.loadingIcon ? <Spinner backColor="rgba(0,0,0,0.1)" spinnerColor={colors.white} />
                     : <TextDefault style={styles.font} textColor={colors.white} H5>{'Submit'}</TextDefault>
                 }
             </RectButton>
         </View>
     )
-}
+})
 export default React.memo(SignUp)

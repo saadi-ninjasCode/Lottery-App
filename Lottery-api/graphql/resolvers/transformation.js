@@ -70,7 +70,7 @@ const userTransformation = user => {
     }
 }
 
-const lotterBallsTransformation = ball => {
+const lotterBallsTransformation = async ball => {
     return {
         ...ball._doc,
         _id: ball.id,

@@ -9,5 +9,6 @@ import { BackButtonComponent, RightButtonComponent, LeftButtonComponent } from '
 import MainCard from './MainCard/MainCard'
 import LotteryCard from './LotteryCard/LotteryCard'
 import Checkbox from './Checkbox/Checkbox'
+import { FlashMessage } from './FlashMessage/FlashMessage'
 
-export { SideBar, Login, SignUp, Spinner, TextDefault, TextError, BackButtonComponent, RightButtonComponent, LeftButtonComponent, HeadingLine, MainCard, LotteryCard, Checkbox }
+export { SideBar, Login, SignUp, Spinner, TextDefault, TextError, BackButtonComponent, RightButtonComponent, LeftButtonComponent, HeadingLine, MainCard, LotteryCard, Checkbox, FlashMessage }

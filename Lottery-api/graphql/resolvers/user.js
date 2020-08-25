@@ -36,17 +36,113 @@ module.exports = {
                 console.log(err)
                 throw err;
             }
-        }
+        },
+        profile: async (_, args, context) => {
+            console.log('profile ',)
+            if (!context.isAuth) {
+                throw new Error('Unauthenticated')
+            }
+            try {
+                const user = await User.findById(context.userId)
+                if (!user) throw new Error('User does not exist')
+                return {
+                    ...user._doc,
+                    _id: user.id,
+                    password: null
+                }
+            } catch (err) {
+                console.log(err)
+                throw err
+            }
+        },
     },
     Mutation: {
-        login: async (_, args) => {
-            console.log('login', {
-                facebookId,
-                email,
-                password,
-                type,
-                notificationToken
-            })
+        appLogin: async (_, args) => {
+            console.log('login', args)
+            var user = args.facebookId
+                ? await User.findOne({ facebookId: args.facebookId })
+                : await User.findOne({ email: args.email.toLowerCase() })
+            if (!user && args.type === 'google') {
+                const newUser = new User({
+                    email: args.email.toLowerCase(),
+                    name: args.name
+                })
+                user = await newUser.save()
+            }
+            if (!user && args.facebookId) {
+                const newUser = new User({
+                    facebookId: args.facebookId,
+                    email: args.email.toLowerCase(),
+                    name: args.name
+                })
+                user = await newUser.save()
+            }
+
+            if (!user) {
+                throw new Error("User does not exist.")
+            }
+            if (args.type === 'default') {
+                const isEqual = await bcrypt.compare(args.password, user.password)
+                if (!isEqual) {
+                    throw new Error('Invliad credentials!')
+                }
+            }
+
+            user.notificationToken = args.notificationToken
+            const result = await user.save()
+            // console.log(result.id)
+            const token = jwt.sign({
+                userId: result.id,
+                email: result.email || result.facebookId
+            }, 'somesupersecretkey');
+
+            // console.log("token: ", token)
+
+            return {
+                ...result._doc,
+                email: result.email,
+                userId: result.id,
+                token: token,
+                tokenExpiration: 1
+            }
+        },
+        createUser: async (_, args) => {
+            console.log('createUser', args.userInputApp)
+            try {
+                if (args.userInputApp.email) {
+                    const existingEmail = await User.findOne({
+                        email: args.userInputApp.email
+                    })
+                    if (existingEmail)
+                        throw new Error('Email is already associated with another account.')
+                    const hashPassword = await bcrypt.hash(args.userInputApp.password, 12)
+                    const appUser = new User({
+                        name: args.userInputApp.name,
+                        email: args.userInputApp.email,
+                        password: hashPassword,
+                        notificationToken: args.userInputApp.notificationToken
+                    })
+                    const result = await appUser.save()
+                    const token = jwt.sign({
+                        userId: result.id,
+                        email: result.email
+                    }, 'somesupersecretkey')
+                    console.log({
+                        ...result._doc,
+                        userId: result.id,
+                        token: token,
+                        tokenExpiration: 1
+                    })
+                    return {
+                        ...result._doc,
+                        userId: result.id,
+                        token: token,
+                        tokenExpiration: 1
+                    }
+                }
+            } catch (err) {
+                throw err
+            }
         },
         adminLogin: async (_, args) => {
             console.log('Admin Login')

@@ -1,13 +1,14 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { View, TouchableOpacity } from 'react-native'
 import styles from './styles'
 import { TextDefault } from '../../Text'
 import { colors } from '../../../utilities'
 import { useNavigation } from '@react-navigation/native'
+import UserContext from '../../../context/User'
 
 function DrawerProfile() {
     const navigation = useNavigation()
-    const isLogged = false
+    const { isLogged } = useContext(UserContext)
     return (
         <View style={styles.mainContainer}>
             {!isLogged ? (

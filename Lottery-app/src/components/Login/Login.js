@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState } from 'react'
 import { View } from 'react-native'
 import styles from './styles'
 import { OutlinedTextField } from 'react-native-material-textfield'
@@ -6,12 +6,41 @@ import { colors, scale } from '../../utilities'
 import { TextDefault } from '../Text'
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { RectButton } from 'react-native-gesture-handler'
+import Spinner from '../Spinner/Spinner'
 
-function Login(props) {
-    const email = useRef()
-    const password = useRef()
+const Login = React.forwardRef((props, ref) => {
+    const { emailRef, passwordRef } = ref
     const [emailError, emailErrorSetter] = useState('')
     const [passwordError, passwordErrorSetter] = useState('')
+
+    const emailValidate = () => {
+        let result = true
+        emailErrorSetter(null)
+        const email = emailRef.current.value()
+        if (!email) {
+            emailErrorSetter('Email/Phone is required')
+            result = false
+        } else {
+            const emailRegex = /^\w+([\\.-]?\w+)*@\w+([\\.-]?\w+)*(\.\w{2,3})+$/
+            const phoneRegex = /^[+]\d{6,15}$/
+            if (emailRegex.test(email) !== true && phoneRegex.test(email) !== true) {
+                emailErrorSetter('Invalid Email')
+                result = false
+            }
+        }
+        return result
+    }
+    function validate() {
+        let result = true
+        result = emailValidate()
+        passwordErrorSetter(null)
+        const password = passwordRef.current.value()
+        if (!password) {
+            passwordErrorSetter('Password is required')
+            result = false
+        }
+        return result
+    }
     return (
         <View style={{ justifyContent: "space-evenly", flex: 1 }}>
             <View style={styles.rowStyle}>
@@ -20,7 +49,7 @@ function Login(props) {
                 </View>
                 <View style={styles.w90}>
                     <OutlinedTextField
-                        ref={email}
+                        ref={emailRef}
                         error={emailError}
                         label={'Email'}
                         labelFontSize={scale(8)}
@@ -34,13 +63,7 @@ function Login(props) {
                         labelTextStyle={{
                             fontSize: scale(10),
                         }}
-                        onEndEditing={event => {
-                            emailErrorSetter(
-                                !event.nativeEvent.text.trim().length
-                                    ? 'Email address is required'
-                                    : null
-                            )
-                        }}
+                        onEndEditing={event => emailValidate()}
                     />
                 </View>
             </View>
@@ -50,7 +73,7 @@ function Login(props) {
                 </View>
                 <View style={styles.w90}>
                     <OutlinedTextField
-                        ref={password}
+                        ref={passwordRef}
                         error={passwordError}
                         label={'Password'}
                         secureTextEntry
@@ -76,13 +99,17 @@ function Login(props) {
                 </View>
             </View>
             <RectButton style={styles.button}
-                onPress={props.onPress}>
+                onPress={async () => {
+                    if (validate())
+                        props.onPress()
+                }
+                }>
                 {props.loadingIcon ? <Spinner backColor="rgba(0,0,0,0.1)" spinnerColor={colors.white} />
                     : <TextDefault style={styles.font} textColor={colors.white} H5>{'Login'}</TextDefault>
                 }
             </RectButton>
-        </View>
-        
+        </View >
+
     )
-}
+})
 export default React.memo(Login)

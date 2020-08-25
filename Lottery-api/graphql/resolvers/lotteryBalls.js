@@ -1,6 +1,7 @@
 const LotteryBalls = require('../../models/lotteryBalls');
 const LotteryType = require('../../models/lotteryType')
-const { transformLotteryBalls } = require('./transformation')
+const { transformLotteryBalls } = require('./transformation');
+const { pubsub, LOTTERY_CREATE, publishToLotteryBalls } = require('../../helpers/subscription');
 
 module.exports = {
     Query: {
@@ -71,7 +72,9 @@ module.exports = {
                     pending: args.lotteryInput.pending,
                 })
                 const result = await balls.save();
-                return transformLotteryBalls(result);
+                const transformData = await transformLotteryBalls(result);
+                publishToLotteryBalls(transformData)
+                return transformData
             }
             catch (err) {
                 console.log(err);
@@ -120,6 +123,11 @@ module.exports = {
                 console.log(err);
                 throw (err);
             }
+        }
+    },
+    Subscription: {
+        subscribeLotteryBalls: {
+            subscribe: () => pubsub.asyncIterator(LOTTERY_CREATE)
         }
     }
 }

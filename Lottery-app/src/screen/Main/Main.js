@@ -13,7 +13,7 @@ const LOTTERY = gql`${dashboardInfo}`
 
 function Main() {
   const navigation = useNavigation()
-  const { data: LotteryData, loading, error, refetch, networkStatus } = useQuery(LOTTERY)
+  const { data: LotteryData, loading, error, refetch, networkStatus } = useQuery(LOTTERY, { fetchPolicy: 'network-only' })
   if (loading) return < Spinner />
   if (error) return <TextError text={error.message} textColor={colors.headerBackground} />
   return (

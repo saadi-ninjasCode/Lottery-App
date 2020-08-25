@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useRef, useEffect, useLayoutEffect, useContext } from 'react';
 import { View, KeyboardAvoidingView, Keyboard } from 'react-native';
 import styles from './styles';
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -9,6 +9,7 @@ import { TextDefault } from '../../components';
 import { TextField } from 'react-native-material-textfield'
 import ChangePassword from './ChangePassword'
 import screenOptions from './screenOptions'
+import UserContext from '../../context/User';
 
 export default function Profile() {
     const navigation = useNavigation()
@@ -19,11 +20,12 @@ export default function Profile() {
     const [modelVisible, setModalVisible] = useState(false)
     const [showPass, setShowPass] = useState(false)
     const [margin, marginSetter] = useState(false)
+    const { profile } = useContext(UserContext)
 
     useLayoutEffect(() => {
         navigation.setOptions(
             screenOptions({
-                title: 'Jango',
+                title: profile.name,
                 fontColor: colors.fontWhite,
                 backColor: colors.headerBackground,
                 passChecker: showPass,
