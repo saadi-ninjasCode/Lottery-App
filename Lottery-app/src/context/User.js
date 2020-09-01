@@ -19,25 +19,28 @@ export function UserProvider(props) {
             loading: loadingProfile,
             error: errorProfile,
             data: dataProfile
-        }] = useLazyQuery(PROFILE, { fetchPolicy: 'network-only', onCompleted, onError })
+        }
+    ] = useLazyQuery(PROFILE, {
+        onCompleted,
+        onError
+    })
 
     useEffect(() => {
-        async function checkLogin() {
+        ; (async () => {
             const token = await AsyncStorage.getItem('token')
             setToken(token)
-        }
-        checkLogin()
+        })()
     }, [])
 
     useEffect(() => {
         if (!token) return
             ; (async () => {
-                await fetchProfile()
+                await fetchProfile({})
             })()
     }, [token])
 
     function onCompleted({ profile }) {
-        console.log('onCompleted')
+        console.log('onCompletedProfile')
     }
     function onError(error) {
         console.log('error context', error)

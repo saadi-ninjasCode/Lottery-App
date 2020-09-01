@@ -19,6 +19,7 @@ const User = new Schema({
     notificationToken: {
         type: String
     },
+    lotteries: [String]
 });
 
 module.exports = mongoose.model('User', User)

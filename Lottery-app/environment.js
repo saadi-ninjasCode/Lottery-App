@@ -9,6 +9,7 @@ import Constants from "expo-constants";
 const ENV = {
   development: {
     GRAPHQL_URL: "http://192.168.100.9:3000/graphql",
+    WS_GRAPHQL_URL: 'ws://192.168.100.9:3000/graphql',
     ANDROID_CLIENT_ID_GOOGLE: "820349940074-vn8777vtib4uqc1igdlb57bm490f1i5b.apps.googleusercontent.com",
     IOS_CLIENT_ID_GOOGLE: "820349940074-q0ljvl6keontb09madfs7f865d0ut3li.apps.googleusercontent.com",
     FACEBOOK_APP_ID: "641882316431141"

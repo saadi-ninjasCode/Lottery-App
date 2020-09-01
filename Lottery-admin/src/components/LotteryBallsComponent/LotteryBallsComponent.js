@@ -34,10 +34,9 @@ function LotteryBallsComponent(props) {
     const MUTATION = props.draw ? EDIT_DRAW : CREATE_DRAW
     //Apollo
     const { loading: loadingLottery, data: lotteryData, error: lotteryDataError } = useQuery(GET_LOTTERY)
-    const [mutation, { loading }] = useMutation(MUTATION, { onCompleted, onError, refetchQueries: [{ query: GET_LOTTERY_DETAILS }] })
+    const [mutation, { loading }] = useMutation(MUTATION, { onCompleted, onError, refetchQueries: [{ query: GET_LOTTERY_DETAILS, variables: { page: 0, rows: 10 } }] })
     //Errors
     const [lotteryError, lotteryErrorSetter] = useState(null)
-
     const onBlur = (setter, field, state) => {
         setter(!validateFunc({ [field]: state }, field))
     }
@@ -102,9 +101,13 @@ function LotteryBallsComponent(props) {
         notifyEl.current.notificationAlert(options(message, category));
     }
 
-    function onCompleted() {
-        showMessage('Lottery Type Added', 'success')
-        formRef.current.reset()
+    function onCompleted(data) {
+        console.log('data:', data)
+        showMessage('Lottery Draw Added', 'success')
+        if (!props.draw) {
+            formRef.current.reset()
+            pendingSetter(false)
+        }
         lotteryErrorSetter(null)
     }
     function onError(QueryError) {

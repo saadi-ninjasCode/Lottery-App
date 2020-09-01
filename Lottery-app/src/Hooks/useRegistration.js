@@ -29,12 +29,12 @@ function useRegistration() {
     const [mutate] = useMutation(LOGIN, { onCompleted, onError })
     const [createUser] = useMutation(CREATE_USER, { onCompleted, onError })
 
-    function onCompleted(data) {
+    async function onCompleted(data) {
         try {
             if (data.createUser)
-                setTokenAsync(data.createUser.token)
-            else if (data.appLogin){
-                setTokenAsync(data.appLogin.token)
+                await setTokenAsync(data.createUser.token)
+            else if (data.appLogin) {
+                await setTokenAsync(data.appLogin.token)
             }
             navigation.navigate('Main')
         } catch (err) {
@@ -73,6 +73,7 @@ function useRegistration() {
         if (type === 'success') {
             return user
         }
+        else { return null }
     }
     async function _facebookSignup() {
         await Facebook.initializeAsync(FACEBOOK_APP_ID)
@@ -88,16 +89,18 @@ function useRegistration() {
             const user = await response.json()
             return user
         }
+        else { return null }
     }
 
 
     async function getPermission() {
         const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
-        if (existingStatus === ' granted')
+        if (existingStatus === 'granted')
             notificationToken = await Notifications.getExpoPushTokenAsync()
     }
 
     async function getLogin(user) {
+        console.log('login: ', notificationToken)
         mutate({ variables: { ...user, notificationToken } })
     }
 

@@ -1,21 +1,97 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FlatList, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context'
 import styles from './styles';
 import { Spinner, TextError, MainCard } from '../../components'
 import { colors } from '../../utilities';
-import { gql, useQuery } from '@apollo/client';
-import { dashboardInfo } from '../../apollo/server';
+import { gql, useQuery, useApolloClient } from '@apollo/client';
+import { dashboardInfo, SubscribeDashboardInfo } from '../../apollo/server';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 
 const LOTTERY = gql`${dashboardInfo}`
+const SUBSCRIPTION_INFO = gql`${SubscribeDashboardInfo}`
 
 function Main() {
+  const client = useApolloClient()
   const navigation = useNavigation()
-  const { data: LotteryData, loading, error, refetch, networkStatus } = useQuery(LOTTERY, { fetchPolicy: 'network-only' })
+  const { data: LotteryData, loading, error, refetch, networkStatus, subscribeToMore } = useQuery(LOTTERY, { fetchPolicy: 'network-only' })
+
+  useEffect(() => {
+    subscribeDashboard()
+  }, [])
+
   if (loading) return < Spinner />
   if (error) return <TextError text={error.message} textColor={colors.headerBackground} />
+
+  function subscribeDashboard() {
+    try {
+      const unsubscribeInfo = subscribeToMore({
+        document: SUBSCRIPTION_INFO,
+        updateQuery: (prev, { subscriptionData }) => {
+          if (!subscriptionData.data)
+            return prev
+          const newFeedItem = subscriptionData.data.subscribeDashBoard;
+          if (newFeedItem.origin === 'edit') {
+            let { dasboardInfo } = prev
+            const lotteryIndex = dasboardInfo.findIndex(o => o.lottery._id === newFeedItem.balls.lottery._id)
+            console.log('prev: ', dasboardInfo[1].draw._id)
+            console.log('new: ', newFeedItem.balls.draw._id)
+            console.log('check: ', dasboardInfo[1].draw._id === newFeedItem.balls.draw._id)
+            if (lotteryIndex > -1) {
+              dasboardInfo[lotteryIndex] = subscriptionData.data.subscribeDashBoard.balls
+            }
+            return {
+              dasboardInfo: [...dasboardInfo]
+            }
+          }
+          else if (newFeedItem.origin === 'new') {
+            let { dasboardInfo } = prev
+            const lotteryIndex = dasboardInfo.findIndex(o => ((o.lottery._id === newFeedItem.balls.lottery._id) && (o.draw._id !== newFeedItem.balls.draw._id)))
+            if (lotteryIndex > -1) {
+              // console.log('info: ', subscriptionData.data.subscribeDashBoard.balls)
+              // dashboardInfo.splice(lotteryIndex, 1, subscriptionData.data.subscribeDashBoard.balls)
+              // dasboardInfo[lotteryIndex] = subscriptionData.data.subscribeDashBoard.balls
+              // console.log('After: ', dasboardInfo[lotteryIndex])
+              dasboardInfo = dasboardInfo.map((data, index) => {
+                if (index === lotteryIndex) {
+                  return subscriptionData.data.subscribeDashBoard.balls
+                } else {
+                  return data
+                }
+              })
+            }
+            return {
+              dasboardInfo: [...dasboardInfo]
+            }
+          }
+          else if (newFeedItem.origin === 'remove') {
+            let { dasboardInfo } = prev
+            const lotteryIndex = dasboardInfo.findIndex(o => ((o.lottery._id === newFeedItem.balls.lottery._id) && (o.draw._id !== newFeedItem.balls.draw._id)))
+            if (lotteryIndex > -1) {
+              // console.log('info: ', subscriptionData.data.subscribeDashBoard.balls)
+              // dashboardInfo.splice(lotteryIndex, 1, subscriptionData.data.subscribeDashBoard.balls)
+              // dasboardInfo[lotteryIndex] = subscriptionData.data.subscribeDashBoard.balls
+              // console.log('After: ', dasboardInfo[lotteryIndex])
+              dasboardInfo = dasboardInfo.map((data, index) => {
+                if (index === lotteryIndex) {
+                  return subscriptionData.data.subscribeDashBoard.balls
+                } else {
+                  return data
+                }
+              })
+            }
+            return {
+              dasboardInfo: [...dasboardInfo]
+            }
+          }
+        }
+      })
+      client.onResetStore(unsubscribeInfo)
+    } catch (error) {
+      console.log('error subscribing order', error.message)
+    }
+  }
   return (
     <SafeAreaView edges={['bottom', 'left', 'right']} style={styles.flex}>
       <FlatList

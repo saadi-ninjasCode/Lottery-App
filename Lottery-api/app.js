@@ -21,9 +21,9 @@ const server = new ApolloServer({
     typeDefs: graphQlSchema,
     resolvers: graphQlResolvers,
     context: ({ req, res }) => {
-        const isAuth = req.isAuth
-        const userId = req.userId
-        return { req, res, isAuth, userId }
+        // const isAuth = req.isAuth
+        // const userId = req.userId
+        return { req, res}
     }
 });
 

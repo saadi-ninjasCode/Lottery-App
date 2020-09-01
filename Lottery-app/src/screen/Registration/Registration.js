@@ -16,6 +16,7 @@ function Registration() {
     const passwordRef = useRef()
     const nameRef = useRef()
     const navigation = useNavigation()
+    const [clickBtn, clickBtnSetter] = useState(false)
     const [isOn, isOnSetter] = useState(false)
     const [textLogin, textLoginSetter] = useState(true)
     const [offset, offsetSetter] = useState(new Animated.Value(0));
@@ -77,17 +78,18 @@ function Registration() {
     }
     async function mutateLogin(user) {
         await tokenPermission()
-        const bool1 = await getLogin(user)
+        await getLogin(user)
     }
     async function mutateSignUp(user) {
         await tokenPermission()
-        const bool1 = await _signUp(user)
+        await _signUp(user)
     }
 
     function SwitchButton() {
         return (
             <View style={styles.switchContainer}>
                 <RectButton
+                    rippleColor={colors.activeColor}
                     style={styles.createToggleSwitchStyle}
                     onPress={() => toggle()}
                 >
@@ -123,7 +125,7 @@ function Registration() {
                                                 password: passwordRef.current.value(),
                                                 type: 'default'
                                             }
-                                            mutateLogin(user)
+                                            await mutateLogin(user)
                                         }
                                     }}
                                 />
@@ -139,7 +141,7 @@ function Registration() {
                                                 password: passwordRef.current.value(),
                                                 name: nameRef.current.value()
                                             }
-                                            mutateSignUp(user)
+                                            await mutateSignUp(user)
                                         }
                                     }}
                                 />
@@ -147,8 +149,10 @@ function Registration() {
                             <View>
                                 <HeadingLine headerName="Or" textWidth="20%" lineWidth="40%" />
                                 <RectButton style={[styles.socialBtn, styles.googleButton]}
+                                    rippleColor={colors.fontMainColor}
                                     onPress={async () => {
-                                        if (!loading) {
+                                        if (!loading && !clickBtn) {
+                                            clickBtnSetter(true)
                                             loginButtonSetter('Google')
                                             const googleUser = await _googleSignup()
                                             if (googleUser) {
@@ -158,13 +162,14 @@ function Registration() {
                                                     name: googleUser.name,
                                                     type: 'google'
                                                 }
-                                                mutateLogin(user)
+                                                await mutateLogin(user)
                                             }
+                                            clickBtnSetter(false)
                                         }
                                     }}
                                 >
                                     {(loading && loginButton === 'Google') ?
-                                        <Spinner backColor="rgba(0,0,0,0.1)" spinnerColor={colors.white} />
+                                        <Spinner backColor="transparent" spinnerColor={colors.white} />
                                         : (
                                             <>
                                                 <View style={styles.btnLogo}>
@@ -177,8 +182,10 @@ function Registration() {
                                         )}
                                 </RectButton>
                                 <RectButton style={[styles.socialBtn, styles.facebookButton]}
+                                    rippleColor={colors.fontMainColor}
                                     onPress={async () => {
-                                        if (!loading) {
+                                        if (!loading && !clickBtn) {
+                                            clickBtnSetter(true)
                                             loginButtonSetter('Facebook')
                                             const facebookUser = await _facebookSignup()
                                             if (facebookUser) {
@@ -189,12 +196,13 @@ function Registration() {
                                                     name: facebookUser.name,
                                                     type: 'facebook'
                                                 }
-                                                mutateLogin(user)
+                                                await mutateLogin(user)
                                             }
+                                            clickBtnSetter(false)
                                         }
                                     }}>
                                     {(loading && loginButton === 'Facebook') ?
-                                        <Spinner backColor="rgba(0,0,0,0.1)" spinnerColor={colors.white} />
+                                        <Spinner backColor="transparent" spinnerColor={colors.white} />
                                         : (
                                             <>
                                                 <View style={styles.btnLogo}>

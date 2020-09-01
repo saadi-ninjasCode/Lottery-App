@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
         ...alignment.PRsmall,
         ...alignment.PLsmall,
         ...alignment.MTxSmall,
-        ...alignment.MBmedium
+        ...alignment.MBxSmall
     },
     shadow: {
         shadowColor: colors.boxShadow,
@@ -39,9 +39,9 @@ const styles = StyleSheet.create({
         borderColor: colors.boxShadow,
     },
     notificationChekboxContainer: {
-        width: "100%",
+        flex: 1,
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
     },
 });
 export default styles

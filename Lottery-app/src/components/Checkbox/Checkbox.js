@@ -1,19 +1,19 @@
 import React from 'react'
-import { RectButton } from 'react-native-gesture-handler'
 import { FontAwesome5 } from '@expo/vector-icons'
 import styles from './styles'
 import { scale, colors } from '../../utilities'
 import PropTypes from 'prop-types'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
 function Checkbox(props) {
   return (
-    <RectButton
+    <TouchableOpacity
       onPress={props.onPress}
       style={[
         styles.mainContainer,
         props.checked
           ? { backgroundColor: colors.checkBoxColor }
-          : { backgroundColor: colors.fontWhite }
+          : { backgroundColor: colors.white }
       ]}>
       {props.checked ? (
         <FontAwesome5
@@ -22,7 +22,7 @@ function Checkbox(props) {
           color={colors.fontWhite}
         />
       ) : null}
-    </RectButton>
+    </TouchableOpacity>
   )
 }
 Checkbox.propTypes = {

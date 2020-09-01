@@ -12,7 +12,7 @@ const GET_LOTTERY = gql`${getlottery}`
 function ActionButton(props) {
     const mutation = props.mutation ? props.mutation : ADMIN_USERS
     const query = props.refetchQuery ? props.refetchQuery : GET_LOTTERY
-    var [deleteAdmin, { loading: deleteLoader }] = useMutation(mutation, { onCompleted, onError, refetchQueries: [{ query: query }] })
+    var [deleteAdmin, { loading: deleteLoader }] = useMutation(mutation, { onCompleted, onError, refetchQueries: [{ query: query, variables: { page: props.pageNumber ? props.pageNumber - 1 : 0, rows: props.rows ? props.rows : 10 } }] })
     function onCompleted(data) {
         console.log(data)
         props.showMessage(props.message, 'success')

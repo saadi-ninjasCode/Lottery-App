@@ -21,6 +21,7 @@ type User{
     email: String!
     password: String
     notificationToken: String
+    lotteries: [String!]
 }
 type Admin {
     _id: ID!
@@ -98,9 +99,13 @@ input LotteryBallsInput{
     pending : Boolean!
 }
 type Subscription_Data {
-    userId: String
     balls: LotteryBalls
+    origin: String!
   }
+  type Sunscription_Lottery {
+    balls: dashboardLottery
+    origin: String!
+}
 
 type Query {
     lottery : [LotteryType!]!
@@ -134,8 +139,11 @@ type Mutation{
     deleteColdBalls(id: String!): LotteryType!
     deleteHotBalls(id: String!): LotteryType!
     deleteDraw(id: String!): LotteryBalls!
+    pushToken(token: String): User!
+    updateNotificationStatus(lotteryID: String!): User!
 }
 type Subscription {
-    subscribeLotteryBall: Subscription_Data!
+    subscribeDraw(id: String): Subscription_Data!
+    subscribeDashBoard: Sunscription_Lottery!
 }
 `

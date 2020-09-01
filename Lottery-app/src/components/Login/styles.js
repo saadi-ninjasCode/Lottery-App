@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         alignSelf: 'center',
-        borderRadius: scale(23)
+        borderRadius: scale(23),
     },
     socialBtn: {
         height: scale(45),

@@ -1,3 +1,3 @@
-import useRegistration from './user'
+import useRegistration from './useRegistration'
 
 export { useRegistration }

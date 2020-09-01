@@ -3,12 +3,13 @@ const Admin = require('../../models/admin')
 const { transformUser } = require('./transformation')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken');
+const LotteryType = require('../../models/lotteryType');
 
 module.exports = {
     Query: {
         user: async (_, __, context) => {
             console.log("Users")
-            if (!context.isAuth) {
+            if (!context.req.isAuth) {
                 throw new Error("Unauthenticated!")
             }
             try {
@@ -24,7 +25,7 @@ module.exports = {
         },
         adminUsers: async (_, __, context) => {
             console.log("Admin Users")
-            if (!context.isAuth) {
+            if (!context.req.isAuth) {
                 throw new Error("Unauthenticated!")
             }
             try {
@@ -38,12 +39,12 @@ module.exports = {
             }
         },
         profile: async (_, args, context) => {
-            console.log('profile ',)
-            if (!context.isAuth) {
+            console.log('profile',)
+            if (!context.req.isAuth) {
                 throw new Error('Unauthenticated')
             }
             try {
-                const user = await User.findById(context.userId)
+                const user = await User.findById(context.req.userId)
                 if (!user) throw new Error('User does not exist')
                 return {
                     ...user._doc,
@@ -120,7 +121,8 @@ module.exports = {
                         name: args.userInputApp.name,
                         email: args.userInputApp.email,
                         password: hashPassword,
-                        notificationToken: args.userInputApp.notificationToken
+                        notificationToken: args.userInputApp.notificationToken,
+                        lotteries: []
                     })
                     const result = await appUser.save()
                     const token = jwt.sign({
@@ -165,11 +167,11 @@ module.exports = {
         },
         adminChangePassword: async (_, args, context) => {
             console.log("Change Password User")
-            if (!context.isAuth) {
+            if (!context.req.isAuth) {
                 throw new Error("Unauthenticated!")
             }
             try {
-                const adminLogin = await Admin.findById(context.userId)
+                const adminLogin = await Admin.findById(context.req.userId)
                 if (!adminLogin) {
                     throw new Error('User not found')
                 }
@@ -188,7 +190,7 @@ module.exports = {
         },
         createAdminUser: async (_, args, context) => {
             console.log("Create Admin User")
-            if (!context.isAuth) {
+            if (!context.req.isAuth) {
                 throw new Error("Unauthenticated!")
             }
             try {
@@ -213,14 +215,14 @@ module.exports = {
         },
         deleteAdminUser: async (_, args, context) => {
             console.log('Delete Admin User')
-            if (!context.isAuth) {
+            if (!context.req.isAuth) {
                 throw new Error('Unauthenticated')
             }
-            const loginUser = await Admin.findById(context.userId)
+            const loginUser = await Admin.findById(context.req.userId)
             if (loginUser.role !== 'admin') {
                 throw new Error('You are not eligible for this operation.')
             }
-            if (context.userId === args.id) {
+            if (context.req.userId === args.id) {
                 throw new Error('You can not remove yourself.')
             }
             try {
@@ -235,26 +237,64 @@ module.exports = {
                 console.log(err);
                 throw err;
             }
+        },
+        updateNotificationStatus: async (_, args, context) => {
+            console.log('Notification Status updated')
+            if (!context.req.isAuth) {
+                throw new Error('Unauthenticated')
+            }
+            //Update user array
+            const user = await User.findById(context.req.userId)
+            if (!user) {
+                throw new Error('User not found')
+            }
+            const checkLottery = await user.lotteries.findIndex(id => id === args.lotteryID)
+            if (checkLottery < 0)
+                user.lotteries.push(args.lotteryID)
+            else {
+                user.lotteries.splice(checkLottery, 1)
+            }
+            //update Lottery array
+            const lottery = await LotteryType.findById(args.lotteryID)
+            if (!lottery) {
+                throw new Error("Lottery not found!")
+            }
+            const checkUserIndex = await lottery.user_list.findIndex(id => id.toString() === context.req.userId)
+            if (checkUserIndex < 0)
+                lottery.user_list.push(context.req.userId)
+            else {
+                lottery.user_list.splice(checkUserIndex, 1)
+            }
+            
+            await user.save()
+            await lottery.save()
+
+            return {
+                ...user._doc,
+                _id: user.id,
+                password: null
+            }
+
         }
+        // addNotifications: async ({ notifications }, req) => {
+        //     if (!req.isAuth) {
+        //         throw new Error('Invalid credentials!');
+        //     }
+        //     try {
+        //         const user = await User.findById(req.userId);
+        //         if (Array.isArray(notifications)) {
+        //             notifications.map(notificationId => {
+        //                 user.notifications.push(notificationId)
+        //             })
+        //         }
+        //         else{
+        //             user.notifications.push(notifications)
+        //         }
+        //     }
+        //     catch (err) {
+        //         console.log(err);
+        //         throw err;
+        //     }
+        // },
     },
-    // addNotifications: async ({ notifications }, req) => {
-    //     if (!req.isAuth) {
-    //         throw new Error('Invalid credentials!');
-    //     }
-    //     try {
-    //         const user = await User.findById(req.userId);
-    //         if (Array.isArray(notifications)) {
-    //             notifications.map(notificationId => {
-    //                 user.notifications.push(notificationId)
-    //             })
-    //         }
-    //         else{
-    //             user.notifications.push(notifications)
-    //         }
-    //     }
-    //     catch (err) {
-    //         console.log(err);
-    //         throw err;
-    //     }
-    // },
 }

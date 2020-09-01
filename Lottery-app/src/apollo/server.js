@@ -27,6 +27,7 @@ export const profile = `
         name
         email
         notificationToken
+        lotteries
         }
     }`
 
@@ -84,3 +85,56 @@ export const ballsById = `query LotteryBallsById($id: String!){
         pending
       }
 }`
+
+export const SubscribeLotteryBalls = `subscription SubscribeDraw($id:String!){
+    subscribeDraw(id:$id){
+        balls{
+            _id
+            lottery{
+                _id
+                name
+            }
+            date
+            balls
+            specialBalls
+            pending
+        }
+        origin
+    }
+}`
+
+export const SubscribeDashboardInfo = `subscription {
+    subscribeDashBoard{
+        balls{
+            lottery{
+              _id
+              name
+              next_draw
+              icon_name
+            }
+            draw{
+              _id
+              date
+              balls
+              specialBalls
+              pending
+            }
+          }
+        origin
+    }
+}`
+
+export const pushToken = `mutation PushToken($token:String!){
+    pushToken(token:$token){
+      _id
+      notificationToken
+    }
+  }`
+
+export const updateNotificationStatus = `mutation UpdateNotificationStatus($lotteryID:String!){
+    updateNotificationStatus(lotteryID:$lotteryID){
+      _id
+      notificationToken
+      lotteries
+    }
+  }`

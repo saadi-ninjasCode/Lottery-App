@@ -19,6 +19,11 @@
     "ios": {
       "supportsTablet": true
     },
+    "android": {
+      "versionCode": 19,
+      "package": "com.lottery.results49",
+      "googleServicesFile": "./google-services.json"
+    },
     "facebookScheme" : "fb641882316431141",
     "facebookAppId": "641882316431141",
     "facebookDisplayName": "49s Results"

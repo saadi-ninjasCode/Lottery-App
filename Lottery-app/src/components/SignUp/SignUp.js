@@ -136,11 +136,12 @@ const SignUp = React.forwardRef((props, ref) => {
                 </View>
             </View>
             <RectButton style={styles.button}
+                rippleColor={colors.fontMainColor}
                 onPress={() => {
                     if (validate())
                         props.onPress()
                 }}>
-                {props.loadingIcon ? <Spinner backColor="rgba(0,0,0,0.1)" spinnerColor={colors.white} />
+                {props.loadingIcon ? <Spinner backColor="transparent" spinnerColor={colors.white} />
                     : <TextDefault style={styles.font} textColor={colors.white} H5>{'Submit'}</TextDefault>
                 }
             </RectButton>

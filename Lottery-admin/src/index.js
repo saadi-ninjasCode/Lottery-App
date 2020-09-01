@@ -21,7 +21,7 @@ import APP from './App'
 import ApolloClient, { InMemoryCache, } from 'apollo-boost'
 import { ApolloProvider } from '@apollo/react-hooks'
 import { server_url } from './config/config'
-
+import "assets/css/nucleo-icons.css";
 import "assets/scss/black-dashboard-react.scss";
 import "assets/demo/demo.css";
 

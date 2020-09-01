@@ -31,7 +31,7 @@ function LotteryBalls() {
     const [balls, ballSetter] = useState(null)
     const [editModal, editModalSetter] = useState(false)
     const [page, setPage] = useState(1)
-    const [rowsPerPage, setRowsPerPage] = useState(1)
+    const [rowsPerPage, setRowsPerPage] = useState(10)
     const { loading: loadingcount, data: totalcount } = useQuery(GET_TOTAL_DRAW)
     const { loading, data: LotteryData } = useQuery(GET_LOTTERY_DETAILS, { variables: { page: page - 1, rows: rowsPerPage } })
 
@@ -80,6 +80,8 @@ function LotteryBalls() {
                 deleteButton={true}
                 editButton={true}
                 row={row}
+                rows={rowsPerPage}
+                pageNumber={page}
                 mutation={DELETE_DRAW}
                 editModal={toggleModal}
                 showMessage={showMessage}
@@ -133,7 +135,6 @@ function LotteryBalls() {
                                 paginationTotalRows={!loadingcount && totalcount.drawCount}
                                 onChangeRowsPerPage={handlePerRowChange}
                                 onChangePage={handlePageChange}
-                                paginationRowsPerPageOptions={[1, 2, 10]}
                                 paginationPerPage={1}
 
                             />

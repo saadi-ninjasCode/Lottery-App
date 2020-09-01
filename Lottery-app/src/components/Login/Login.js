@@ -18,7 +18,7 @@ const Login = React.forwardRef((props, ref) => {
         emailErrorSetter(null)
         const email = emailRef.current.value()
         if (!email) {
-            emailErrorSetter('Email/Phone is required')
+            emailErrorSetter('Email is required')
             result = false
         } else {
             const emailRegex = /^\w+([\\.-]?\w+)*@\w+([\\.-]?\w+)*(\.\w{2,3})+$/
@@ -88,7 +88,7 @@ const Login = React.forwardRef((props, ref) => {
                         labelTextStyle={{
                             fontSize: scale(10),
                         }}
-                        onBlur={(event) => {
+                        onEndEditing={(event) => {
                             passwordErrorSetter(
                                 !event.nativeEvent?.text.trim().length
                                     ? 'Password is required'
@@ -99,12 +99,13 @@ const Login = React.forwardRef((props, ref) => {
                 </View>
             </View>
             <RectButton style={styles.button}
+                rippleColor={colors.fontMainColor}
                 onPress={async () => {
                     if (validate())
                         props.onPress()
                 }
                 }>
-                {props.loadingIcon ? <Spinner backColor="rgba(0,0,0,0.1)" spinnerColor={colors.white} />
+                {props.loadingIcon ? <Spinner backColor="transparent" spinnerColor={colors.white} />
                     : <TextDefault style={styles.font} textColor={colors.white} H5>{'Login'}</TextDefault>
                 }
             </RectButton>

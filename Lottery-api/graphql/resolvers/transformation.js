@@ -22,13 +22,13 @@ const lotteryById = async (lotteryids) => {
     }
 };
 
-const lotteryTypeTransformation = lottery => {
+const lotteryTypeTransformation = async lottery => {
     return {
         ...lottery._doc,
         _id: lottery.id,
         // next_draw: dateToString(lottery._doc.next_draw),
         // user_list: lottery.user_list.length
-        user_list: userById(lottery.user_list)
+        user_list: await userById(lottery.user_list)
 
     };
 };
@@ -38,7 +38,7 @@ const summaryTransformation = async lottery => {
         lottery: {
             ...lottery._doc,
             _id: lottery.id,
-            user_list: userById(lottery.user_list)
+            user_list: await userById(lottery.user_list),
         },
         draw: drawBall[0]
     };
@@ -74,7 +74,7 @@ const lotterBallsTransformation = async ball => {
     return {
         ...ball._doc,
         _id: ball.id,
-        lottery: lotteryById(ball._doc.lottery),
+        lottery: await lotteryById(ball._doc.lottery),
     }
 }
 

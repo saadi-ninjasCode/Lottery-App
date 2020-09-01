@@ -7,6 +7,8 @@ import FlashMessage from 'react-native-flash-message';
 import { UserProvider } from './src/context/User';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import setupApollo from './src/apollo/index'
+import * as Permissions from 'expo-permissions'
+import { Notifications } from 'expo';
 
 export default function App() {
   const [client, setupClient] = useState(null)
@@ -18,6 +20,27 @@ export default function App() {
   async function loadAppData() {
     const client = await setupApollo()
     setupClient(client)
+    await permissionForPushNotificationsAsync()
+  }
+
+  async function permissionForPushNotificationsAsync() {
+    const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS)
+    let finalStatus = existingStatus
+    if (finalStatus !== 'granted') {
+      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+      finalStatus = status;
+    }
+    if (finalStatus !== 'granted') {
+      return
+    }
+    if (Platform.OS === 'android') {
+      Notifications.createChannelAndroidAsync('default', {
+        name: 'default',
+        sound: true,
+        priority: 'max',
+        vibrate: [0, 250, 250, 250]
+      })
+    }
   }
 
   if (client) {

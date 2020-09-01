@@ -1,6 +1,7 @@
 const LotteryType = require('../../models/lotteryType');
 const { transfromLotteryType, transformSummary } = require('./transformation');
 const LotteryBalls = require('../../models/lotteryBalls');
+const { pubsub, DASHBOARD_INFO, publishToDashboardInfo } = require('../../helpers/subscription');
 
 module.exports = {
     Query: {
@@ -31,7 +32,7 @@ module.exports = {
     Mutation: {
         createLottery: async (_, args, context) => {
             console.log("Create Lottery")
-            if (!context.isAuth) {
+            if (!context.req.isAuth) {
                 throw new Error("Unauthenticated!")
             }
             const existingName = await LotteryType.findOne({ name: args.lotteryInput.name });
@@ -55,8 +56,8 @@ module.exports = {
             }
         },
         editLottery: async (_, args, context) => {
-            console.log('Delete Lottery')
-            if (!context.isAuth) {
+            console.log('Edit Lottery')
+            if (!context.req.isAuth) {
                 throw new Error("Unauthenticated!")
             }
             try {
@@ -70,7 +71,12 @@ module.exports = {
                 getLottery.next_draw = args.lotteryInput.next_draw
                 getLottery.icon_name = args.lotteryInput.icon_name
                 const result = await getLottery.save()
-                return transfromLotteryType(result)
+                const transformData = await transfromLotteryType(result);
+                //Dashboard Subscription
+                const dashboardData = await transformSummary(result)
+                // console.log('data: ', dashboardData)
+                publishToDashboardInfo(dashboardData, 'edit')
+                return transformData
             } catch (err) {
                 console.log(err)
                 throw err;
@@ -78,7 +84,7 @@ module.exports = {
         },
         editFavouriteBalls: async (_, args, context) => {
             console.log('Edit Favourite Ball')
-            if (!context.isAuth) {
+            if (!context.req.isAuth) {
                 throw new Error("Unauthenticated!")
             }
             try {
@@ -101,6 +107,7 @@ module.exports = {
                         checkLottery.hotBall = args.ballsCountInput.hotBall.sort(function (a, b) { return (b.times - a.times) })
                 }
                 const result = await checkLottery.save()
+
                 return transfromLotteryType(result)
             } catch (err) {
                 console.log(err)
@@ -111,7 +118,7 @@ module.exports = {
             console.log('Delete Lottery')
             // IMplement Delete to end level
 
-            if (!context.isAuth) {
+            if (!context.req.isAuth) {
                 throw new Error("Unauthenticated!")
             }
             try {
@@ -128,7 +135,10 @@ module.exports = {
                     if (lotteryResult.ok !== 1)
                         throw new Error("Deletion Failed!")
                     else {
-                        return transfromLotteryType(checkLottery);
+                        const transformData = transfromLotteryType(checkLottery);
+                        // console.log('data: ', transformData)
+                        // publishToDashboardInfo(transformData, 'edit')
+                        return transformData
                     }
                 }
             } catch (err) {
@@ -138,7 +148,7 @@ module.exports = {
         },
         deleteColdBalls: async (_, args, context) => {
             console.log('Delete Favourite Ball ')
-            if (!context.isAuth) {
+            if (!context.req.isAuth) {
                 throw new Error("Unauthenticated!")
             }
             try {
@@ -148,7 +158,8 @@ module.exports = {
                 }
                 checkLottery.coldBall = []
                 const result = await checkLottery.save()
-                return transfromLotteryType(result)
+                const transformData = await transfromLotteryType(result);
+                return transformData
             } catch (err) {
                 console.log(err)
                 throw err;
@@ -156,7 +167,7 @@ module.exports = {
         },
         deleteHotBalls: async (_, args, context) => {
             console.log('Delete Favourite Ball ')
-            if (!context.isAuth) {
+            if (!context.req.isAuth) {
                 throw new Error("Unauthenticated!")
             }
             try {
@@ -171,6 +182,11 @@ module.exports = {
                 console.log(err)
                 throw err;
             }
+        }
+    },
+    Subscription: {
+        subscribeDashBoard: {
+            subscribe: () => pubsub.asyncIterator(DASHBOARD_INFO)
         }
     }
 };

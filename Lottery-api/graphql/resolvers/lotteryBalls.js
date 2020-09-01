@@ -1,7 +1,8 @@
 const LotteryBalls = require('../../models/lotteryBalls');
 const LotteryType = require('../../models/lotteryType')
-const { transformLotteryBalls } = require('./transformation');
-const { pubsub, LOTTERY_CREATE, publishToLotteryBalls } = require('../../helpers/subscription');
+const { transformLotteryBalls, transformSummary } = require('./transformation');
+const { pubsub, DRAW_CREATE, publishToLotteryBalls, publishToDashboardInfo } = require('../../helpers/subscription');
+const { withFilter } = require('apollo-server-express');
 
 module.exports = {
     Query: {
@@ -56,7 +57,7 @@ module.exports = {
     Mutation: {
         createLotteryBalls: async (_, args, context) => {
             console.log('Create New Draw')
-            if (!context.isAuth) {
+            if (!context.req.isAuth) {
                 throw new Error("Unauthenticated!")
             }
             try {
@@ -73,7 +74,10 @@ module.exports = {
                 })
                 const result = await balls.save();
                 const transformData = await transformLotteryBalls(result);
-                publishToLotteryBalls(transformData)
+                publishToLotteryBalls(transformData, 'new')
+                const dashboardData = await transformSummary(checkLottery)
+                // console.log('dashboard:', dashboardData)
+                publishToDashboardInfo(dashboardData, 'new')
                 return transformData
             }
             catch (err) {
@@ -81,9 +85,9 @@ module.exports = {
                 throw (err);
             }
         },
-        editLotteryBalls: async (_, args, context) => {
+        editLotteryBalls: async (_, args, { req, res }) => {
             console.log("Draw Edit")
-            if (!context.isAuth) {
+            if (!req.isAuth) {
                 throw new Error("Unauthenticated!")
             }
             try {
@@ -97,7 +101,12 @@ module.exports = {
                 getDraw.specialBalls = args.lotteryInput.pending ? [] : args.lotteryInput.specialBalls
                 getDraw.pending = args.lotteryInput.pending
                 const result = await getDraw.save();
-                return transformLotteryBalls(result);
+                //subscription
+                const transformData = await transformLotteryBalls(result);
+                publishToLotteryBalls(transformData, 'edit')
+                const dashboardData = await transformSummary(checkLottery)
+                publishToDashboardInfo(dashboardData, 'edit')
+                return transformData
             }
             catch (err) {
                 console.log(err);
@@ -106,7 +115,7 @@ module.exports = {
         },
         deleteDraw: async (_, args, context) => {
             console.log("Delete Draw")
-            if (!context.isAuth) {
+            if (!context.req.isAuth) {
                 throw new Error("Unauthenticated!")
             }
             try {
@@ -116,7 +125,12 @@ module.exports = {
                     throw new Error("Deletion failed")
                 }
                 else {
-                    return transformLotteryBalls(getDraw);
+                    const transformData = await transformLotteryBalls(getDraw);
+                    publishToLotteryBalls(transformData, 'remove')
+                    const checkLottery = await LotteryType.findById(transformData.lottery._id)
+                    const dashboardData = await transformSummary(checkLottery)
+                    publishToDashboardInfo(dashboardData, 'remove')
+                    return transformData
                 }
             }
             catch (err) {
@@ -126,8 +140,15 @@ module.exports = {
         }
     },
     Subscription: {
-        subscribeLotteryBalls: {
-            subscribe: () => pubsub.asyncIterator(LOTTERY_CREATE)
+        subscribeDraw: {
+            subscribe:
+                withFilter(
+                    () => pubsub.asyncIterator(DRAW_CREATE),
+                    (payload, args, context) => {
+                        return payload.subscribeDraw.balls.lottery._id.toString() === args.id
+                    }
+                )
+
         }
     }
 }

@@ -137,8 +137,8 @@ function SideBar(props) {
                             <DrawerItems
                                 icon={'sign-out-alt'}
                                 text={'Log Out'}
-                                onPress={() => {
-                                    logout()
+                                onPress={async () => {
+                                    await logout()
                                     navigation.dispatch(DrawerActions.closeDrawer());
                                 }} />
                         )}
