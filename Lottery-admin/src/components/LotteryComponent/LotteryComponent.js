@@ -41,7 +41,9 @@ function LotteryComponent(props) {
 
     function onCompleted(data) {
         console.log(data)
-        form.current.reset()
+        if (!props.lottery) {
+            form.current.reset()
+        }
         showMessage('Lottery Type Added', 'success')
         nameErrorSetter(null)
         iconErrorSetter(null)
