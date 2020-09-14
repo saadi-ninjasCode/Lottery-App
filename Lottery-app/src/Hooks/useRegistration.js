@@ -100,7 +100,6 @@ function useRegistration() {
     }
 
     async function getLogin(user) {
-        console.log('login: ', notificationToken)
         mutate({ variables: { ...user, notificationToken } })
     }
 

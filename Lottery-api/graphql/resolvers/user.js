@@ -265,9 +265,9 @@ module.exports = {
             else {
                 lottery.user_list.splice(checkUserIndex, 1)
             }
-            
+
             await user.save()
-            await lottery.save()
+            await lottery.save({ validateBeforeSave: false })
 
             return {
                 ...user._doc,

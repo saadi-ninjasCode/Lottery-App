@@ -3,6 +3,7 @@ const LotteryType = require('../../models/lotteryType')
 const { transformLotteryBalls, transformSummary } = require('./transformation');
 const { pubsub, DRAW_CREATE, publishToLotteryBalls, publishToDashboardInfo } = require('../../helpers/subscription');
 const { withFilter } = require('apollo-server-express');
+const { sendNotificationUser, NEW_DRAW } = require('../../helpers/notificationsUtill');
 
 module.exports = {
     Query: {
@@ -73,6 +74,7 @@ module.exports = {
                     pending: args.lotteryInput.pending,
                 })
                 const result = await balls.save();
+                await sendNotificationUser({ lotteryId: checkLottery._id, userList: checkLottery.user_list, title: checkLottery.name, message: NEW_DRAW })
                 const transformData = await transformLotteryBalls(result);
                 publishToLotteryBalls(transformData, 'new')
                 const dashboardData = await transformSummary(checkLottery)

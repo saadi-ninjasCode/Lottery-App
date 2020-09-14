@@ -24,6 +24,13 @@
       "package": "com.lottery.results49",
       "googleServicesFile": "./google-services.json"
     },
+      "notification": {
+        "iosDisplayInForeground": true,
+        "icon": "./assets/image.png",
+        "color": "#221977",
+        "androidMode": "default",
+        "androidCollapsedTitle": "Results 49"
+      },
     "facebookScheme" : "fb641882316431141",
     "facebookAppId": "641882316431141",
     "facebookDisplayName": "49s Results"

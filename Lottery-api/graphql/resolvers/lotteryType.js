@@ -106,7 +106,7 @@ module.exports = {
                     if (args.ballsCountInput.hotBall.length <= 3)
                         checkLottery.hotBall = args.ballsCountInput.hotBall.sort(function (a, b) { return (b.times - a.times) })
                 }
-                const result = await checkLottery.save()
+                const result = await checkLottery.save({ validateBeforeSave: false })
 
                 return transfromLotteryType(result)
             } catch (err) {

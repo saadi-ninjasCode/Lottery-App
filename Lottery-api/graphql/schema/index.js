@@ -141,6 +141,7 @@ type Mutation{
     deleteDraw(id: String!): LotteryBalls!
     pushToken(token: String): User!
     updateNotificationStatus(lotteryID: String!): User!
+    sendNotification(lotteryID:String!): String!
 }
 type Subscription {
     subscribeDraw(id: String): Subscription_Data!
