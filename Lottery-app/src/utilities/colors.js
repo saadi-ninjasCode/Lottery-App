@@ -24,31 +24,6 @@ const theme = {
     facebook: '#3b5998',
     activeColor: '#4AD285',
     checkBoxColor: 'rgb(78, 142, 237)',
-
-    // iconColorPink: '#d83765',
-    // itemCardColor: '#FFF',
-    // tagColor: '#d83765',
-    // radioColor: '#FFF',
-    // radioOuterColor: '#d83765',
-    // checkBoxColor: '#d83765',
-    // startColor: '#d83765',
-    // startOutlineColor: '#d83765',
-    // orderComplete: '#1DB20D',
-    // orderUncomplete: '#fe0000',
-    // horizontalLine: '#949393',
-    // lightHorizontalLine: '#f0f0f0',
-    // buttonBackground: '#d83765',
-    // buttonText: '#FFF',
-    // buttonBackgroundPink: '#d83765',
-    // buttonTextPink: '#FFF',
-    // shadowColor: '#2a2a2a',
-
-    // textErrorColor: '#FA7751',
-    // headerBackgroundTwo: '#FAFAFA',
-    // titleComponentBackground: 'rgba(39,111,191,0.1)',
-    // titleComponentText: 'rgba(39,111,191,0.8)',
-    // titleTextError: '#FFF',
-    // statusSecondColor: '#5A5858'
   }
 }
 export default theme.Primary
