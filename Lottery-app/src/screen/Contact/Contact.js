@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-export default function Contact() {
+function Contact() {
   return (
     <View style={styles.container}>
       <Text>Open up App.js to start working on your app!</Text>
@@ -19,3 +19,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+export default React.memo(Contact)

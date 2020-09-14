@@ -11,7 +11,7 @@ import ChangePassword from './ChangePassword'
 import screenOptions from './screenOptions'
 import UserContext from '../../context/User';
 
-export default function Profile() {
+function Profile() {
     const navigation = useNavigation()
     const refName = useRef()
 
@@ -203,3 +203,4 @@ export default function Profile() {
         </>
     );
 }
+export default React.memo(Profile)

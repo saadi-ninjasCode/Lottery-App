@@ -91,4 +91,4 @@ function Generator() {
     </SafeAreaView>
   );
 }
-export default Generator
+export default React.memo(Generator)

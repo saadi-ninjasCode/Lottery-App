@@ -5,7 +5,7 @@ import { useRoute } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useQuery, gql, useApolloClient } from '@apollo/client';
 import { Spinner, TextError, LotteryCard, TextDefault } from '../../components';
-import { ballsById, SubscribeDashboardInfo, SubscribeLotteryBalls } from '../../apollo/server'
+import { ballsById, SubscribeLotteryBalls } from '../../apollo/server'
 import { colors } from '../../utilities';
 
 const LOTTERY_DRAW = gql`${ballsById}`

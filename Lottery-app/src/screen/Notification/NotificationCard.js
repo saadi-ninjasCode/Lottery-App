@@ -1,4 +1,4 @@
-import React, { useContext, useCallback } from 'react'
+import React, { useContext } from 'react'
 import { TouchableOpacity, View, Linking } from 'react-native'
 import { Checkbox, TextDefault, Spinner, FlashMessage } from '../../components'
 import UserContext from '../../context/User'
@@ -12,7 +12,7 @@ import { gql, useMutation } from '@apollo/client'
 const PROFILE = gql`${profile}`
 const UPDATE_NOTIFICATION_TOKEN = gql`${updateNotificationStatus}`
 
-export default function NotificationCard(props) {
+function NotificationCard(props) {
     const { profile } = useContext(UserContext)
     const [mutate, { loading }] = useMutation(UPDATE_NOTIFICATION_TOKEN, {
         onCompleted,
@@ -78,3 +78,5 @@ export default function NotificationCard(props) {
         </TouchableOpacity>
     )
 }
+
+export default React.memo(NotificationCard)

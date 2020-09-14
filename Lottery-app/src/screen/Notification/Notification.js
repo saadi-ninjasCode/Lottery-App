@@ -11,7 +11,7 @@ import NotificationCard from './NotificationCard';
 
 const LOTTERY = gql`${getLotteryName}`
 
-export default function Notification() {
+function Notification() {
   const { data, loading: dataLoading, error } = useQuery(LOTTERY)
   if (dataLoading) return <Spinner />
   if (error) return <TextError text={error.message} textColor={colors.headerBackground} />
@@ -35,5 +35,4 @@ export default function Notification() {
     </SafeAreaView>
   );
 }
-
-
+export default React.memo(Notification)

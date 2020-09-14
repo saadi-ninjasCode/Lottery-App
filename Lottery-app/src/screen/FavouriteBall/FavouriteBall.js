@@ -54,7 +54,7 @@ function FavouriteBall() {
         <SafeAreaView edges={['bottom', 'left', 'right']} styles={[styles.flex, styles.mainBackground]} >
             <SectionList
                 style={{ flexGrow: 1 }}
-                contentContainerStyle={{...alignment.PTmedium}}
+                contentContainerStyle={{ ...alignment.PTmedium }}
                 sections={sectionData}
                 keyExtractor={(item, index) => index}
                 stickySectionHeadersEnabled={false}
@@ -79,4 +79,4 @@ function FavouriteBall() {
         </SafeAreaView>
     );
 }
-export default FavouriteBall
+export default React.memo(FavouriteBall)
