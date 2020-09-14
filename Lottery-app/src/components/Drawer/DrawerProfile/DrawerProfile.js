@@ -5,10 +5,12 @@ import { TextDefault } from '../../Text'
 import { colors } from '../../../utilities'
 import { useNavigation } from '@react-navigation/native'
 import UserContext from '../../../context/User'
+import Spinner from '../../Spinner/Spinner'
 
 function DrawerProfile() {
     const navigation = useNavigation()
-    const { isLogged } = useContext(UserContext)
+    const { isLogged, loadingProfile, profile } = useContext(UserContext)
+    if (loadingProfile) return <Spinner backColor='transparent' spinnerColor={colors.drawerTitleColor} />
     return (
         <View style={styles.mainContainer}>
             {!isLogged ? (
@@ -25,11 +27,11 @@ function DrawerProfile() {
                             <View style={styles.subConainer}>
                                 <View style={styles.imgContainer}>
                                     <TextDefault textColor={colors.white} style={styles.fonts} H1>
-                                        {'M'}
+                                    {profile.name[0].toUpperCase()}
                                     </TextDefault>
                                 </View>
                                 <TextDefault textColor={colors.drawerTitleColor} style={styles.font} H4>
-                                    {'M Saad Javed'}
+                                    {profile.name}
                                 </TextDefault>
                             </View>
                         )}
