@@ -3,9 +3,9 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import { SideBar } from '../components'
-import { useSafeArea } from 'react-native-safe-area-context'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import navigationService from './navigationService'
-import { Registration, Main, Contact, Privacy, Notification, Generator, Profile, FavouriteBall, Lottery } from '../screen'
+import { Registration, Main, Condition, Privacy, Notification, Generator, Profile, FavouriteBall, Lottery } from '../screen'
 import { drawerContentOptions, drawerStyle, ScreenAnimation, ScreenHeader, menuButton } from './navigationOptions'
 
 const Stack = createStackNavigator()
@@ -13,7 +13,7 @@ const MainStack = createStackNavigator()
 const SideDrawer = createDrawerNavigator()
 
 function Drawer() {
-    const inset = useSafeArea()
+    const inset = useSafeAreaInsets()
     return (
         <SideDrawer.Navigator
             drawerStyle={drawerStyle(inset)}
@@ -29,7 +29,7 @@ function MenuStack() {
         <Stack.Navigator initialRouteName='Main' screenOptions={{ ...ScreenHeader(), ...ScreenAnimation() }}>
             <Stack.Screen name='Main' component={Main} options={menuButton()} />
             <Stack.Screen name='Registration' component={Registration} />
-            <Stack.Screen name='Contact' component={Contact} />
+            <Stack.Screen name='Condition' component={Condition} />
             <Stack.Screen name='Privacy' component={Privacy} />
             <Stack.Screen name='Notification' component={Notification} />
             <Stack.Screen name='Generator' component={Generator} />

@@ -49,9 +49,9 @@ const TopMenus = [
 
 const BottomMenu = [
     {
-        title: 'Contact',
-        icon: 'id-card',
-        navigateTo: 'Contact',
+        title: 'Terms & Conditions',
+        icon: 'file-prescription',
+        navigateTo: 'Condition',
         isAuth: false
     },
     {
