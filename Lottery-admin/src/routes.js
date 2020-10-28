@@ -16,7 +16,6 @@
 
 */
 import Dashboard from "views/Dashboard.js";
-import LunchTime from "views/LunchTime.js"
 import LotteryBalls from "./views/LotteryBalls";
 import Login from './views/Login'
 import Lottery from './views/Lottery'
@@ -30,13 +29,6 @@ var routes = [
     name: "Dashboard",
     icon: "fas fa-tachometer-alt",
     component: Dashboard,
-    layout: "/admin"
-  },
-  {
-    path: "/LunchTime",
-    name: "Lunch Time",
-    icon: "fas fa-utensils",
-    component: LunchTime,
     layout: "/admin"
   },
   {
