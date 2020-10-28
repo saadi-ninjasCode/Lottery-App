@@ -53,11 +53,12 @@ function Lottery() {
             center: true
         },
         {
-            name: 'Next Draw Date',
+            name: 'Next Draw Date (Europe/London)',
             selector: 'next_draw',
             sortable: true,
             center: true,
-            format: row => dateTransformation(row.next_draw)
+            format: row => dateTransformation(row.next_draw),
+            grow:2
         },
         {
             name: 'Total Users',
@@ -136,7 +137,7 @@ function Lottery() {
                 </Col>
             </Row>
             <Modal modalTransition={{ timeout: 400 }} backdropTransition={{ timeout: 200 }}
-                modalClassName="modal-black"
+                // modalClassName="modal-black"
                 size="lg"
                 toggle={() => toggleModal(null)}
                 isOpen={editModal}>

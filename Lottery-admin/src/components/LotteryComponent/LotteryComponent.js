@@ -22,12 +22,18 @@ import { createLottery, editLottery, getlottery } from '../../apollo/server'
 import { gql } from "apollo-boost";
 import { useMutation } from "@apollo/react-hooks";
 import NotificationAlert from "react-notification-alert";
+import moment from 'moment-timezone'
 
+// moment.tz.setDefault('Pacific/Niue');
+import Datetime from 'react-datetime';
+import "react-datetime/css/react-datetime.css";
 
 const CREATE_LOTTERY = gql`${createLottery}`
 const EDIT_LOTTERY = gql`${editLottery}`
 const GET_LOTTERY = gql`${getlottery}`
 function LotteryComponent(props) {
+
+    // console.log('moment: ', moment(1603710000000).format())
     const form = useRef()
     const notifyEl = useRef(null);
     const MUTATION = props.lottery ? EDIT_LOTTERY : CREATE_LOTTERY
@@ -35,7 +41,8 @@ function LotteryComponent(props) {
     const [nameError, nameErrorSetter] = useState(null)
     const [iconError, iconErrorSetter] = useState(null)
     const name = props.lottery ? props.lottery.name : ''
-    const [date, dateSetter] = useState(props.lottery ? new Date(+props.lottery.next_draw) : '')
+
+    const [date, dateSetter] = useState(props.lottery ? moment(+props.lottery.next_draw) : '')
     const [iconName, iconNameSetter] = useState(props.lottery ? props.lottery.icon_name ? props.lottery.icon_name : '' : 'mug-hot')
     const [mutation, { loading }] = useMutation(MUTATION, { onCompleted, onError, refetchQueries: [{ query: GET_LOTTERY }] })
 
@@ -69,6 +76,11 @@ function LotteryComponent(props) {
     function onBlur(setter, field, state) {
         setter(!validateFunc({ [field]: state }, field))
     }
+
+    // function dateChange(date) {
+    //     dateSetter(date.format("DD MMMM YYYY, hh:mm A"))
+    //     console.log("save:", date)
+    // }
     function validate() {
         const nameError = !validateFunc({ name: form.current['input-name'].value }, 'name')
         const iconError = !validateFunc({ iconName: form.current['input-icon'].value }, 'iconName')
@@ -88,6 +100,10 @@ function LotteryComponent(props) {
         autoDismiss: 7,
         icon: 'far fa-bell'
     })
+
+    function validationDay(current) {
+        return current.isSameOrAfter(moment(), 'days')
+    }
 
     console.log('LotteryComponent')
     return (
@@ -132,16 +148,37 @@ function LotteryComponent(props) {
                                 </Row>
                                 <Row>
                                     <Col className="pr-md-3" md="12">
-                                        <label className='className="form-control-label' htmlFor="input-date"> Next Draw Date</label>
+                                        <label className='form-control-label' htmlFor="input-date"> Next Draw Date
+                                        <i>&nbsp; (Europe/London)</i>
+                                        </label>
                                         <br />
                                         <FormGroup>
-                                            <DatePicker
+                                            <Datetime
+                                                id="input-date"
+                                                name='input-date'
+                                                value={date}
+                                                initialViewDate={date ? date : moment()}
+                                                onOpen={() => (!date ? dateSetter(moment()) : null)}
+                                                isValidDate={validationDay}
+                                                dateFormat={"DD MMMM YYYY,"}
+                                                timeFormat={"hh:mm A"}
+                                                input={true}
+                                                locale='en'
+                                                inputProps={{
+                                                    placeholder: "Click to select a date"
+                                                }}
+                                                onChange={d => dateSetter(d)}
+                                            />
+                                        </FormGroup>
+                                        {/* <FormGroup>
+                                             <DatePicker
                                                 id="input-date"
                                                 name='input-date'
                                                 placeholderText="Click to select a date"
                                                 className='form-control'
                                                 selected={date}
-                                                onChange={e => dateSetter(e)}
+                                                // onChange={e => dateSetter(e)}
+                                                onChange={dateChange}
                                                 timeInputLabel="Time:"
                                                 showTimeInput
                                                 dateFormat="dd MMMM yyyy, h:mm aa"
@@ -149,8 +186,9 @@ function LotteryComponent(props) {
                                                 openToDate={new Date()}
                                                 isClearable
                                                 withPortal={props.lottery ? false : true}
+                                                locale='en'
                                             />
-                                        </FormGroup>
+                                      </FormGroup> */}
                                     </Col>
                                 </Row>
                                 <Row>
@@ -194,7 +232,7 @@ function LotteryComponent(props) {
                                                     lotteryInput: {
                                                         _id: props.lottery ? props.lottery._id : '',
                                                         name: form.current['input-name'].value,
-                                                        next_draw: form.current['input-date'].value,
+                                                        next_draw: date,
                                                         icon_name: form.current['input-icon'].value
                                                     }
                                                 }
