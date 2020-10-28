@@ -133,6 +133,14 @@ function Dashboard(props) {
                                                     {dateTransformation(item.lottery.next_draw, true)}
                                                 </span>
                                             </p>
+                                            <p>
+                                                <span className="text-info">
+                                                    {'Time Zone:'}
+                                                </span>
+                                                <span className="ml-4 text-primary">
+                                                    {'Europe/London'}
+                                                </span>
+                                            </p>
                                         </CardBody>
                                     </div>
                                 </Row>
