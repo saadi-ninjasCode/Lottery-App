@@ -1,4 +1,4 @@
-import { dateToCustom, dateWithWeekday } from "../variables/date"
+import { dateWithWeekdayMoment, dateToCustomMoment } from "../variables/date"
 
 const lotteryBallsTransformation = (balls, pending) => {
     if (pending) {
@@ -47,9 +47,9 @@ const favouriteTimeTransformation = balls => {
 const dateTransformation = (date, weekday = false) => {
     if (date) {
         if (weekday)
-            return dateWithWeekday(date)
+            return dateWithWeekdayMoment(date)
         else
-            return dateToCustom(date)
+            return dateToCustomMoment(date)
     }
     else
         return '-'
