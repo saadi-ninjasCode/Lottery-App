@@ -57,11 +57,13 @@ function LotteryBalls() {
             // center: true
         },
         {
-            name: 'Draw Date',
+            name: 'Draw Date (Europe/London)',
             selector: 'date',
             sortable: true,
             defaultSortAsc: true,
-            format: row => dateTransformation(row.date)
+            center: true,
+            format: row => dateTransformation(row.date),
+
         },
         {
             name: 'Balls',
@@ -143,7 +145,6 @@ function LotteryBalls() {
                 </Col>
             </Row>
             <Modal modalTransition={{ timeout: 400 }} backdropTransition={{ timeout: 200 }}
-                modalClassName="modal-black"
                 size="lg"
                 isOpen={editModal}
                 toggle={() => toggleModal(null)}>

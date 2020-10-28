@@ -14,10 +14,11 @@ import {
 import { getlottery, createLotteryBalls, getlotteryDetails, editLotteryBalls } from "../../apollo/server"
 import { gql } from "apollo-boost";
 import { useQuery, useMutation } from "@apollo/react-hooks";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import { validateFunc } from "constraint/constraint";
 import NotificationAlert from "react-notification-alert";
+import moment from 'moment-timezone'
+import Datetime from 'react-datetime';
+import "react-datetime/css/react-datetime.css";
 
 
 const GET_LOTTERY = gql`${getlottery}`
@@ -28,7 +29,7 @@ const GET_LOTTERY_DETAILS = gql`${getlotteryDetails}`
 function LotteryBallsComponent(props) {
     const formRef = useRef()
     const notifyEl = useRef(null);
-    const [date, dateSetter] = useState(props.draw ? new Date(+props.draw.date) : new Date())
+    const [date, dateSetter] = useState(props.draw ? moment(+props.draw.date) : moment())
     const [pending, pendingSetter] = useState(props.draw ? props.draw.pending : false)
     const lotterySelect = props.draw ? props.draw.lottery._id : ''
     const MUTATION = props.draw ? EDIT_DRAW : CREATE_DRAW
@@ -136,6 +137,13 @@ function LotteryBallsComponent(props) {
         autoDismiss: 7,
         icon: 'far fa-bell'
     })
+    function validationDay(current) {
+        if (props.draw)
+            return current.isSameOrAfter(moment(+props.draw.date), 'days')
+        else
+            return current.isSameOrAfter(moment(), 'days')
+    }
+
     if (lotteryDataError) return <h5>Something is missing</h5>
     return (
         <>
@@ -183,21 +191,22 @@ function LotteryBallsComponent(props) {
                                 </Row>
                                 <Row>
                                     <Col className="pr-md-3" md="12">
-                                        <Label className='ml-md-3' htmlFor="input-date" >Date  <i className='tim-icons icon-calendar-60'></i></Label>
+                                        <Label className='ml-md-3' htmlFor="input-date" >Date  <i className='tim-icons icon-calendar-60'></i> <i>&nbsp; (Europe/London)</i></Label>
                                         <FormGroup>
-                                            <DatePicker
+                                            <Datetime
                                                 id="input-date"
                                                 name='input-date'
-                                                placeholderText="Click to select a date"
-                                                className='form-control'
-                                                selected={date}
-                                                maxDate={new Date()}
-                                                onChange={e => dateSetter(e)}
-                                                timeInputLabel="Time:"
-                                                showTimeInput
-                                                dateFormat="dd MMMM yyyy, h:mm aa"
-                                                isClearable
-                                                withPortal={props.draw ? false : true}
+                                                value={date}
+                                                initialViewDate={date ? date : moment()}
+                                                isValidDate={validationDay}
+                                                dateFormat={"DD MMMM YYYY,"}
+                                                timeFormat={"hh:mm A"}
+                                                input={true}
+                                                locale='en'
+                                                inputProps={{
+                                                    placeholder: "Click to select a date"
+                                                }}
+                                                onChange={d => dateSetter(d)}
                                             />
                                         </FormGroup>
                                     </Col>
