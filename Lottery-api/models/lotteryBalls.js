@@ -8,9 +8,9 @@ const lotteryBalls = new Schema({
     },
     date: {
         type: Date,
-        default: function () {
-            return Date.now();
-        }
+        // default: function () {
+        //     return Date.now();
+        // }
     },
     balls: {
         type: [String],
@@ -24,11 +24,11 @@ const lotteryBalls = new Schema({
 },
     { timestamps: true }
 );
-lotteryBalls.pre('validate', function (next) {
-    if (this.date >= Date.now()) {
-        throw new Error("Lottery date cann't exceed current date.");
-    }
-    else
-        next();
-});
+// lotteryBalls.pre('validate', function (next) {
+//     if (this.date >= Date.now()) {
+//         throw new Error("Lottery date cann't exceed current date.");
+//     }
+//     else
+//         next();
+// });
 module.exports = mongoose.model('LotteryBalls', lotteryBalls);
