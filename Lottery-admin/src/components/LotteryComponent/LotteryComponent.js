@@ -40,6 +40,7 @@ function LotteryComponent(props) {
     const [iconFocus, iconFocusSetter] = useState(false)
     const [nameError, nameErrorSetter] = useState(null)
     const [iconError, iconErrorSetter] = useState(null)
+    const [dateError, setDateError] = useState(null)
     const name = props.lottery ? props.lottery.name : ''
 
     const [date, dateSetter] = useState(props.lottery ? moment(+props.lottery.next_draw) : '')
@@ -54,11 +55,13 @@ function LotteryComponent(props) {
         showMessage('Lottery Type Added', 'success')
         nameErrorSetter(null)
         iconErrorSetter(null)
+        setDateError(null)
     }
     function onError(QueryError) {
         console.log(QueryError)
         nameErrorSetter(null)
         iconErrorSetter(null)
+        setDateError(null)
         let errorMesage = ''
         try {
             if (QueryError.graphQLErrors.length > 0)
@@ -82,6 +85,18 @@ function LotteryComponent(props) {
     //     console.log("save:", date)
     // }
     function validate() {
+        if (moment(date, "DD MMMM YYYY, hh:mm A ", true).isValid()) {
+            if (date.isBefore(moment().startOf('hour'))) {
+                showMessage("Date cann't be less than current date", 'danger')
+                setDateError(false)
+                return false
+            }
+        }
+        else {
+            showMessage("Invalid Date Format", 'danger')
+            setDateError(false)
+            return false
+        }
         const nameError = !validateFunc({ name: form.current['input-name'].value }, 'name')
         const iconError = !validateFunc({ iconName: form.current['input-icon'].value }, 'iconName')
         nameErrorSetter(nameError)
@@ -152,7 +167,13 @@ function LotteryComponent(props) {
                                         <i>&nbsp; (Europe/London)</i>
                                         </label>
                                         <br />
-                                        <FormGroup>
+                                        <FormGroup className={
+                                            dateError === null
+                                                ? ''
+                                                : dateError
+                                                    ? 'has-success'
+                                                    : 'has-danger'
+                                        }>
                                             <Datetime
                                                 id="input-date"
                                                 name='input-date'

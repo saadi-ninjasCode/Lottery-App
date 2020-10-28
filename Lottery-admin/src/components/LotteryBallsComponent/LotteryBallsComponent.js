@@ -29,6 +29,7 @@ const GET_LOTTERY_DETAILS = gql`${getlotteryDetails}`
 function LotteryBallsComponent(props) {
     const formRef = useRef()
     const notifyEl = useRef(null);
+
     const [date, dateSetter] = useState(props.draw ? moment(+props.draw.date) : moment())
     const [pending, pendingSetter] = useState(props.draw ? props.draw.pending : false)
     const lotterySelect = props.draw ? props.draw.lottery._id : ''
@@ -38,10 +39,24 @@ function LotteryBallsComponent(props) {
     const [mutation, { loading }] = useMutation(MUTATION, { onCompleted, onError, refetchQueries: [{ query: GET_LOTTERY_DETAILS, variables: { page: 0, rows: 10 } }] })
     //Errors
     const [lotteryError, lotteryErrorSetter] = useState(null)
+    const [dateError, setDateError] = useState(null)
+
     const onBlur = (setter, field, state) => {
         setter(!validateFunc({ [field]: state }, field))
     }
     function validate() {
+        if (moment(date, "DD MMMM YYYY, hh:mm A ", true).isValid()) {
+            if (date.isBefore(moment().startOf('hour'))) {
+                showMessage("Date cann't be less than current date", 'danger')
+                setDateError(false)
+                return false
+            }
+        }
+        else {
+            showMessage("Invalid Date Format", 'danger')
+            setDateError(false)
+            return false
+        }
         const lotteryError = !validateFunc({ lotteryDropDown: formRef.current['input-lottery'].value }, 'lotteryDropDown')
         let numberError = []
         if (!pending) {
@@ -110,10 +125,12 @@ function LotteryBallsComponent(props) {
             pendingSetter(false)
         }
         lotteryErrorSetter(null)
+        setDateError(null)
     }
     function onError(QueryError) {
         console.log(QueryError)
         lotteryErrorSetter(null)
+        setDateError(null)
         let errorMesage = ''
         try {
             if (QueryError.graphQLErrors.length > 0)
@@ -192,7 +209,13 @@ function LotteryBallsComponent(props) {
                                 <Row>
                                     <Col className="pr-md-3" md="12">
                                         <Label className='ml-md-3' htmlFor="input-date" >Date  <i className='tim-icons icon-calendar-60'></i> <i>&nbsp; (Europe/London)</i></Label>
-                                        <FormGroup>
+                                        <FormGroup className={
+                                            dateError === null
+                                                ? ''
+                                                : dateError
+                                                    ? 'has-success'
+                                                    : 'has-danger'
+                                        }>
                                             <Datetime
                                                 id="input-date"
                                                 name='input-date'
