@@ -4,6 +4,10 @@ import AdminLayout from "layouts/Admin.js";
 import Auth from "./layouts/Auth";
 import PrivateRotue from './views/PrivateRoute'
 
+import moment from 'moment-timezone'
+
+// moment.tz.setDefault('Pacific/Niue');
+moment.tz.setDefault('Europe/London');
 
 function APP() {
     return (
