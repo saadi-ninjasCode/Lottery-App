@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: scale(20),
+        backgroundColor: colors.yellow,
         ...alignment.MTxSmall
     },
     btn: {

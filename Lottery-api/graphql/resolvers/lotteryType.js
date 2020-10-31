@@ -8,7 +8,7 @@ module.exports = {
         lottery: async () => {
             console.log("Lottery Type")
             try {
-                const lotteries = await LotteryType.find();
+                const lotteries = await LotteryType.find().sort({ name: 1 });
                 return lotteries.map(lottery => {
                     return transfromLotteryType(lottery);
                 })
@@ -23,7 +23,7 @@ module.exports = {
             // if (!context.isAuth) {
             //     throw new Error("Unauthenticated!")
             // }
-            const lotteries = await LotteryType.find();
+            const lotteries = await LotteryType.find().sort({ name: 1 });
             return lotteries.map(lott => {
                 return transformSummary(lott)
             })

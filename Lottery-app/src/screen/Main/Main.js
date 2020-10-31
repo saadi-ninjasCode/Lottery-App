@@ -35,9 +35,6 @@ function Main() {
           if (newFeedItem.origin === 'edit') {
             let { dasboardInfo } = prev
             const lotteryIndex = dasboardInfo.findIndex(o => o.lottery._id === newFeedItem.balls.lottery._id)
-            console.log('prev: ', dasboardInfo[1].draw._id)
-            console.log('new: ', newFeedItem.balls.draw._id)
-            console.log('check: ', dasboardInfo[1].draw._id === newFeedItem.balls.draw._id)
             if (lotteryIndex > -1) {
               dasboardInfo[lotteryIndex] = subscriptionData.data.subscribeDashBoard.balls
             }
@@ -49,10 +46,6 @@ function Main() {
             let { dasboardInfo } = prev
             const lotteryIndex = dasboardInfo.findIndex(o => ((o.lottery._id === newFeedItem.balls.lottery._id) && (o.draw._id !== newFeedItem.balls.draw._id)))
             if (lotteryIndex > -1) {
-              // console.log('info: ', subscriptionData.data.subscribeDashBoard.balls)
-              // dashboardInfo.splice(lotteryIndex, 1, subscriptionData.data.subscribeDashBoard.balls)
-              // dasboardInfo[lotteryIndex] = subscriptionData.data.subscribeDashBoard.balls
-              // console.log('After: ', dasboardInfo[lotteryIndex])
               dasboardInfo = dasboardInfo.map((data, index) => {
                 if (index === lotteryIndex) {
                   return subscriptionData.data.subscribeDashBoard.balls
@@ -69,10 +62,6 @@ function Main() {
             let { dasboardInfo } = prev
             const lotteryIndex = dasboardInfo.findIndex(o => ((o.lottery._id === newFeedItem.balls.lottery._id) && (o.draw._id !== newFeedItem.balls.draw._id)))
             if (lotteryIndex > -1) {
-              // console.log('info: ', subscriptionData.data.subscribeDashBoard.balls)
-              // dashboardInfo.splice(lotteryIndex, 1, subscriptionData.data.subscribeDashBoard.balls)
-              // dasboardInfo[lotteryIndex] = subscriptionData.data.subscribeDashBoard.balls
-              // console.log('After: ', dasboardInfo[lotteryIndex])
               dasboardInfo = dasboardInfo.map((data, index) => {
                 if (index === lotteryIndex) {
                   return subscriptionData.data.subscribeDashBoard.balls

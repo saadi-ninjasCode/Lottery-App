@@ -1,4 +1,4 @@
-import { dateToCustom, dateWithWeekday, dateToZone } from "./date"
+import { dateToCustom, dateWithWeekday, dateToZone, dateToTime } from "./date"
 
 const lotteryBallsTransformation = (balls, pending) => {
     if (pending) {
@@ -62,5 +62,12 @@ const getZone = (date) => {
     else
         return '-'
 }
+const getTime = (date) => {
+    if (date) {
+        return dateToTime(date)
+    }
+    else
+        return '-'
+}
 
-export { lotteryBallsTransformation, favouriteBallTransformation, favouriteTimeTransformation, dateTransformation, getZone }
+export { lotteryBallsTransformation, favouriteBallTransformation, favouriteTimeTransformation, dateTransformation, getZone, getTime }

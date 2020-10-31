@@ -24,13 +24,13 @@ function Generator() {
     }, 2000);
   }
   function wait() {
-    setBall1(Math.floor(Math.random() * 50) + 1)
-    setBall2(Math.floor(Math.random() * 50) + 1)
-    setBall3(Math.floor(Math.random() * 50) + 1)
-    setBall4(Math.floor(Math.random() * 50) + 1)
-    setBall5(Math.floor(Math.random() * 50) + 1)
-    setBall6(Math.floor(Math.random() * 50) + 1)
-    setBall7(Math.floor(Math.random() * 50) + 1)
+    setBall1(Math.floor(Math.random() * 49) + 1)
+    setBall2(Math.floor(Math.random() * 49) + 1)
+    setBall3(Math.floor(Math.random() * 49) + 1)
+    setBall4(Math.floor(Math.random() * 49) + 1)
+    setBall5(Math.floor(Math.random() * 49) + 1)
+    setBall6(Math.floor(Math.random() * 49) + 1)
+    setBall7(Math.floor(Math.random() * 49) + 1)
   }
   return (
     <SafeAreaView style={[styles.flex, styles.mainBackground]}>
@@ -43,37 +43,37 @@ function Generator() {
         <View style={styles.boxContainer}>
           <View style={styles.boxInfo}>
             <View style={styles.lotteryBalls}>
-              <View style={[styles.ballContainer, { backgroundColor: colors.yellow }]}>
+              <View style={styles.ballContainer}>
                 <TextDefault style={styles.font} textColor={colors.headerBackground} bold H4 center >
                   {ball1}
                 </TextDefault>
               </View>
-              <View style={[styles.ballContainer, { backgroundColor: colors.yellow }]}>
+              <View style={styles.ballContainer}>
                 <TextDefault style={styles.font} textColor={colors.headerBackground} bold H4 center >
                   {ball2}
                 </TextDefault>
               </View>
-              <View style={[styles.ballContainer, { backgroundColor: colors.yellow }]}>
+              <View style={styles.ballContainer}>
                 <TextDefault style={styles.font} textColor={colors.headerBackground} bold H4 center >
                   {ball3}
                 </TextDefault>
               </View>
-              <View style={[styles.ballContainer, { backgroundColor: colors.yellow }]}>
+              <View style={styles.ballContainer}>
                 <TextDefault style={styles.font} textColor={colors.headerBackground} bold H4 center >
                   {ball4}
                 </TextDefault>
               </View>
-              <View style={[styles.ballContainer, { backgroundColor: colors.yellow }]}>
+              <View style={styles.ballContainer}>
                 <TextDefault style={styles.font} textColor={colors.headerBackground} bold H4 center >
                   {ball5}
                 </TextDefault>
               </View>
-              <View style={[styles.ballContainer, { backgroundColor: colors.green }]}>
+              <View style={styles.ballContainer}>
                 <TextDefault style={styles.font} textColor={colors.headerBackground} bold H4 center >
                   {ball6}
                 </TextDefault>
               </View>
-              <View style={[styles.ballContainer, { backgroundColor: colors.green }]}>
+              <View style={styles.ballContainer}>
                 <TextDefault style={styles.font} textColor={colors.headerBackground} bold H4 center >
                   {ball7}
                 </TextDefault>

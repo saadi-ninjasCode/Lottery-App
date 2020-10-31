@@ -9,6 +9,9 @@ import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import setupApollo from './src/apollo/index'
 import * as Permissions from 'expo-permissions'
 import { Notifications } from 'expo';
+import moment from 'moment-timezone'
+
+moment.tz.setDefault("Europe/London");
 
 export default function App() {
   const [client, setupClient] = useState(null)

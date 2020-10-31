@@ -13,10 +13,8 @@ import {
     InputGroup,
     InputGroupText
 } from "reactstrap";
-import DatePicker from "react-datepicker";
 import classNames from 'classnames'
 
-import "react-datepicker/dist/react-datepicker.css";
 import { validateFunc } from "../../constraint/constraint";
 import { createLottery, editLottery, getlottery } from '../../apollo/server'
 import { gql } from "apollo-boost";

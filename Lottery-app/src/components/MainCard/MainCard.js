@@ -2,7 +2,7 @@ import React from 'react'
 import { View } from 'react-native'
 import { TextDefault } from '../Text'
 import styles from './styles'
-import { colors, scale, dateTransformation, getZone } from '../../utilities'
+import { colors, scale, dateTransformation, getTime, alignment } from '../../utilities'
 import Counter from '../Counter/Counter'
 import { FontAwesome5 } from '@expo/vector-icons';
 
@@ -20,8 +20,8 @@ function MainCard(props) {
                     <TextDefault numberOfLines={1} textColor={colors.headerText} H5 bold>
                         {dateTransformation(props.draw ? props.draw.date : null, true)}
                     </TextDefault>
-                    <TextDefault numberOfLines={1} textColor={colors.headerText}>
-                        {getZone(props.draw ? props.draw.date : null)}
+                    <TextDefault numberOfLines={1} textColor={colors.headerText} style={alignment.MTxSmall}>
+                        {getTime(props.draw ? props.draw.date : null)} <TextDefault numberOfLines={1} textColor={colors.fontSecondColor} small > {' (Europe/London)'}</TextDefault>
                     </TextDefault>
                     <View style={styles.lotteryBalls}>
                         {props.draw && (props.draw.pending ? (

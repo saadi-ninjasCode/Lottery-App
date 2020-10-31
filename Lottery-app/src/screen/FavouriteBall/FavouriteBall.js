@@ -59,13 +59,13 @@ function FavouriteBall() {
                 keyExtractor={(item, index) => index}
                 stickySectionHeadersEnabled={false}
                 showsVerticalScrollIndicator={false}
-                renderSectionHeader={({ section: { name } }) => (
-                    <View style={styles.headerStyles}>
-                        <TextDefault textColor={colors.fontWhite} H3 center>
-                            {name}
-                        </TextDefault>
-                    </View>
-                )}
+                // renderSectionHeader={({ section: { name } }) => (
+                //     <View style={styles.headerStyles}>
+                //         <TextDefault textColor={colors.fontWhite} H3 center>
+                //             {name}
+                //         </TextDefault>
+                //     </View>
+                // )}
                 renderItem={({ item, index, section }) => (
                     <>
                         <Balls name='Cold Balls' color={colors.facebook} array={item.coldBall} />
