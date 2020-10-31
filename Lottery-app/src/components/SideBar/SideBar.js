@@ -92,7 +92,7 @@ function SideBar(props) {
                             <TextDefault
                                 style={styles.font}
                                 textColor={colors.fontWhite} H5 >
-                                {'Lottery Results'}
+                                {'Results'}
                             </TextDefault>
                             <View style={styles.resultContainer}>
                                 {error ? <TextError text={error.message} mainColor={'transparent'} textColor={colors.drawerTitleColor} /> :
