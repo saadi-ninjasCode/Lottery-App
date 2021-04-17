@@ -8,7 +8,7 @@ mutation appLogin($facebookId:String,$email:String,$password:String,$type:String
      email
    }
 }
-`
+`;
 export const createUser = `
   mutation CreateUser($userInputApp: UserInputApp){
       createUser(userInputApp:$userInputApp){
@@ -18,7 +18,7 @@ export const createUser = `
           token
           tokenExpiration
       }
-    }`
+    }`;
 
 export const profile = `
     query{
@@ -29,8 +29,7 @@ export const profile = `
         notificationToken
         lotteries
         }
-    }`
-
+    }`;
 
 export const getLotteryName = `query{
     lottery{
@@ -39,7 +38,7 @@ export const getLotteryName = `query{
         icon_name
         next_draw
     }
-}`
+}`;
 
 export const favouriteBall = `query{
     lottery{
@@ -53,7 +52,7 @@ export const favouriteBall = `query{
           times
         }
       }
-}`
+}`;
 
 export const dashboardInfo = `query{
     dasboardInfo{
@@ -71,20 +70,23 @@ export const dashboardInfo = `query{
             pending
         }
       }
-}`
-export const ballsById = `query LotteryBallsById($id: String!){
-    lotteryBallsById(id:$id){
-        _id
-        lottery{
-            _id
-            name
+}`;
+export const ballsById = `query LotteryBallsById($id: String!, $page: Int, $rows: Int){
+    lotteryBallsById(id:$id, page: $page, rows: $rows){
+      totalRecords
+      draws {
+          _id
+          lottery{
+              _id
+              name
+          }
+          date
+          balls
+          specialBalls
+          pending
         }
-        date
-        balls
-        specialBalls
-        pending
       }
-}`
+}`;
 
 export const SubscribeLotteryBalls = `subscription SubscribeDraw($id:String!){
     subscribeDraw(id:$id){
@@ -101,7 +103,7 @@ export const SubscribeLotteryBalls = `subscription SubscribeDraw($id:String!){
         }
         origin
     }
-}`
+}`;
 
 export const SubscribeDashboardInfo = `subscription {
     subscribeDashBoard{
@@ -122,14 +124,14 @@ export const SubscribeDashboardInfo = `subscription {
           }
         origin
     }
-}`
+}`;
 
 export const pushToken = `mutation PushToken($token:String!){
     pushToken(token:$token){
       _id
       notificationToken
     }
-  }`
+  }`;
 
 export const updateNotificationStatus = `mutation UpdateNotificationStatus($lotteryID:String!){
     updateNotificationStatus(lotteryID:$lotteryID){
@@ -137,4 +139,4 @@ export const updateNotificationStatus = `mutation UpdateNotificationStatus($lott
       notificationToken
       lotteries
     }
-  }`
+  }`;
