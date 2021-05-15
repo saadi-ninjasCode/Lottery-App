@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+const path = require("path");
 const { ApolloServer, gql } = require("apollo-server-express");
 const isAuth = require("./middleware/is-auth");
 const http = require("http");
@@ -44,8 +45,9 @@ mongoose
   })
   .then(() => {
     httpServer.listen(process.env.PORT, () => {
-      console.log(`🚀  server started at http://localhost:${process.env.PORT}${server.graphqlPath}`);
-      console.log(`🚀 Subscriptions ready at ws://localhost:${process.env.PORT}${server.subscriptionsPath}`);
+      console.log(`🚀  server started at port${process.env.PORT}`);
+      // console.log(`🚀  server started at http://localhost:${process.env.PORT}${server.graphqlPath}`);
+      // console.log(`🚀 Subscriptions ready at ws://localhost:${process.env.PORT}${server.subscriptionsPath}`);
     });
   })
   .catch((err) => console.log("DB Connection Error : \n ", err));
